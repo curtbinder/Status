@@ -1,0 +1,14 @@
+Status Application
+
+CodeName:  jStatus
+
+Utility app that will allow for the following:
+
+* Get controller status
+* Get / Set the controller's date & time
+* Get the controller's version
+* Get / Set memory locations on the controller
+
+Communications can be done via WIFI or the COM port.
+
+The app is written in Java and should run natively on all platforms.
