@@ -11,4 +11,7 @@ Utility app that will allow for the following:
 
 Communications can be done via WIFI or the COM port.
 
-The app is written in Java and should run natively on all platforms.
+The app:
+* is written in Java and should run natively on all platforms.
+* uses the Eclipse IDE
+* can use the WindowsBuilder plugin (by Google)
