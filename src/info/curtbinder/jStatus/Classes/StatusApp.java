@@ -16,10 +16,12 @@ public class StatusApp {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		statusClass = new Status();
+		// read any saved/stored default values 
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					statusClass = new Status();
 					statusUI = new MainFrame(statusClass);
 					statusUI.setDefaults();
 					

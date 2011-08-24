@@ -3,6 +3,8 @@ package info.curtbinder.jStatus.Classes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 public class WriteValueAdapter implements ActionListener {
 
 	Status m;
@@ -15,7 +17,7 @@ public class WriteValueAdapter implements ActionListener {
 		try {
 			m.SendCommand(true);
 		} catch (Exception e) {
-			System.out.print("Write: Error with URL\n");
+			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error with URL", "Write Error", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

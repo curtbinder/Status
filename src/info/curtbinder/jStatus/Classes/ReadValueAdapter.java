@@ -3,6 +3,8 @@ package info.curtbinder.jStatus.Classes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 public class ReadValueAdapter implements ActionListener {
 
 	Status m;
@@ -15,7 +17,7 @@ public class ReadValueAdapter implements ActionListener {
 		try {
 			m.SendCommand(false);
 		} catch (Exception e) {
-			System.out.print("Read: Error with URL\n");
+			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error with URL", "Read Error", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

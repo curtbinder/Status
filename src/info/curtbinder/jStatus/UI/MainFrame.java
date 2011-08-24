@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final int minWidth = 370;
-	private static final int minHeight = 400;
+	private static final int minHeight = 420;
 	private static final int commLabelWidth = 50;
 	private static final int commLabelHeight = 15;
 	private static final String appTitle = "ReefAngel Status";
