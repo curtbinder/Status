@@ -1,5 +1,6 @@
 package info.curtbinder.jStatus.UI;
 
+import info.curtbinder.Dialogs.AboutDialog;
 import info.curtbinder.jStatus.Classes.*;
 
 import java.awt.Color;
@@ -11,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,7 +38,6 @@ public class MainFrame extends JFrame {
 	private static final int minHeight = 420;
 	private static final int commLabelWidth = 50;
 	private static final int commLabelHeight = 15;
-	private static final String appTitle = "ReefAngel Status";
 	private JPanel contentPane;
 	private JTextField textIP;
 	private JTextField textPort;
@@ -48,6 +49,7 @@ public class MainFrame extends JFrame {
 	private ButtonGroup groupMemType;
 	
 	private CloseAction closeAction = new CloseAction();
+	private AboutAction aboutAction = new AboutAction();
 
 	public class CloseAction extends AbstractAction {
 		/**
@@ -61,10 +63,29 @@ public class MainFrame extends JFrame {
 			System.exit(0);
 		}
 	}
+	public class AboutAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		public AboutAction() {
+			putValue(NAME, "About");
+		}
+		public void actionPerformed(ActionEvent ae) {
+			AboutDialog d = new AboutDialog(StatusApp.statusUI,
+					new ImageIcon(MainFrame.class.getResource(Globals.appIconName)),
+					"RA Status", 
+					"Monitor the status of the controller");
+			d.setAppVersion(Globals.versionMajor, Globals.versionMinor,
+					Globals.versionRevision, Globals.versionBuild);
+			d.setCopyright(Globals.copyrightInfo);
+			d.setBanner(new ImageIcon(MainFrame.class.getResource(Globals.bannerIconName)));
+			d.setURL(Globals.url);
+			d.setCreditors(Globals.creditList);
+			d.setLicense(Globals.legal);
+			d.showAbout();
+		}
+	}
 	
 	public MainFrame(Status m) {
-		setTitle(appTitle);
-		//this.m = m;
+		setTitle(Globals.appTitle);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// center on screen
 		setBounds(100, 100, minWidth, minHeight);
@@ -80,7 +101,7 @@ public class MainFrame extends JFrame {
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
-		JMenuItem mntmAbout = new JMenuItem("About");
+		JMenuItem mntmAbout = new JMenuItem(aboutAction);
 		mnHelp.add(mntmAbout);
 		
 		contentPane = new JPanel();

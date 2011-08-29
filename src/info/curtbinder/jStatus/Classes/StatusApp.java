@@ -5,7 +5,7 @@ import info.curtbinder.jStatus.UI.*;
 
 public class StatusApp {
 
-	static MainFrame statusUI;
+	public static MainFrame statusUI;
 	static Status statusClass;
 	
 	public StatusApp() {
