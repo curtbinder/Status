@@ -1,12 +1,14 @@
 package info.curtbinder.jStatus.UI;
 
 import info.curtbinder.Dialogs.AboutDialog;
+import info.curtbinder.Dialogs.TextDialog;
 import info.curtbinder.jStatus.Classes.*;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -47,8 +49,11 @@ public class MainFrame extends JFrame {
 	private JLabel lblWriteStatus;
 	private ButtonGroup groupCommType;
 	private ButtonGroup groupMemType;
+	private JButton btnReadValue;
+	private JButton btnWriteValue;
 	
 	private CloseAction closeAction = new CloseAction();
+	private MemoryLocationsAction memoryAction= new MemoryLocationsAction();
 	private AboutAction aboutAction = new AboutAction();
 
 	public class CloseAction extends AbstractAction {
@@ -83,6 +88,20 @@ public class MainFrame extends JFrame {
 			d.showAbout();
 		}
 	}
+	public class MemoryLocationsAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		public MemoryLocationsAction() {
+			putValue(NAME, "Memory Locations");
+		}
+		public void actionPerformed(ActionEvent ae) {
+			TextDialog d = new TextDialog(null, "Memory Locations", "Location - Type - Reference", 300, 300);
+			d.setWindowList(Globals.memoryLocationList);
+			d.showDialog();
+			Point p = StatusApp.statusUI.getLocation();
+			int w = StatusApp.statusUI.getWidth();
+			d.setBounds(p.x + w, p.y, 300, 300);
+		}
+	}
 	
 	public MainFrame(Status m) {
 		setTitle(Globals.appTitle);
@@ -101,7 +120,9 @@ public class MainFrame extends JFrame {
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
+		JMenuItem mntmMemory = new JMenuItem(memoryAction);
 		JMenuItem mntmAbout = new JMenuItem(aboutAction);
+		mnHelp.add(mntmMemory);
 		mnHelp.add(mntmAbout);
 		
 		contentPane = new JPanel();
@@ -235,7 +256,7 @@ public class MainFrame extends JFrame {
 		lblReadValue = new JLabel("");  // clear value first
 		lblReadValue.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblReadValue.setHorizontalAlignment(SwingConstants.CENTER);
-		JButton btnReadValue = new JButton("Read");
+		btnReadValue = new JButton("Read");
 		btnReadValue.addActionListener(new ReadValueAdapter(m));
 		btnReadValue.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomLeft.add(Box.createVerticalStrut(5));
@@ -274,7 +295,7 @@ public class MainFrame extends JFrame {
 		boxValue.add(Box.createHorizontalStrut(5));
 		boxStatus.add(lblWriteStatus);
 		boxStatus.add(Box.createHorizontalGlue());
-		JButton btnWriteValue = new JButton("Write Value");
+		btnWriteValue = new JButton("Write Value");
 		btnWriteValue.setAlignmentX(0.5f);
 		btnWriteValue.addActionListener(new WriteValueAdapter(m));
 		
@@ -359,5 +380,10 @@ public class MainFrame extends JFrame {
 	
 	public String getWriteValue() {
 		return textWriteValue.getText();
+	}
+	
+	public void enableReadWriteButtons(boolean bEnable) {
+		btnReadValue.setEnabled(bEnable);
+		btnWriteValue.setEnabled(bEnable);
 	}
 }
