@@ -11,6 +11,7 @@ public class Status {
 
 	private boolean writeValue = false;
 	private String sendCmdErrorMessage = new String("");
+	// TODO add thread for status & date/time tabs
 	
 	public Status() {
 		// TODO Auto-generated constructor stub

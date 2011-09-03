@@ -173,6 +173,7 @@ public class MemoryTab extends JPanel {
 	public String getWriteValue() {
 		return textWriteValue.getText();
 	}
+	
 	public void enableReadWriteButtons(boolean bEnable) {
 		btnReadValue.setEnabled(bEnable);
 		btnWriteValue.setEnabled(bEnable);
