@@ -15,7 +15,7 @@ public class ReadValueAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		try {
-			m.SendCommand(false);
+			m.SendReadWriteCommand(false);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error with URL", "Read Error", JOptionPane.INFORMATION_MESSAGE);
 		}

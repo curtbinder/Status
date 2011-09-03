@@ -23,6 +23,9 @@ public class Status {
 			String line;
 			while ( (line = bin.readLine()) != null )
 				s += line;
+			
+			// add in XML parsing here
+			// create new handler class
 		} catch (Exception e) {
 			sendCmdErrorMessage = e.getMessage();
 			if ( sendCmdErrorMessage.isEmpty() ) {
@@ -33,7 +36,7 @@ public class Status {
 		return s;
 	}
 	
-	public void SendCommand(boolean Write) {
+	public void SendReadWriteCommand(boolean Write) {
 		String url = StatusApp.statusUI.getCommMethod();
 		if ( url == "GET " ) {
 			JOptionPane.showMessageDialog(StatusApp.statusUI, 

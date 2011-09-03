@@ -13,6 +13,7 @@ public class Globals {
 	public static final String url = "http://curtbinder.info/";
 	public static final String bannerIconName = "/images/curtbinderlogo.png";
 	public static final String appIconName = "/images/Rss-green-64.png";
+	public static final String refreshIconName = "/images/refresh-16.png";
 	public static final String [] creditList = {
 		"Curt Binder",
 		"Dave Molton"
