@@ -10,8 +10,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,12 +34,12 @@ public class StatusTab extends JPanel {
 	private JLabel lblPwmDaylight;
 	private JLabel lblLow;
 	private JLabel lblHigh;
-	private Status statusClass;
+	//private Status statusClass;
 	private Controller ra;
 
 	public StatusTab ( Status s ) {
 		super();
-		statusClass = s;
+		//statusClass = s;
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

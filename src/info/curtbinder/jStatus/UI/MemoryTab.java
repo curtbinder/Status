@@ -34,11 +34,11 @@ public class MemoryTab extends JPanel {
 	private ButtonGroup groupMemType;
 	private JButton btnReadValue;
 	private JButton btnWriteValue;
-	private Status statusClass;
+	//private Status statusClass;
 
 	public MemoryTab ( Status s ) {
 		super();
-		statusClass = s;
+		//statusClass = s;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		// Start of Memory panel

@@ -43,6 +43,14 @@ public class Controller {
 		qtyExpansionRelays = 0;
 	}
 
+	public void setNumExpansionRelays ( byte relays ) {
+		qtyExpansionRelays = relays;
+	}
+	
+	public byte getNumExpansionRelays ( ) {
+		return qtyExpansionRelays;
+	}
+
 	public void setTemp1 ( int value ) {
 		t1.setValue(value);
 	}
@@ -112,7 +120,8 @@ public class Controller {
 	}
 
 	public String getPwmA ( ) {
-		return new String(String.format("%s%c", pwmA, DecimalFormatSymbols.getInstance().getPercent()));
+		return new String(String.format("%s%c", pwmA, DecimalFormatSymbols
+				.getInstance().getPercent()));
 	}
 
 	public void setPwmD ( byte v ) {
@@ -120,7 +129,8 @@ public class Controller {
 	}
 
 	public String getPwmD ( ) {
-		return new String(String.format("%s%c", pwmD, DecimalFormatSymbols.getInstance().getPercent()));
+		return new String(String.format("%s%c", pwmD, DecimalFormatSymbols
+				.getInstance().getPercent()));
 	}
 
 	public void setMainRelayData ( short data, short maskOn, short maskOff ) {

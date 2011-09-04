@@ -49,7 +49,7 @@ public class MainFrame extends JFrame {
 	private JTextField textIP;
 	private JTextField textPort;
 	private ButtonGroup groupCommType;
-	private Status statusClass;
+	//private Status statusClass;
 	public MemoryTab tabMemory;
 	public StatusTab tabStatus;
 
@@ -59,7 +59,7 @@ public class MainFrame extends JFrame {
 		// center on screen
 		setBounds(100, 100, minWidth, minHeight);
 		setMinimumSize(new Dimension(minWidth, minHeight));
-		statusClass = m;
+		//statusClass = m;
 		setJMenuBar(new StatusMenuBar());
 
 		contentPane = new JPanel();
