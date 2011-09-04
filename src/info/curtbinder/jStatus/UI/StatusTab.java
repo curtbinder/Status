@@ -93,22 +93,22 @@ public class StatusTab extends JPanel {
 		gbc_lblT1.gridy = 0;
 		status.add(lblT1, gbc_lblT1);
 
-		JLabel lblPwmActinicLabel = new JLabel("AP:");
-		lblPwmActinicLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
-		GridBagConstraints gbc_lblPwmActinicLabel = new GridBagConstraints();
-		gbc_lblPwmActinicLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblPwmActinicLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPwmActinicLabel.gridx = 3;
-		gbc_lblPwmActinicLabel.gridy = 0;
-		status.add(lblPwmActinicLabel, gbc_lblPwmActinicLabel);
+		JLabel lblPwmDaylightLabel = new JLabel("DP:");
+		lblPwmDaylightLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
+		GridBagConstraints gbc_lblPwmDaylightLabel = new GridBagConstraints();
+		gbc_lblPwmDaylightLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblPwmDaylightLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPwmDaylightLabel.gridx = 3;
+		gbc_lblPwmDaylightLabel.gridy = 0;
+		status.add(lblPwmDaylightLabel, gbc_lblPwmDaylightLabel);
 
-		lblPwmActinic = new JLabel(Globals.defaultStatusText);
-		GridBagConstraints gbc_lblPwmActinic = new GridBagConstraints();
-		gbc_lblPwmActinic.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPwmActinic.gridx = 4;
-		gbc_lblPwmActinic.gridy = 0;
-		status.add(lblPwmActinic, gbc_lblPwmActinic);
-
+		lblPwmDaylight = new JLabel(Globals.defaultStatusText);
+		GridBagConstraints gbc_lblPwmDaylight = new GridBagConstraints();
+		gbc_lblPwmDaylight.insets = new Insets(0, 0, 5, 0);
+		gbc_lblPwmDaylight.gridx = 4;
+		gbc_lblPwmDaylight.gridy = 0;
+		status.add(lblPwmDaylight, gbc_lblPwmDaylight);
+		
 		JLabel lblTemp2Label = new JLabel("Temp2:");
 		lblTemp2Label.setFont(new Font("Dialog", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblTemp2Label = new GridBagConstraints();
@@ -125,21 +125,21 @@ public class StatusTab extends JPanel {
 		gbc_lblT2.gridy = 1;
 		status.add(lblT2, gbc_lblT2);
 
-		JLabel lblPwmDaylightLabel = new JLabel("DP:");
-		lblPwmDaylightLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
-		GridBagConstraints gbc_lblPwmDaylightLabel = new GridBagConstraints();
-		gbc_lblPwmDaylightLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblPwmDaylightLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPwmDaylightLabel.gridx = 3;
-		gbc_lblPwmDaylightLabel.gridy = 1;
-		status.add(lblPwmDaylightLabel, gbc_lblPwmDaylightLabel);
+		JLabel lblPwmActinicLabel = new JLabel("AP:");
+		lblPwmActinicLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
+		GridBagConstraints gbc_lblPwmActinicLabel = new GridBagConstraints();
+		gbc_lblPwmActinicLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblPwmActinicLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPwmActinicLabel.gridx = 3;
+		gbc_lblPwmActinicLabel.gridy = 1;
+		status.add(lblPwmActinicLabel, gbc_lblPwmActinicLabel);
 
-		lblPwmDaylight = new JLabel(Globals.defaultStatusText);
-		GridBagConstraints gbc_lblPwmDaylight = new GridBagConstraints();
-		gbc_lblPwmDaylight.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPwmDaylight.gridx = 4;
-		gbc_lblPwmDaylight.gridy = 1;
-		status.add(lblPwmDaylight, gbc_lblPwmDaylight);
+		lblPwmActinic = new JLabel(Globals.defaultStatusText);
+		GridBagConstraints gbc_lblPwmActinic = new GridBagConstraints();
+		gbc_lblPwmActinic.insets = new Insets(0, 0, 5, 0);
+		gbc_lblPwmActinic.gridx = 4;
+		gbc_lblPwmActinic.gridy = 1;
+		status.add(lblPwmActinic, gbc_lblPwmActinic);
 
 		JLabel lblTemp3Label = new JLabel("Temp3:");
 		lblTemp3Label.setFont(new Font("Dialog", Font.PLAIN, 12));

@@ -7,6 +7,7 @@ import info.curtbinder.jStatus.Classes.WriteValueAdapter;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.Box;
@@ -56,8 +57,20 @@ public class MemoryTab extends JPanel {
 		textLocation = new JTextField();
 		textLocation.setColumns(10);
 		lblLocation.setLabelFor(textLocation);
+		
+		JButton helpIcon = new JButton(new MemoryLocationsAction());
+		helpIcon.setBorderPainted(false);
+		helpIcon.setContentAreaFilled(false);
+		helpIcon.setText("");
+		Dimension dim = new Dimension(16,16);
+		helpIcon.setPreferredSize(dim);
+		helpIcon.setMinimumSize(dim);
+		helpIcon.setMaximumSize(dim);
+		
 		locationBox.add(lblLocation);
 		locationBox.add(textLocation);
+		locationBox.add(helpIcon);
+		
 		topLeft.add(Box.createVerticalGlue());
 		topLeft.add(locationBox);
 		topLeft.add(Box.createVerticalGlue());

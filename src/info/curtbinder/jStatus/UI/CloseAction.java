@@ -9,6 +9,7 @@ public class CloseAction extends AbstractAction {
 
 	public CloseAction () {
 		putValue(NAME, "Close");
+		// TODO add in Close icon
 	}
 
 	public void actionPerformed ( ActionEvent ae ) {

@@ -1,11 +1,9 @@
 package info.curtbinder.jStatus.UI;
 
 import info.curtbinder.Dialogs.AboutDialog;
-import info.curtbinder.Dialogs.TextDialog;
 import info.curtbinder.jStatus.Classes.Globals;
 import info.curtbinder.jStatus.Classes.StatusApp;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -27,6 +25,7 @@ public class StatusMenuBar extends JMenuBar {
 
 		public AboutAction () {
 			putValue(NAME, "About");
+			// TODO add in about icon
 		}
 
 		public void actionPerformed ( ActionEvent ae ) {
@@ -42,24 +41,6 @@ public class StatusMenuBar extends JMenuBar {
 			d.setCreditors(Globals.creditList);
 			d.setLicense(Globals.legal);
 			d.showAbout();
-		}
-	}
-
-	public class MemoryLocationsAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public MemoryLocationsAction () {
-			putValue(NAME, "Memory Locations");
-		}
-
-		public void actionPerformed ( ActionEvent ae ) {
-			TextDialog d = new TextDialog(null, "Memory Locations",
-					"Location - Type - Reference", 300, 300);
-			d.setWindowList(Globals.memoryLocationList);
-			d.showDialog();
-			Point p = StatusApp.statusUI.getLocation();
-			int w = StatusApp.statusUI.getWidth();
-			d.setBounds(p.x + w, p.y, 300, 300);
 		}
 	}
 
