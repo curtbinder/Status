@@ -37,10 +37,11 @@ public class Globals {
 	public static final String memoryLocationsIconName = "/images/help-16.png";
 
 	// Credits & Legal Stuff
-	public static final String[] creditList = { "Curt Binder", "Dave Molton" };
+	public static final String[] creditList = { "Curt Binder", "Dave Molton",
+			"Roberto Imai" };
 	public static final String legal = "This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. "
-			+ "To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 444 Castro Street, "
-			+ "Suite 900, Mountain View, California, 94041, USA.";
+										+ "To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 444 Castro Street, "
+										+ "Suite 900, Mountain View, California, 94041, USA.";
 
 	public static final String[] memoryLocationList = {
 			"800 - Byte - MH On Hour", "801 - Byte - MH On Minute",
