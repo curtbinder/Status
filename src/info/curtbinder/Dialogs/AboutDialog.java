@@ -41,19 +41,20 @@ public class AboutDialog extends JDialog {
 	private JLabel lblUrl = new JLabel();
 	private JButton btnCredits = new JButton("Credits");
 	private JButton btnLicense = new JButton("License");
-	private String [] arrayCredits = new String [0];
+	private String[] arrayCredits = new String[0];
 	private String sLicense = new String();
 
 	private AboutDialog aDlg;
 
-	public AboutDialog(final JFrame owner, ImageIcon appIcon, String appName, String description) {
+	public AboutDialog ( final JFrame owner, ImageIcon appIcon, String appName,
+			String description ) {
 		super(owner);
 		aDlg = this;
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		setContentPane(contentPane);
-		
+
 		// Info panel
 		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -89,9 +90,9 @@ public class AboutDialog extends JDialog {
 		infoPanel.add(Box.createVerticalStrut(5));
 		lblUrl.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblUrl.setForeground(Color.BLUE);
-		//lblUrl.setFont(new Font("Dialog", Font.PLAIN, 12));
+		// lblUrl.setFont(new Font("Dialog", Font.PLAIN, 12));
 		lblUrl.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked ( MouseEvent e ) {
 				java.awt.Desktop d = java.awt.Desktop.getDesktop();
 				java.net.URI url;
 				try {
@@ -99,33 +100,32 @@ public class AboutDialog extends JDialog {
 					url = new java.net.URI(lblUrl.getText());
 				} catch (URISyntaxException e1) {
 					// invalid URL
-					JOptionPane.showMessageDialog(aDlg, 
-							"Error with URL:\n" + lblUrl.getText(), 
-							"Invalid URL", 
+					JOptionPane.showMessageDialog(aDlg, "Error with URL:\n"
+							+ lblUrl.getText(), "Invalid URL",
 							JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 				try {
-					System.out.print("Launch browser: " + url.toString() + "\n");
+					System.out
+							.print("Launch browser: " + url.toString() + "\n");
 					d.browse(url);
 				} catch (IOException e1) {
 					// error loading URL
-					JOptionPane.showMessageDialog(aDlg, 
-							"Error loading URL:\n" + lblUrl.getText(), 
-							"Error Loading", 
+					JOptionPane.showMessageDialog(aDlg, "Error loading URL:\n"
+							+ lblUrl.getText(), "Error Loading",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
 		infoPanel.add(lblUrl);
-		
+
 		// Button panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		buttonPanel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		btnCredits.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnCredits.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
+			public void actionPerformed ( ActionEvent ev ) {
 				TextDialog d = new TextDialog(aDlg, "Credits", "Contributors:");
 				d.setWindowList(aDlg.arrayCredits);
 				d.showDialog();
@@ -133,8 +133,9 @@ public class AboutDialog extends JDialog {
 		});
 		btnLicense.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnLicense.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				TextDialog d = new TextDialog(aDlg, "License", "Legal Stuff:", 300, 200);
+			public void actionPerformed ( ActionEvent ev ) {
+				TextDialog d = new TextDialog(aDlg, "License", "Legal Stuff:",
+						300, 200);
 				d.setWindowText(aDlg.sLicense);
 				d.showDialog();
 			}
@@ -142,7 +143,7 @@ public class AboutDialog extends JDialog {
 		JButton btnClose = new JButton("Close");
 		btnClose.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnClose.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
+			public void actionPerformed ( ActionEvent ev ) {
 				setVisible(false);
 				dispose();
 			}
@@ -152,51 +153,52 @@ public class AboutDialog extends JDialog {
 		buttonPanel.add(btnLicense);
 		buttonPanel.add(Box.createHorizontalGlue());
 		buttonPanel.add(btnClose);
-		
+
 		contentPane.add(infoPanel);
 		contentPane.add(Box.createVerticalStrut(5));
 		contentPane.add(buttonPanel);
 
 		setMinimumSize(new Dimension(minWidth, minHeight));
 	}
-	
-	void setAppName(String appName) {
+
+	void setAppName ( String appName ) {
 		lblAppName.setText(appName);
 		setTitle("About " + appName);
 	}
-	public void setAppVersion(int major, int minor, int revision, String build) {
+
+	public void setAppVersion ( int major, int minor, int revision, String build ) {
 		String v = major + "." + minor + "." + revision;
-		if ( ! build.isEmpty() ) {
-			 v += "-" + build;
+		if ( !build.isEmpty() ) {
+			v += "-" + build;
 		}
 		lblAppVersion.setText(v);
 	}
-	
-	public void setDescription(String desc) {
+
+	public void setDescription ( String desc ) {
 		lblDescription.setText(desc);
 	}
-	
-	public void setCopyright(String copyright) {
+
+	public void setCopyright ( String copyright ) {
 		lblCopyright.setText(copyright);
 	}
-	
-	public void setBanner(ImageIcon i) {
+
+	public void setBanner ( ImageIcon i ) {
 		lblBanner.setIcon(i);
 	}
-	
-	public void setURL(String url) {
+
+	public void setURL ( String url ) {
 		lblUrl.setText(url);
 	}
-	
-	public void setCreditors(String [] creditors) {
+
+	public void setCreditors ( String[] creditors ) {
 		arrayCredits = creditors;
 	}
-	
-	public void setLicense(String s) {
+
+	public void setLicense ( String s ) {
 		sLicense = s;
 	}
-	
-	public void showAbout() {
+
+	public void showAbout ( ) {
 		setLocationRelativeTo(getParent());
 		if ( lblBanner.getIcon() == null ) {
 			lblBanner.setVisible(false);

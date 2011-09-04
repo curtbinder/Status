@@ -1,5 +1,6 @@
 package info.curtbinder.jStatus.UI;
 
+import info.curtbinder.jStatus.Classes.Globals;
 import info.curtbinder.jStatus.Classes.ReadValueAdapter;
 import info.curtbinder.jStatus.Classes.Status;
 import info.curtbinder.jStatus.Classes.WriteValueAdapter;
@@ -21,7 +22,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class MemoryTab extends JPanel {
-	
+
 	/**
 	 * 
 	 */
@@ -34,17 +35,17 @@ public class MemoryTab extends JPanel {
 	private JButton btnReadValue;
 	private JButton btnWriteValue;
 	private Status statusClass;
-	
-	public MemoryTab(Status s) {
+
+	public MemoryTab ( Status s ) {
+		super();
 		statusClass = s;
-		JPanel tabMemory = new JPanel();
-		tabMemory.setLayout(new BoxLayout(tabMemory, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		// Start of Memory panel
 		// top half
 		JPanel topHalf = new JPanel();
 		topHalf.setLayout(new BoxLayout(topHalf, BoxLayout.X_AXIS));
-		
+
 		// top left
 		JPanel topLeft = new JPanel();
 		topLeft.setLayout(new BoxLayout(topLeft, BoxLayout.Y_AXIS));
@@ -60,15 +61,17 @@ public class MemoryTab extends JPanel {
 		topLeft.add(Box.createVerticalGlue());
 		topLeft.add(locationBox);
 		topLeft.add(Box.createVerticalGlue());
-		
+
 		// top right
 		JPanel topRight = new JPanel();
-		topRight.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Status Type:", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		topRight.setBorder(new TitledBorder(new LineBorder(new Color(184, 207,
+				229)), "Status Type:", TitledBorder.LEADING, TitledBorder.TOP,
+				null, new Color(51, 51, 51)));
 		topRight.setLayout(new BoxLayout(topRight, BoxLayout.Y_AXIS));
 		JRadioButton rdbtnByte = new JRadioButton("Byte Value");
-		rdbtnByte.setActionCommand("/mb");
+		rdbtnByte.setActionCommand(Globals.requestMemoryByte);
 		JRadioButton rdbtnInt = new JRadioButton("Integer Value");
-		rdbtnInt.setActionCommand("/mi");
+		rdbtnInt.setActionCommand(Globals.requestMemoryInt);
 		topRight.add(Box.createVerticalGlue());
 		topRight.add(rdbtnByte);
 		topRight.add(Box.createVerticalGlue());
@@ -78,24 +81,25 @@ public class MemoryTab extends JPanel {
 		groupMemType.add(rdbtnByte);
 		rdbtnByte.setSelected(true);
 		groupMemType.add(rdbtnInt);
-		
+
 		topHalf.add(topLeft);
 		topHalf.add(Box.createHorizontalGlue());
 		topHalf.add(topRight);
-		
+
 		// bottom half
 		JPanel bottomHalf = new JPanel();
 		bottomHalf.setLayout(new BoxLayout(bottomHalf, BoxLayout.X_AXIS));
-		
+
 		// bottom left
 		JPanel bottomLeft = new JPanel();
-		bottomLeft.setBorder(new TitledBorder(null, "Read Value:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		bottomLeft.setBorder(new TitledBorder(null, "Read Value:",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		bottomLeft.setLayout(new BoxLayout(bottomLeft, BoxLayout.Y_AXIS));
-		lblReadValue = new JLabel("");  // clear value first
+		lblReadValue = new JLabel(""); // clear value first
 		lblReadValue.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblReadValue.setHorizontalAlignment(SwingConstants.CENTER);
-		JButton btnReadValue = new JButton("Read");
-		btnReadValue.addActionListener(new ReadValueAdapter(statusClass));
+		btnReadValue = new JButton("Read");
+		btnReadValue.addActionListener(new ReadValueAdapter(s));
 		btnReadValue.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomLeft.add(Box.createVerticalStrut(5));
 		bottomLeft.add(Box.createVerticalGlue());
@@ -103,10 +107,11 @@ public class MemoryTab extends JPanel {
 		bottomLeft.add(Box.createVerticalGlue());
 		bottomLeft.add(btnReadValue);
 		bottomLeft.add(Box.createVerticalStrut(5));
-		
+
 		// bottom right
 		JPanel bottomRight = new JPanel();
-		bottomRight.setBorder(new TitledBorder(null, "Write Value:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		bottomRight.setBorder(new TitledBorder(null, "Write Value:",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		bottomRight.setLayout(new BoxLayout(bottomRight, BoxLayout.Y_AXIS));
 		JPanel boxValue = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) boxValue.getLayout();
@@ -135,46 +140,47 @@ public class MemoryTab extends JPanel {
 		boxStatus.add(Box.createHorizontalGlue());
 		btnWriteValue = new JButton("Write Value");
 		btnWriteValue.setAlignmentX(0.5f);
-		btnWriteValue.addActionListener(new WriteValueAdapter(statusClass));
-		
+		btnWriteValue.addActionListener(new WriteValueAdapter(s));
+
 		bottomRight.add(Box.createVerticalGlue());
 		bottomRight.add(boxValue);
 		bottomRight.add(boxStatus);
 		bottomRight.add(Box.createVerticalGlue());
 		bottomRight.add(btnWriteValue);
 		bottomRight.add(Box.createVerticalStrut(5));
-		
+
 		bottomHalf.add(bottomLeft);
 		bottomHalf.add(Box.createHorizontalGlue());
 		bottomHalf.add(bottomRight);
-		
-		tabMemory.add(topHalf);
-		tabMemory.add(Box.createVerticalGlue());
-		tabMemory.add(bottomHalf);
+
+		add(topHalf);
+		add(Box.createVerticalGlue());
+		add(bottomHalf);
 		// end of Status panel
+
 	}
 
-	public String getMemType() {
+	public String getMemType ( ) {
 		return groupMemType.getSelection().getActionCommand();
 	}
 
-	public String getTextLocation() {
+	public String getTextLocation ( ) {
 		return textLocation.getText();
 	}
-	
-	public void setReadValue(String s) {
+
+	public void setReadValue ( String s ) {
 		lblReadValue.setText(s);
 	}
-	
-	public void setWriteStatus(String s) {
+
+	public void setWriteStatus ( String s ) {
 		lblWriteStatus.setText(s);
 	}
-	
-	public String getWriteValue() {
+
+	public String getWriteValue ( ) {
 		return textWriteValue.getText();
 	}
-	
-	public void enableReadWriteButtons(boolean bEnable) {
+
+	public void enableReadWriteButtons ( boolean bEnable ) {
 		btnReadValue.setEnabled(bEnable);
 		btnWriteValue.setEnabled(bEnable);
 	}
