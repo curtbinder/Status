@@ -28,16 +28,17 @@ public class Status {
 	private String SendCommandToController ( URL u ) {
 		String s = "";
 		try {
-			BufferedReader bin = new BufferedReader(new InputStreamReader(u
-					.openStream()));
+			BufferedReader bin =
+					new BufferedReader( new InputStreamReader( u.openStream() ) );
 			String line;
 			while ( (line = bin.readLine()) != null ) {
 				s += line;
 			}
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			sendCmdErrorMessage = e.getMessage();
 			if ( sendCmdErrorMessage.isEmpty() ) {
-				sendCmdErrorMessage = "Unknown error communicating to controller";
+				sendCmdErrorMessage =
+						"Unknown error communicating to controller";
 			}
 			s = Globals.errorMessage;
 		}
@@ -47,17 +48,19 @@ public class Status {
 	public void SendReadWriteCommand ( boolean Write ) {
 		String url = StatusApp.statusUI.getCommMethod();
 		if ( url == "GET " ) {
-			JOptionPane.showMessageDialog(StatusApp.statusUI,
-					"COM not implemented yet", "Comm Type",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											"COM not implemented yet",
+											"Comm Type",
+											JOptionPane.INFORMATION_MESSAGE );
 			return;
 		}
 		String cmd = StatusApp.statusUI.tabMemory.getMemType();
 		String loc = StatusApp.statusUI.tabMemory.getTextLocation();
 		if ( loc.isEmpty() ) {
-			JOptionPane.showMessageDialog(StatusApp.statusUI,
-					"Must specify a memory location",
-					"Missing Memory Location", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											"Must specify a memory location",
+											"Missing Memory Location",
+											JOptionPane.INFORMATION_MESSAGE );
 			return;
 		}
 		cmd += loc;
@@ -65,71 +68,77 @@ public class Status {
 		if ( Write ) {
 			String value = StatusApp.statusUI.tabMemory.getWriteValue();
 			if ( value.isEmpty() ) {
-				JOptionPane.showMessageDialog(StatusApp.statusUI,
-						"Must specify a value to write", "Missing Value",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane
+						.showMessageDialog( StatusApp.statusUI,
+											"Must specify a value to write",
+											"Missing Value",
+											JOptionPane.INFORMATION_MESSAGE );
 				return;
 			}
 			cmd += "," + value;
 		}
 		final String s = url + cmd;
-		System.out.print("Command: '" + s + "'\n");
+		System.out.print( "Command: '" + s + "'\n" );
 
 		// blank out the status boxes
 		if ( Write ) {
-			StatusApp.statusUI.tabMemory.setWriteStatus("");
+			StatusApp.statusUI.tabMemory.setWriteStatus( "" );
 		} else {
-			StatusApp.statusUI.tabMemory.setReadValue("");
+			StatusApp.statusUI.tabMemory.setReadValue( "" );
 		}
 
 		// TODO figure out how to interrupt the thread if it's stuck waiting
 		new Thread() {
 			public void run ( ) {
-				System.out.println("Started thread read/write");
-				threadReadWriteMemory(s);
-				System.out.println("Finished thread read/write");
+				System.out.println( "Started thread read/write" );
+				threadReadWriteMemory( s );
+				System.out.println( "Finished thread read/write" );
 			}
 		}.start();
 	}
 
 	private void threadReadWriteMemory ( String url ) {
 		// Disable the read/write buttons
-		StatusApp.statusUI.tabMemory.enableReadWriteButtons(false);
+		StatusApp.statusUI.tabMemory.enableReadWriteButtons( false );
 		// send command to controller
-		String res = new String("");
+		String res = new String( "" );
 		long start = System.currentTimeMillis();
 		try {
-			res = SendCommandToController(new URL(url));
-		} catch (MalformedURLException e) {
-			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error with URL",
-					"Read Error", JOptionPane.INFORMATION_MESSAGE);
+			res = SendCommandToController( new URL( url ) );
+		} catch ( MalformedURLException e ) {
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											"Error with URL", "Read Error",
+											JOptionPane.INFORMATION_MESSAGE );
 		}
 		long end = System.currentTimeMillis();
-		System.out.printf("Took %d ms to send command\n", end - start);
+		System.out.printf( "Took %d ms to send command\n", end - start );
 
 		// Enable the read/write buttons
-		StatusApp.statusUI.tabMemory.enableReadWriteButtons(true);
+		StatusApp.statusUI.tabMemory.enableReadWriteButtons( true );
 
 		// check if there was an error
-		if ( res.equals(Globals.errorMessage) ) {
+		if ( res.equals( Globals.errorMessage ) ) {
 			// encountered an error, display a popup message
-			JOptionPane.showMessageDialog(StatusApp.statusUI,
-					sendCmdErrorMessage, "Error sending command",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											sendCmdErrorMessage,
+											"Error sending command",
+											JOptionPane.INFORMATION_MESSAGE );
 
 		} else {
 			// no error
 			// parse the returned xml string
 			XMLHandler h = new XMLHandler();
-			if ( !parseXML(h, res) ) {
+			if ( !parseXML( h, res ) ) {
 				// TODO consider displaying a popup window
-				System.out.println("Error with parser");
+				System.out.println( "Error with parser" );
 				return;
 			}
 			if ( writeValue ) {
-				StatusApp.statusUI.tabMemory.setWriteStatus(h.getMemoryResponse());
+				StatusApp.statusUI.tabMemory.setWriteStatus( h
+						.getMemoryResponse() );
 			} else {
-				StatusApp.statusUI.tabMemory.setReadValue(h.getMemoryResponse());
+				StatusApp.statusUI.tabMemory.setReadValue( h
+						.getMemoryResponse() );
 			}
 		}
 	}
@@ -137,18 +146,19 @@ public class Status {
 	public void SendRefreshCommand ( ) {
 		String url = StatusApp.statusUI.getCommMethod();
 		if ( url == "GET " ) {
-			JOptionPane.showMessageDialog(StatusApp.statusUI,
-					"COM not implemented yet", "Comm Type",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											"COM not implemented yet",
+											"Comm Type",
+											JOptionPane.INFORMATION_MESSAGE );
 			return;
 		}
 		final String s = url + Globals.requestStatus;
-		System.out.println("Refresh: '" + s + "'");
+		System.out.println( "Refresh: '" + s + "'" );
 		new Thread() {
 			public void run ( ) {
-				System.out.println("Started thread refresh");
-				threadRefreshStatus(s);
-				System.out.println("Finished thread refresh");
+				System.out.println( "Started thread refresh" );
+				threadRefreshStatus( s );
+				System.out.println( "Finished thread refresh" );
 			}
 		}.start();
 	}
@@ -160,23 +170,25 @@ public class Status {
 		String res = "";
 		long start = System.currentTimeMillis();
 		try {
-			res = SendCommandToController(new URL(url));
-		} catch (MalformedURLException e) {
-			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error with URL",
-					"Read Error", JOptionPane.INFORMATION_MESSAGE);
+			res = SendCommandToController( new URL( url ) );
+		} catch ( MalformedURLException e ) {
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											"Error with URL", "Read Error",
+											JOptionPane.INFORMATION_MESSAGE );
 		}
 		long end = System.currentTimeMillis();
-		System.out.printf("Took %d ms to send command\n", end - start);
+		System.out.printf( "Took %d ms to send command\n", end - start );
 
 		// Enable the refresh button
 		StatusApp.statusUI.tabStatus.enableRefreshButton();
 
 		// check if there was an error
-		if ( res.equals(Globals.errorMessage) ) {
+		if ( res.equals( Globals.errorMessage ) ) {
 			// encountered an error, display a popup message
-			JOptionPane.showMessageDialog(StatusApp.statusUI,
-					sendCmdErrorMessage, "Error sending command",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											sendCmdErrorMessage,
+											"Error sending command",
+											JOptionPane.INFORMATION_MESSAGE );
 
 		} else {
 			// no error
@@ -184,40 +196,40 @@ public class Status {
 			// set values in tabStatus
 			// call updateDisplay
 			XMLHandler h = new XMLHandler();
-			if ( !parseXML(h, res) ) {
+			if ( !parseXML( h, res ) ) {
 				// TODO consider displaying a popup window
-				System.out.println("Error with parser");
+				System.out.println( "Error with parser" );
 				return;
 			}
-			StatusApp.statusUI.tabStatus.setControllerInformation(h.getRa());
+			StatusApp.statusUI.tabStatus.setControllerInformation( h.getRa() );
 		}
 	}
 
 	private boolean parseXML ( XMLHandler h, String res ) {
 		XMLReader xr;
 		long start, end;
-		System.out.println("Parsing");
+		System.out.println( "Parsing" );
 		try {
 			xr = XMLReaderFactory.createXMLReader();
-		} catch (SAXException e) {
+		} catch ( SAXException e ) {
 			e.printStackTrace();
 			return false;
 		}
-		xr.setContentHandler(h);
-		xr.setErrorHandler(h);
+		xr.setContentHandler( h );
+		xr.setErrorHandler( h );
 		start = System.currentTimeMillis();
 		try {
-			xr.parse(new InputSource(new StringReader(res)));
-		} catch (IOException e) {
+			xr.parse( new InputSource( new StringReader( res ) ) );
+		} catch ( IOException e ) {
 			e.printStackTrace();
 			return false;
-		} catch (SAXException e) {
+		} catch ( SAXException e ) {
 			e.printStackTrace();
 			return false;
 		}
 		end = System.currentTimeMillis();
-		System.out.printf("Took %d ms to parse\n", end - start);
-		System.out.println("Parsed");
+		System.out.printf( "Took %d ms to parse\n", end - start );
+		System.out.println( "Parsed" );
 		return true;
 	}
 }

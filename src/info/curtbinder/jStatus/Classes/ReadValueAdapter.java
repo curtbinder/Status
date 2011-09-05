@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 public class ReadValueAdapter implements ActionListener {
 
-	Status m;
+	private Status m;
 
 	public ReadValueAdapter ( Status m ) {
 		this.m = m;

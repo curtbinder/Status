@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 public class WriteValueAdapter implements ActionListener {
 
-	Status m;
+	private Status m;
 
 	public WriteValueAdapter ( Status m ) {
 		this.m = m;
