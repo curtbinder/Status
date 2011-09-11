@@ -16,7 +16,7 @@ public class RefreshAdapter implements ActionListener {
 	@Override
 	public void actionPerformed ( ActionEvent arg0 ) {
 		try {
-			m.SendRefreshCommand();
+			m.sendRefreshCommand();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(StatusApp.statusUI,
 					"Error with Refresh", "Refresh Error",

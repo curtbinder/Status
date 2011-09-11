@@ -26,6 +26,7 @@ public class MainFrame extends JFrame {
 	private JTabbedPane tabbedPane;
 	public MemoryTab tabMemory;
 	public StatusTab tabStatus;
+	public DateTimeTab tabDateTime;
 	private CommunicationsPanel panelCommunication;
 
 	public MainFrame ( Status m ) {
@@ -48,10 +49,10 @@ public class MainFrame extends JFrame {
 		tabbedPane = new JTabbedPane( JTabbedPane.TOP );
 		tabMemory = new MemoryTab( m );
 		tabStatus = new StatusTab( m );
-		// JPanel tabDateTime = createDateTimeTab();
+		tabDateTime = new DateTimeTab( m );
 		tabbedPane.addTab( tabStatus.NAME, null, tabStatus, null );
 		tabbedPane.addTab( tabMemory.NAME, null, tabMemory, null );
-		// tabbedPane.addTab("Date & Time", null, tabDateTime, null);
+		tabbedPane.addTab( tabDateTime.NAME, null, tabDateTime, null );
 
 		// Button panel
 		JPanel buttonPanel = new JPanel();

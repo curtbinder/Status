@@ -26,7 +26,7 @@ public class Globals {
 	public static final int versionMajor = 1;
 	public static final int versionMinor = 0;
 	public static final int versionRevision = 0;
-	public static final String versionBuild = "alpha 3";
+	public static final String versionBuild = "alpha 4";
 	public static final String copyrightInfo = "Copyright 2011 Curt Binder";
 	public static final String url = "http://curtbinder.info/";
 

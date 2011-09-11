@@ -17,15 +17,14 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class Status {
 
 	private boolean writeValue = false;
+	private boolean enableButtonsOnThreadFinish = true;
 	private String sendCmdErrorMessage = "";
-
-	// TODO add thread for status & date/time tabs
+	private Thread threadSender;
 
 	public Status () {
-		// TODO Auto-generated constructor stub
 	}
 
-	private String SendCommandToController ( URL u ) {
+	private String sendCommandToController ( URL u ) {
 		String s = "";
 		try {
 			BufferedReader bin =
@@ -45,7 +44,47 @@ public class Status {
 		return s;
 	}
 
-	public void SendReadWriteCommand ( boolean Write ) {
+	public void sendReadMemoryCommand ( ) {
+		sendMemoryCommand("ReadMemory");
+	}
+	
+	public void sendWriteMemoryCommand ( ) {
+		writeValue = true;
+		if ( ! sendMemoryCommand("WriteMemory") ) {
+			// error with the command for whatever reason
+			// most likely due to an unavailable option
+			writeValue = false;
+		}
+	}
+	
+	private boolean sendMemoryCommand(String outputPrefix) {
+		String cmd = StatusApp.statusUI.tabMemory.getMemType();
+		String loc = StatusApp.statusUI.tabMemory.getTextLocation();
+		if ( loc.isEmpty() ) {
+			JOptionPane.showMessageDialog( StatusApp.statusUI,
+											"Must specify a memory location",
+											"Missing Memory Location",
+											JOptionPane.INFORMATION_MESSAGE );
+			return false;
+		}
+		cmd += loc;
+		if ( writeValue ) {
+			String value = StatusApp.statusUI.tabMemory.getWriteValue();
+			if ( value.isEmpty() ) {
+				JOptionPane
+						.showMessageDialog( StatusApp.statusUI,
+											"Must specify a value to write",
+											"Missing Value",
+											JOptionPane.INFORMATION_MESSAGE );
+				return false;
+			}
+			cmd += "," + value;
+		}
+		sendCommand(outputPrefix, cmd);
+		return true;
+	}
+	/*
+	public void sendReadWriteCommand ( boolean Write ) {
 		String url = StatusApp.statusUI.getCommMethod();
 		if ( url == "GET " ) {
 			JOptionPane.showMessageDialog( StatusApp.statusUI,
@@ -87,7 +126,6 @@ public class Status {
 			StatusApp.statusUI.tabMemory.setReadValue( "" );
 		}
 
-		// TODO figure out how to interrupt the thread if it's stuck waiting
 		new Thread() {
 			public void run ( ) {
 				System.out.println( "Started thread read/write" );
@@ -99,12 +137,12 @@ public class Status {
 
 	private void threadReadWriteMemory ( String url ) {
 		// Disable the read/write buttons
-		StatusApp.statusUI.tabMemory.enableReadWriteButtons( false );
+		StatusApp.statusUI.tabMemory.disableButtons();
 		// send command to controller
 		String res = new String( "" );
 		long start = System.currentTimeMillis();
 		try {
-			res = SendCommandToController( new URL( url ) );
+			res = sendCommandToController( new URL( url ) );
 		} catch ( MalformedURLException e ) {
 			JOptionPane.showMessageDialog( StatusApp.statusUI,
 											"Error with URL", "Read Error",
@@ -114,7 +152,7 @@ public class Status {
 		System.out.printf( "Took %d ms to send command\n", end - start );
 
 		// Enable the read/write buttons
-		StatusApp.statusUI.tabMemory.enableReadWriteButtons( true );
+		StatusApp.statusUI.tabMemory.enableButtons();
 
 		// check if there was an error
 		if ( res.equals( Globals.errorMessage ) ) {
@@ -142,8 +180,93 @@ public class Status {
 			}
 		}
 	}
+	*/
 
-	public void SendRefreshCommand ( ) {
+	public void sendRefreshCommand ( ) {
+		sendCommand( "Refresh", Globals.requestStatus );
+	}
+
+	public void sendVersionCommand ( ) {
+		sendCommand( "Version", Globals.requestVersion );
+	}
+
+	public void sendSetDateTimeCommand ( ) {
+		new Thread() {
+			public void run ( ) {
+				// set date and time
+				DateTime dt = new DateTime();
+				dt.setWithCurrentDateTime();
+				String req = Globals.requestDateTime + dt.getSetCommand();
+				// indicate we are writing a value to look for the proper response
+				writeValue = true;
+				// indicate we don't want the buttons re-enabled just yet
+				enableButtonsOnThreadFinish = false;
+				sendCommand( "SetDateTime", req );
+				try {
+					threadSender.join();
+				} catch ( InterruptedException e ) {
+					e.printStackTrace();
+				}
+				enableButtonsOnThreadFinish = true;
+				if ( ! sendCmdErrorMessage.isEmpty() ) {
+					enableButtons();
+					return;
+				}
+				// delay for about 2 seconds
+				try {
+					java.util.concurrent.TimeUnit.SECONDS.sleep( 2 );
+				} catch ( InterruptedException e ) {
+				}
+				// get date and time from controller
+				sendCommand( "GetDateTime", Globals.requestDateTime );
+			}
+		}.start();
+	}
+
+	public void sendGetDateTimeCommand ( ) {
+		sendCommand( "Get DateTime", Globals.requestDateTime );
+	}
+
+	private void updateDisplay ( XMLHandler h ) {
+		String req = h.getRequestType();
+		if ( req.equals( Globals.requestStatus ) ) {
+			StatusApp.statusUI.tabStatus.setControllerInformation( h.getRa() );
+		} else if ( req.startsWith( Globals.requestDateTime ) ) {
+			if ( writeValue ) {
+				StatusApp.statusUI.tabDateTime.setDateTimeText( h
+						.getDateTimeUpdateStatus() );
+			} else {
+				StatusApp.statusUI.tabDateTime
+						.setDateTimeText( h.getDateTime() );
+			}
+		} else if ( req.equals( Globals.requestVersion ) ) {
+			StatusApp.statusUI.tabDateTime.setVersionText( h.getVersion() );
+		} else if ( req.startsWith( Globals.requestMemoryByte.substring( 0, 2 ) ) ) {
+			if ( writeValue ) {
+				StatusApp.statusUI.tabMemory.setWriteStatus( h
+				                     						.getMemoryResponse() );
+			} else {
+				StatusApp.statusUI.tabMemory.setReadValue( h
+				                   						.getMemoryResponse() );
+			}
+		}
+	}
+
+	private void disableButtons ( ) {
+		// disable all buttons on the forms
+		StatusApp.statusUI.tabMemory.disableButtons();
+		StatusApp.statusUI.tabStatus.disableRefreshButton();
+		StatusApp.statusUI.tabDateTime.disableButtons();
+	}
+
+	private void enableButtons ( ) {
+		// enable all buttons on the forms
+		StatusApp.statusUI.tabMemory.enableButtons();
+		StatusApp.statusUI.tabStatus.enableRefreshButton();
+		StatusApp.statusUI.tabDateTime.enableButtons();
+	}
+
+	public void sendCommand ( String outputPrefix, String request ) {
 		String url = StatusApp.statusUI.getCommMethod();
 		if ( url == "GET " ) {
 			JOptionPane.showMessageDialog( StatusApp.statusUI,
@@ -152,35 +275,38 @@ public class Status {
 											JOptionPane.INFORMATION_MESSAGE );
 			return;
 		}
-		final String s = url + Globals.requestStatus;
-		System.out.println( "Refresh: '" + s + "'" );
-		new Thread() {
+		final String s = url + request;
+		System.out.println( outputPrefix + ": '" + s + "'" );
+		threadSender = new Thread() {
 			public void run ( ) {
-				System.out.println( "Started thread refresh" );
-				threadRefreshStatus( s );
-				System.out.println( "Finished thread refresh" );
+				System.out.println( "Started thread" );
+				threadSendCommand( s );
+				System.out.println( "Finished thread" );
 			}
-		}.start();
+		};
+		threadSender.start();
 	}
 
-	private void threadRefreshStatus ( String url ) {
-		// Disable the refresh button
-		StatusApp.statusUI.tabStatus.disableRefreshButton();
+	private void threadSendCommand ( String url ) {
+		// Disable the buttons
+		disableButtons();
 		// send command to controller
 		String res = "";
+		sendCmdErrorMessage = "";
 		long start = System.currentTimeMillis();
 		try {
-			res = SendCommandToController( new URL( url ) );
+			res = sendCommandToController( new URL( url ) );
 		} catch ( MalformedURLException e ) {
-			JOptionPane.showMessageDialog( StatusApp.statusUI,
-											"Error with URL", "Read Error",
-											JOptionPane.INFORMATION_MESSAGE );
+			sendCmdErrorMessage = "Error sending command";
+			res = Globals.errorMessage;
 		}
 		long end = System.currentTimeMillis();
 		System.out.printf( "Took %d ms to send command\n", end - start );
 
-		// Enable the refresh button
-		StatusApp.statusUI.tabStatus.enableRefreshButton();
+		// Enable the buttons only if we are supposed to
+		if ( enableButtonsOnThreadFinish ) {
+			enableButtons();
+		}
 
 		// check if there was an error
 		if ( res.equals( Globals.errorMessage ) ) {
@@ -191,18 +317,16 @@ public class Status {
 											JOptionPane.INFORMATION_MESSAGE );
 
 		} else {
-			// no error
-			// parse the returned xml string
-			// set values in tabStatus
-			// call updateDisplay
 			XMLHandler h = new XMLHandler();
 			if ( !parseXML( h, res ) ) {
 				// TODO consider displaying a popup window
 				System.out.println( "Error with parser" );
 				return;
 			}
-			StatusApp.statusUI.tabStatus.setControllerInformation( h.getRa() );
+			updateDisplay( h );
 		}
+		// always turn off write value when we finish the threads
+		writeValue = false;
 	}
 
 	private boolean parseXML ( XMLHandler h, String res ) {

@@ -16,7 +16,7 @@ public class WriteValueAdapter implements ActionListener {
 	@Override
 	public void actionPerformed ( ActionEvent arg0 ) {
 		try {
-			m.SendReadWriteCommand(true);
+			m.sendWriteMemoryCommand();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error with URL",
 					"Write Error", JOptionPane.INFORMATION_MESSAGE);

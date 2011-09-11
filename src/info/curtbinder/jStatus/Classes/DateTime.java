@@ -7,9 +7,10 @@ import java.util.Locale;
 public class DateTime {
 	private int hour;
 	private int minute;
-	private int month;
+	private int month; // month is 1 based on controller, 0 based in java
 	private int day;
-	private int year;
+	private int year; // year is to be set as years since 2000
+	private String updateStatus; // status set when updating date/time
 
 	public DateTime () {
 		this.hour = 0;
@@ -17,6 +18,7 @@ public class DateTime {
 		this.month = 0;
 		this.day = 0;
 		this.year = 0;
+		this.updateStatus = "";
 	}
 
 	public DateTime ( int hr, int min, int mon, int day, int yr ) {
@@ -25,6 +27,7 @@ public class DateTime {
 		this.month = mon;
 		this.day = day;
 		this.year = yr;
+		this.updateStatus = "";
 	}
 
 	public void setHour ( int hr ) {
@@ -60,9 +63,6 @@ public class DateTime {
 	}
 
 	public void setYear ( int year ) {
-		// year is stored since 2000
-		if ( year >= 2000 )
-			year -= 2000;
 		this.year = year;
 	}
 
@@ -70,33 +70,52 @@ public class DateTime {
 		return year;
 	}
 
+	public void setStatus ( String s ) {
+		this.updateStatus = s;
+	}
+
+	public String getUpdateStatus ( ) {
+		return updateStatus;
+	}
+
 	public String getDateTimeString ( ) {
-		DateFormat dft = DateFormat.getDateTimeInstance(DateFormat.DEFAULT,
-				DateFormat.DEFAULT, Locale.getDefault());
+		DateFormat dft =
+				DateFormat.getDateTimeInstance( DateFormat.DEFAULT,
+												DateFormat.DEFAULT, Locale
+														.getDefault() );
 		Calendar c = Calendar.getInstance();
 		c.clear();
-		c.set(year, month, day, hour, minute);
-		return dft.format(c.getTime());
+		c.set( year, month, day, hour, minute );
+		return dft.format( c.getTime() );
 	}
 
 	public void setWithCurrentDateTime ( ) {
 		Calendar now = Calendar.getInstance();
-		hour = now.get(Calendar.HOUR);
-		minute = now.get(Calendar.MINUTE);
-		month = now.get(Calendar.MONTH);
-		day = now.get(Calendar.DAY_OF_MONTH);
-		year = now.get(Calendar.YEAR) - 2000;
+		hour = now.get( Calendar.HOUR );
+		if ( now.get( Calendar.AM_PM ) == 1 ) {
+			hour += 12;
+		}
+		minute = now.get( Calendar.MINUTE );
+		month = now.get( Calendar.MONTH );
+		day = now.get( Calendar.DAY_OF_MONTH );
+		year = now.get( Calendar.YEAR );
 	}
 
 	public String getSetCommand ( ) {
-		return generateSetDateTimeCommand(hour, minute, month, day, year);
+		return generateSetDateTimeCommand( hour, minute, month, day, year );
 	}
 
-	public static String generateSetDateTimeCommand ( int hr, int min, int mon,
-			int day, int yr ) {
+	public static String generateSetDateTimeCommand (
+			int hr,
+			int min,
+			int mon,
+			int day,
+			int yr ) {
 		String cmd = Globals.requestDateTime;
-		cmd += String.format("%02d%02d,%02d%02d,%02d", hr, min, mon, day, yr);
-		System.out.println("DateTime: '" + cmd + "'");
+		cmd +=
+				String.format( "%02d%02d,%02d%02d,%02d", hr, min, mon + 1, day,
+								yr - 2000 );
+		System.out.println( "DateTime: '" + cmd + "'" );
 		return cmd;
 	}
 }

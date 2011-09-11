@@ -5,21 +5,22 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-public class ReadValueAdapter implements ActionListener {
+public class SetTimeAdapter implements ActionListener {
 
 	private Status m;
-
-	public ReadValueAdapter ( Status m ) {
+	
+	public SetTimeAdapter ( Status m ) {
 		this.m = m;
 	}
-
+	
 	@Override
 	public void actionPerformed ( ActionEvent arg0 ) {
 		try {
-			m.sendReadMemoryCommand();
+			m.sendSetDateTimeCommand();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error with URL",
-					"Read Error", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(StatusApp.statusUI, "Error setting date & time",
+					"SetDateTime Error", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+
 }

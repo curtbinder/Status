@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -59,6 +60,7 @@ public class MemoryTab extends JPanel {
 		FlowLayout flowLayout_1 = (FlowLayout) locationBox.getLayout();
 		flowLayout_1.setAlignment( FlowLayout.LEFT );
 		JLabel lblLocation = new JLabel( "Location:" );
+		lblLocation.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		textLocation = new JTextField();
 		textLocation.setColumns( 10 );
 		lblLocation.setLabelFor( textLocation );
@@ -88,8 +90,10 @@ public class MemoryTab extends JPanel {
 		topRight.setLayout( new BoxLayout( topRight, BoxLayout.Y_AXIS ) );
 		rdbtnByte = new JRadioButton( "Byte Value" );
 		rdbtnByte.setActionCommand( Globals.requestMemoryByte );
+		rdbtnByte.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		rdbtnInt = new JRadioButton( "Integer Value" );
 		rdbtnInt.setActionCommand( Globals.requestMemoryInt );
+		rdbtnInt.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		topRight.add( Box.createVerticalGlue() );
 		topRight.add( rdbtnByte );
 		topRight.add( Box.createVerticalGlue() );
@@ -137,6 +141,7 @@ public class MemoryTab extends JPanel {
 		boxValue.setAlignmentX( 0.5f );
 		JLabel lblWrite = new JLabel( "Value:" );
 		lblWrite.setAlignmentX( Component.TOP_ALIGNMENT );
+		lblWrite.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		textWriteValue = new JTextField();
 		textWriteValue.setColumns( 5 );
 		textWriteValue.setAlignmentX( Component.TOP_ALIGNMENT );
@@ -149,6 +154,7 @@ public class MemoryTab extends JPanel {
 		flowLayout_2.setAlignment( FlowLayout.LEFT );
 		boxStatus.setAlignmentX( 0.5f );
 		JLabel lblStatus = new JLabel( "Status:" );
+		lblStatus.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		lblStatus.setAlignmentX( Component.TOP_ALIGNMENT );
 		lblWriteStatus = new JLabel( "" );
 		lblWriteStatus.setAlignmentX( Component.TOP_ALIGNMENT );
@@ -214,8 +220,13 @@ public class MemoryTab extends JPanel {
 		return textWriteValue.getText();
 	}
 
-	public void enableReadWriteButtons ( boolean bEnable ) {
-		btnReadValue.setEnabled( bEnable );
-		btnWriteValue.setEnabled( bEnable );
+	public void enableButtons ( ) {
+		btnReadValue.setEnabled( true );
+		btnWriteValue.setEnabled( true );		
+	}
+	
+	public void disableButtons ( ) {
+		btnReadValue.setEnabled( false );
+		btnWriteValue.setEnabled( false );
 	}
 }
