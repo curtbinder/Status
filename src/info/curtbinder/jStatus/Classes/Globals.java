@@ -26,12 +26,12 @@ public class Globals {
 	public static final int versionMajor = 1;
 	public static final int versionMinor = 0;
 	public static final int versionRevision = 0;
-	public static final String versionBuild = "alpha 4";
+	public static final String versionBuild = "beta 1";
 	public static final String copyrightInfo = "Copyright 2011 Curt Binder";
 	public static final String url = "http://curtbinder.info/";
 
 	// Icons
-	public static final String bannerIconName = "/images/curtbinderlogo.png";
+	public static final String bannerIconName = "/images/cb_h_banner-medium.png";
 	public static final String appIconName = "/images/Rss-green-64.png";
 	public static final String refreshIconName = "/images/refresh-16.png";
 	public static final String memoryLocationsIconName = "/images/help-16.png";

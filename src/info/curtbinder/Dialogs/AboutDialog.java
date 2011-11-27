@@ -31,7 +31,7 @@ public class AboutDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 2285475934781331947L;
 	private static final int minWidth = 350;
-	private static final int minHeight = 270;
+	private static final int minHeight = 300;
 	private JLabel lblAppIcon = new JLabel();
 	private JLabel lblAppName = new JLabel("APP NAME");
 	private JLabel lblAppVersion = new JLabel("");
