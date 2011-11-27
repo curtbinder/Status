@@ -1,6 +1,7 @@
 package info.curtbinder.jStatus.UI;
 
 import info.curtbinder.Dialogs.TextDialog;
+import info.curtbinder.jStatus.Classes.Globals;
 import info.curtbinder.jStatus.Classes.Memory;
 import info.curtbinder.jStatus.Classes.MemoryListMouseAdapter;
 import info.curtbinder.jStatus.Classes.StatusApp;
@@ -56,7 +57,7 @@ public class MemoryDialog extends TextDialog {
 	private JList memoryLocations;
 	
 	public MemoryDialog ( JDialog owner ) {
-		super( owner, "Memory Locations", "Location - Type - Reference",
+		super( owner, Globals.menuHelpMemoryText, Globals.memoryDescription,
 				windowWidth, windowHeight );
 		memoryLocations  = new JList(memoryLocationArray);
 		memoryLocations.setCellRenderer( new MemoryCellRenderer() );

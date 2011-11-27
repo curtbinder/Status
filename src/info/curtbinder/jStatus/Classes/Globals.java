@@ -41,6 +41,7 @@ public class Globals {
 	public static final String url = "http://curtbinder.info/";
 	public static final String aboutTitle = "About ";
 	public static final String prefsTitle = "Preferences";
+	public static final String memoryDescription = "Location - Type - Reference";
 
 	// Icons
 	public static final String bannerIconName = "/images/cb_h_banner-medium.png";
