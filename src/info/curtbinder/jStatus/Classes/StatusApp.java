@@ -11,6 +11,7 @@ public class StatusApp {
 	static Status statusClass;
 	private static String host;
 	private static String port;
+	private static String comtype;
 
 	public StatusApp () {
 	}
@@ -30,6 +31,7 @@ public class StatusApp {
 					// method
 					statusUI.setHost( host );
 					statusUI.setPort( port );
+					statusUI.setComType( comtype );
 					statusUI.setVisible( true );
 				} catch ( Exception e ) {
 					e.printStackTrace();
@@ -44,6 +46,7 @@ public class StatusApp {
 				Preferences.userNodeForPackage( StatusApp.class );
 		host = userprefs.get( Globals.keyHost, Globals.defaultHost );
 		port = userprefs.get( Globals.keyPort, Globals.defaultPort );
+		comtype = userprefs.get( Globals.keyComType, Globals.defaultComType );
 	}
 
 }

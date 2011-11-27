@@ -19,6 +19,8 @@ public class CommunicationsPanel extends JPanel {
 
 	private ButtonGroup groupCommType;
 	private WifiPanel panelWifiSettings;
+	private JRadioButton rdbtnWifi;
+	private JRadioButton rdbtnCom;
 
 	public CommunicationsPanel () {
 		super();
@@ -34,9 +36,9 @@ public class CommunicationsPanel extends JPanel {
 			null, new Color( 51, 51, 51 ) ) );
 		panelCommChoice.setLayout( new BoxLayout( panelCommChoice,
 			BoxLayout.Y_AXIS ) );
-		JRadioButton rdbtnWifi = new JRadioButton( "Wifi" );
+		rdbtnWifi = new JRadioButton( Globals.comWifiLabel );
 		rdbtnWifi.setActionCommand( Globals.WifiActionCommand );
-		JRadioButton rdbtnCom = new JRadioButton( "COM" );
+		rdbtnCom = new JRadioButton( Globals.comCOMLabel );
 		rdbtnCom.setActionCommand( Globals.ComActionCommand );
 		panelCommChoice.add( Box.createVerticalGlue() );
 		panelCommChoice.add( rdbtnWifi );
@@ -50,7 +52,6 @@ public class CommunicationsPanel extends JPanel {
 
 		// Communication settings
 		panelWifiSettings = new WifiPanel();
-		
 
 		// Fill the communication panel
 		add( Box.createHorizontalStrut( 5 ) );
@@ -78,8 +79,16 @@ public class CommunicationsPanel extends JPanel {
 		if ( s == "COM" )
 			url = "GET ";
 		else
-			url = "http://" + getTextHost().getText() + ":" + getTextPort().getText();
+			url = "http://" + getTextHost().getText() + ":"
+							+ getTextPort().getText();
 		return url;
 	}
 
+	public void setWifiMethod ( ) {
+		rdbtnWifi.setSelected( true );
+	}
+
+	public void setComMethod ( ) {
+		rdbtnCom.setSelected( false );
+	}
 }

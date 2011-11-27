@@ -14,9 +14,6 @@ import javax.swing.border.EmptyBorder;
 
 public class MainFrame extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final int minWidth = 380; // 370;
 	private static final int minHeight = 420;
@@ -27,7 +24,9 @@ public class MainFrame extends JFrame {
 	public MemoryTab tabMemory;
 	public StatusTab tabStatus;
 	public DateTimeTab tabDateTime;
-	private CommunicationsPanel panelCommunication;
+	private String host;
+	private String port;
+	private String comtype;
 
 	public MainFrame ( Status m ) {
 		setTitle( Globals.appTitle );
@@ -35,7 +34,6 @@ public class MainFrame extends JFrame {
 		// center on screen
 		setBounds( 100, 100, minWidth, minHeight );
 		setMinimumSize( new Dimension( minWidth, minHeight ) );
-		// statusClass = m;
 		setJMenuBar( new StatusMenuBar() );
 
 		contentPane = new JPanel();
@@ -43,7 +41,7 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout( new BoxLayout( contentPane, BoxLayout.Y_AXIS ) );
 		setContentPane( contentPane );
 
-		panelCommunication = new CommunicationsPanel();
+		// panelCommunication = new CommunicationsPanel();
 
 		// Tabbed window panel
 		tabbedPane = new JTabbedPane( JTabbedPane.TOP );
@@ -62,37 +60,51 @@ public class MainFrame extends JFrame {
 		buttonPanel.add( btnClose );
 
 		// Add the panels to the main pane
-		contentPane.add( panelCommunication );
+		// contentPane.add( panelCommunication );
 		contentPane.add( tabbedPane );
 		contentPane.add( Box.createVerticalStrut( 5 ) );
 		contentPane.add( buttonPanel );
 	}
 
 	public String getCommMethod ( ) {
-		return panelCommunication.getCommMethod();
+		String url;
+		if ( comtype == Globals.ComActionCommand )
+			url = "GET ";
+		else
+			url = "http://" + host + ":" + port;
+		return url;
+	}
+
+	public void setComType ( String s ) {
+		comtype = s;
+	}
+	
+	public String getComType ( ) {
+		return comtype;
 	}
 
 	public void setDefaults ( ) {
 		setHost( Globals.defaultHost );
 		setPort( Globals.defaultPort );
+		setComType( Globals.defaultComType );
 		tabMemory.setReadValue( "" );
 		tabMemory.setWriteStatus( "" );
 	}
 
 	public void setHost ( String s ) {
-		panelCommunication.getTextHost().setText( s );
+		host = s;
 	}
 
 	public String getHost ( ) {
-		return panelCommunication.getTextHost().getText();
+		return host;
 	}
 
 	public void setPort ( String s ) {
-		panelCommunication.getTextPort().setText( s );
+		port = s;
 	}
 
 	public String getPort ( ) {
-		return panelCommunication.getTextPort().getText();
+		return port;
 	}
 
 	public void updateMemorySettings ( Memory m ) {

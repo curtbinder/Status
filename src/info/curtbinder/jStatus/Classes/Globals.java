@@ -1,17 +1,21 @@
 package info.curtbinder.jStatus.Classes;
 
 public class Globals {
+	public static final String comWifiLabel = "Wifi";
+	public static final String comCOMLabel = "COM";
+	public static final String WifiActionCommand = "WIFI";
+	public static final String ComActionCommand = "COM";
+	public static final String errorMessage = "Error";
+	public static final String defaultStatusText = "-";
+	
 	// Preferences
 	public static final String keyHost = "host";
 	public static final String defaultHost = "10.0.42.40";
 	public static final String keyPort = "port";
 	public static final String defaultPort = "2000";
+	public static final String keyComType = "comtype";
+	public static final String defaultComType = WifiActionCommand;
 	
-	public static final String WifiActionCommand = "WIFI";
-	public static final String ComActionCommand = "COM";
-	public static final String errorMessage = "Error";
-	public static final String defaultStatusText = "-";
-
 	// Controller commands
 	public static final String requestMemoryByte = "/mb";
 	public static final String requestMemoryInt = "/mi";
@@ -36,6 +40,7 @@ public class Globals {
 	public static final String copyrightInfo = "Copyright 2011 Curt Binder";
 	public static final String url = "http://curtbinder.info/";
 	public static final String aboutTitle = "About ";
+	public static final String prefsTitle = "Preferences";
 
 	// Icons
 	public static final String bannerIconName = "/images/cb_h_banner-medium.png";
@@ -54,6 +59,7 @@ public class Globals {
 	public static final String btnCloseText = "Close";
 	public static final String btnCreditsText = "Credits";
 	public static final String btnLicenseText = "License";
+	public static final String btnSaveText = "Save";
 	
 	// Credits & Legal Stuff
 	public static final String contributorsText = "Contributors:";
