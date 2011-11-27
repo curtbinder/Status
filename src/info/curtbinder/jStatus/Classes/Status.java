@@ -2,9 +2,12 @@ package info.curtbinder.jStatus.Classes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
@@ -24,24 +27,32 @@ public class Status {
 	public Status () {
 	}
 
-	private String sendCommandToController ( URL u ) {
-		String s = "";
+	private String sendCommandToController ( InputStream is ) {
+		StringBuilder s = new StringBuilder(8192);
 		try {
+			if ( Thread.interrupted() )
+				throw new InterruptedException();
+			
 			BufferedReader bin =
-					new BufferedReader( new InputStreamReader( u.openStream() ) );
+					new BufferedReader( new InputStreamReader( is ) );
 			String line;
 			while ( (line = bin.readLine()) != null ) {
-				s += line;
+				if ( Thread.interrupted() ) 
+					throw new InterruptedException();
+				
+				s.append( line );
 			}
+		} catch ( InterruptedException e ) {
+			s = new StringBuilder("Cancelled");
 		} catch ( Exception e ) {
 			sendCmdErrorMessage = e.getMessage();
 			if ( sendCmdErrorMessage.isEmpty() ) {
 				sendCmdErrorMessage =
 						"Unknown error communicating to controller";
 			}
-			s = Globals.errorMessage;
+			s = new StringBuilder(Globals.errorMessage);
 		}
-		return s;
+		return s.toString();
 	}
 
 	public void sendReadMemoryCommand ( ) {
@@ -194,13 +205,46 @@ public class Status {
 		disableButtons();
 		// send command to controller
 		String res = "";
+		HttpURLConnection con = null;
 		sendCmdErrorMessage = "";
 		long start = System.currentTimeMillis();
 		try {
-			res = sendCommandToController( new URL( url ) );
+			//res = sendCommandToController( new URL( url ) );
+			InputStream is;
+			if ( url.startsWith( "GET" ) ) {
+				// this is COM method
+				is = null;
+				throw new InterruptedException();
+			} else {
+				URL u = new URL( url );
+				con = (HttpURLConnection) u.openConnection();
+				con.setReadTimeout( 1500 );
+				con.setConnectTimeout( 1000 );
+				con.setRequestMethod( "GET" );
+				con.connect();
+				is = con.getInputStream();
+			}
+			
+			if ( Thread.interrupted() )
+				throw new InterruptedException();
+			
+			res = sendCommandToController( is );
 		} catch ( MalformedURLException e ) {
 			sendCmdErrorMessage = "Error sending command";
 			res = Globals.errorMessage;
+		} catch ( SocketTimeoutException e ) {
+			sendCmdErrorMessage = "Timeout connecting";
+			res = Globals.errorMessage;
+		} catch ( IOException e ) {
+			sendCmdErrorMessage = "IO Exception";
+			res = Globals.errorMessage;			
+		} catch ( InterruptedException e ) {
+			sendCmdErrorMessage = "Cancelled";
+			res = Globals.errorMessage;
+		} finally {
+			if ( con != null ) {
+				con.disconnect();
+			}
 		}
 		long end = System.currentTimeMillis();
 		System.out.printf( "Took %d ms to send command\n", end - start );

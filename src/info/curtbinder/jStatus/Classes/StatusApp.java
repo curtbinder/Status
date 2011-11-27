@@ -12,7 +12,7 @@ public class StatusApp {
 	private static String host;
 	private static String port;
 	private static String comtype;
-
+	
 	public StatusApp () {
 	}
 
@@ -39,7 +39,7 @@ public class StatusApp {
 			}
 		} );
 	}
-
+	
 	private static void initPrefs ( ) {
 		// initialize the preferences
 		Preferences userprefs =

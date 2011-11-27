@@ -4,6 +4,7 @@ import info.curtbinder.jStatus.Classes.*;
 
 import java.awt.Component;
 import java.awt.Dimension;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,7 +28,7 @@ public class MainFrame extends JFrame {
 	private String host;
 	private String port;
 	private String comtype;
-
+	
 	public MainFrame ( Status m ) {
 		setTitle( Globals.appTitle );
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -64,6 +65,7 @@ public class MainFrame extends JFrame {
 		contentPane.add( tabbedPane );
 		contentPane.add( Box.createVerticalStrut( 5 ) );
 		contentPane.add( buttonPanel );
+		
 	}
 
 	public String getCommMethod ( ) {
