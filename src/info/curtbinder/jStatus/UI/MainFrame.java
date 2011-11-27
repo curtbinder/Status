@@ -73,18 +73,18 @@ public class MainFrame extends JFrame {
 	}
 
 	public void setDefaults ( ) {
-		setIP( Globals.defaultIP );
+		setHost( Globals.defaultHost );
 		setPort( Globals.defaultPort );
 		tabMemory.setReadValue( "" );
 		tabMemory.setWriteStatus( "" );
 	}
 
-	public void setIP ( String s ) {
-		panelCommunication.getTextIP().setText( s );
+	public void setHost ( String s ) {
+		panelCommunication.getTextHost().setText( s );
 	}
 
-	public String getIP ( ) {
-		return panelCommunication.getTextIP().getText();
+	public String getHost ( ) {
+		return panelCommunication.getTextHost().getText();
 	}
 
 	public void setPort ( String s ) {

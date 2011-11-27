@@ -15,7 +15,7 @@ public class WifiPanel extends JPanel {
 	private static final long serialVersionUID = 1779461731674037567L;
 	private static final int ipLabelWidth = 50;
 	private static final int ipLabelHeight = 15;
-	private JTextField textIP;
+	private JTextField textHost;
 	private JTextField textPort;
 
 	public WifiPanel() {
@@ -27,16 +27,16 @@ public class WifiPanel extends JPanel {
 		FlowLayout flowLayout = (FlowLayout) boxIPCom.getLayout();
 		flowLayout.setAlignment( FlowLayout.LEFT );
 		boxIPCom.setAlignmentX( Component.TOP_ALIGNMENT );
-		JLabel lblIp = new JLabel( "IP:" );
-		lblIp.setPreferredSize( new Dimension( ipLabelWidth,
+		JLabel lblHost = new JLabel( "Host:" );
+		lblHost.setPreferredSize( new Dimension( ipLabelWidth,
 					ipLabelHeight ) );
-		textIP = new JTextField();
-		textIP.setAlignmentX( Component.TOP_ALIGNMENT );
-		lblIp.setLabelFor( textIP );
-		textIP.setHorizontalAlignment( SwingConstants.LEFT );
-		textIP.setColumns( 10 );
-		boxIPCom.add( lblIp );
-		boxIPCom.add( textIP );
+		textHost = new JTextField();
+		textHost.setAlignmentX( Component.TOP_ALIGNMENT );
+		lblHost.setLabelFor( textHost );
+		textHost.setHorizontalAlignment( SwingConstants.LEFT );
+		textHost.setColumns( 10 );
+		boxIPCom.add( lblHost );
+		boxIPCom.add( textHost );
 
 		JPanel boxPortBaud = new JPanel();
 		flowLayout = (FlowLayout) boxPortBaud.getLayout();
@@ -59,8 +59,8 @@ public class WifiPanel extends JPanel {
 		add( Box.createVerticalGlue() );
 	}
 
-	public JTextField getTextIP ( ) {
-		return textIP;
+	public JTextField getTextHost ( ) {
+		return textHost;
 	}
 
 	public JTextField getTextPort ( ) {

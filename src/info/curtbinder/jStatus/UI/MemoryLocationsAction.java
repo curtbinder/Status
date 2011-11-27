@@ -13,7 +13,7 @@ public class MemoryLocationsAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	public MemoryLocationsAction () {
-		putValue( NAME, "Memory Locations" );
+		putValue( NAME, Globals.menuHelpMemoryText );
 		putValue( SMALL_ICON, new ImageIcon( MainFrame.class
 				.getResource( Globals.memoryLocationsIconName ) ) );
 	}

@@ -19,19 +19,20 @@ public class StatusMenuBar extends JMenuBar {
 	private CloseAction closeAction = new CloseAction();
 	private MemoryLocationsAction memoryAction = new MemoryLocationsAction();
 	private AboutAction aboutAction = new AboutAction();
+	private PrefsAction prefsAction = new PrefsAction();
 
 	public class AboutAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
 		public AboutAction () {
-			putValue(NAME, "About");
+			putValue(NAME, Globals.menuHelpAboutText);
 			// TODO add in about icon
 		}
 
 		public void actionPerformed ( ActionEvent ae ) {
 			AboutDialog d = new AboutDialog(StatusApp.statusUI, new ImageIcon(
 					MainFrame.class.getResource(Globals.appIconName)),
-					"RA Status", "Monitor the status of the controller");
+					Globals.appName, Globals.appDescription);
 			d.setAppVersion(Globals.versionMajor, Globals.versionMinor,
 					Globals.versionRevision, Globals.versionBuild);
 			d.setCopyright(Globals.copyrightInfo);
@@ -47,12 +48,17 @@ public class StatusMenuBar extends JMenuBar {
 	public StatusMenuBar () {
 		super();
 
-		JMenu mnFile = new JMenu("File");
+		JMenu mnFile = new JMenu(Globals.menuFileText);
 		add(mnFile);
 		JMenuItem mntmClose = new JMenuItem(closeAction);
 		mnFile.add(mntmClose);
+		
+		JMenu mnEdit = new JMenu(Globals.menuEditText);
+		add(mnEdit);
+		JMenuItem mntmPrefs = new JMenuItem(prefsAction);
+		mnEdit.add(mntmPrefs);
 
-		JMenu mnHelp = new JMenu("Help");
+		JMenu mnHelp = new JMenu(Globals.menuHelpText);
 		add(mnHelp);
 		JMenuItem mntmMemory = new JMenuItem(memoryAction);
 		JMenuItem mntmAbout = new JMenuItem(aboutAction);

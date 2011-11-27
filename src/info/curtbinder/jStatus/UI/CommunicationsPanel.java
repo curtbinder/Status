@@ -60,8 +60,8 @@ public class CommunicationsPanel extends JPanel {
 		add( Box.createHorizontalStrut( 5 ) );
 	}
 
-	public JTextField getTextIP ( ) {
-		return panelWifiSettings.getTextIP();
+	public JTextField getTextHost ( ) {
+		return panelWifiSettings.getTextHost();
 	}
 
 	public JTextField getTextPort ( ) {
@@ -78,7 +78,7 @@ public class CommunicationsPanel extends JPanel {
 		if ( s == "COM" )
 			url = "GET ";
 		else
-			url = "http://" + getTextIP().getText() + ":" + getTextPort().getText();
+			url = "http://" + getTextHost().getText() + ":" + getTextPort().getText();
 		return url;
 	}
 

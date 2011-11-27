@@ -10,6 +10,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -19,20 +20,20 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 
-public class TextDialog extends JDialog {
+public class PrefsDialog extends JDialog {
 
 	private static final long serialVersionUID = 432907898192448125L;
 	private static final int minWidth = 200;
 	private static final int minHeight = 200;
 	protected JScrollPane textWindow;
 
-	public TextDialog ( JDialog owner, String title, String description ) {
+	public PrefsDialog ( JFrame owner, String title, String description ) {
 		super( owner );
 		setMinimumSize( new Dimension( minWidth, minHeight ) );
 		createWindow( title, description );
 	}
 
-	public TextDialog ( JDialog owner, String title, String description,
+	public PrefsDialog ( JFrame owner, String title, String description,
 						int width, int height ) {
 		super( owner );
 		setMinimumSize( new Dimension( width, height ) );
