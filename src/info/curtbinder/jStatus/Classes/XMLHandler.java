@@ -78,6 +78,8 @@ public class XMLHandler extends DefaultHandler {
 			}
 		} else if ( requestType.equals( Globals.requestVersion ) ) {
 			processVersionXml( qName );
+		} else {
+			// TODO request none, set an error?
 		}
 		currentElementText = "";
 	}
@@ -99,41 +101,50 @@ public class XMLHandler extends DefaultHandler {
 			} else if ( qName.startsWith( Globals.xmlMemorySingle ) ) {
 				// can be either type, just chose to use Bytes
 				requestType = Globals.requestMemoryByte;
+			}  else if ( qName.equals( Globals.xmlMode ) ) {
+				// all modes return the same response, just chose to use Exit Mode
+				requestType = Globals.requestExitMode;
+			} else {
+				requestType = Globals.requestNone;
 			}
 		}
 	}
 
 	private void processStatusXml ( String tag ) {
-		if ( tag.equals( "T1" ) ) {
+		if ( tag.equals( Globals.xmlT1 ) ) {
 			ra.setTemp1( Integer.parseInt( currentElementText ) );
-		} else if ( tag.equals( "T2" ) ) {
+		} else if ( tag.equals( Globals.xmlT2 ) ) {
 			ra.setTemp2( Integer.parseInt( currentElementText ) );
-		} else if ( tag.equals( "T3" ) ) {
+		} else if ( tag.equals( Globals.xmlT3 ) ) {
 			ra.setTemp3( Integer.parseInt( currentElementText ) );
-		} else if ( tag.equals( "PH" ) ) {
+		} else if ( tag.equals( Globals.xmlPH ) ) {
 			ra.setPH( Integer.parseInt( currentElementText ) );
-		} else if ( tag.equals( "ATOLOW" ) ) {
+		} else if ( tag.equals( Globals.xmlATOLow ) ) {
 			boolean f = false;
 			if ( Integer.parseInt( currentElementText ) == 1 ) {
 				f = true;
 			}
 			ra.setAtoLow( f );
-		} else if ( tag.equals( "ATOHIGH" ) ) {
+		} else if ( tag.equals( Globals.xmlATOHigh ) ) {
 			boolean f = false;
 			if ( Integer.parseInt( currentElementText ) == 1 ) {
 				f = true;
 			}
 			ra.setAtoHigh( f );
-		} else if ( tag.equals( "PWMA" ) ) {
+		} else if ( tag.equals( Globals.xmlPWMActinic ) ) {
 			ra.setPwmA( Byte.parseByte( currentElementText ) );
-		} else if ( tag.equals( "PWMD" ) ) {
+		} else if ( tag.equals( Globals.xmlPWMDaylight ) ) {
 			ra.setPwmD( Byte.parseByte( currentElementText ) );
-		} else if ( tag.equals( "R" ) ) {
+		} else if ( tag.equals( Globals.xmlSalinity )) {
+			ra.setSalinity( Byte.parseByte( currentElementText ) );
+		} else if ( tag.equals( Globals.xmlRelay ) ) {
 			ra.setMainRelayData( Short.parseShort( currentElementText ) );
-		} else if ( tag.equals( "RON" ) ) {
-			ra.setMainRelayDataMaskOn( Short.parseShort( currentElementText ) );
-		} else if ( tag.equals( "ROFF" ) ) {
-			ra.setMainRelayDataMaskOff( Short.parseShort( currentElementText ) );
+		} else if ( tag.equals( Globals.xmlRelayMaskOn ) ) {
+			ra.setMainRelayOnMask( Short.parseShort( currentElementText ) );
+		} else if ( tag.equals( Globals.xmlRelayMaskOff ) ) {
+			ra.setMainRelayOffMask( Short.parseShort( currentElementText ) );
+		} else if ( tag.equals( Globals.xmlLogDate ) ) {
+			ra.setLogDate( currentElementText );
 		}
 		// TODO process expansion relays
 	}
@@ -142,17 +153,17 @@ public class XMLHandler extends DefaultHandler {
 		/*
 		 * Response will be more XML data or OK
 		 */
-		if ( tag.equals( "HR" ) ) {
+		if ( tag.equals( Globals.xmlHour ) ) {
 			dt.setHour( Integer.parseInt( currentElementText ) );
-		} else if ( tag.equals( "MIN" ) ) {
+		} else if ( tag.equals( Globals.xmlMinute ) ) {
 			dt.setMinute( Integer.parseInt( currentElementText ) );
-		} else if ( tag.equals( "MON" ) ) {
+		} else if ( tag.equals( Globals.xmlMonth ) ) {
 			// controller uses 1 based for month
 			// java uses 0 based for month
 			dt.setMonth( Integer.parseInt( currentElementText ) - 1 );
-		} else if ( tag.equals( "DAY" ) ) {
+		} else if ( tag.equals( Globals.xmlDay ) ) {
 			dt.setDay( Integer.parseInt( currentElementText ) );
-		} else if ( tag.equals( "YR" ) ) {
+		} else if ( tag.equals( Globals.xmlYear ) ) {
 			dt.setYear( Integer.parseInt( currentElementText ) );
 		}
 	}

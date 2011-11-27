@@ -28,15 +28,15 @@ public class Number {
 	private void computeNumber ( ) {
 		int divisor = 1;
 		switch ( decimalPlaces ) {
-		case 2:
-			divisor = 100;
-			break;
-		case 1:
-			divisor = 10;
-			break;
-		default:
-			divisor = 1;
-			break;
+			case 2:
+				divisor = 100;
+				break;
+			case 1:
+				divisor = 10;
+				break;
+			default:
+				divisor = 1;
+				break;
 		}
 		whole = value / divisor;
 		fraction = value % divisor;
@@ -58,20 +58,22 @@ public class Number {
 		computeNumber();
 	}
 
-	public String getNumberString ( ) {
+	public String toString ( ) {
 		String s = "";
 		switch ( decimalPlaces ) {
-		case 2:
-			s = String.format("%d%c%02d", whole, DecimalFormatSymbols
-					.getInstance().getDecimalSeparator(), fraction);
-			break;
-		case 1:
-			s = String.format("%d%c%01d", whole, DecimalFormatSymbols
-					.getInstance().getDecimalSeparator(), fraction);
-			break;
-		default:
-			s = String.format("%d", whole);
-			break;
+			case 2:
+				s =
+						String.format( "%d%c%02d", whole, DecimalFormatSymbols
+								.getInstance().getDecimalSeparator(), fraction );
+				break;
+			case 1:
+				s =
+						String.format( "%d%c%01d", whole, DecimalFormatSymbols
+								.getInstance().getDecimalSeparator(), fraction );
+				break;
+			default:
+				s = String.format( "%d", whole );
+				break;
 		}
 		return s;
 	}

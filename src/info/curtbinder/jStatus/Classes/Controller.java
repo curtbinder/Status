@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols;
 public class Controller {
 	public static final byte MAX_EXPANSION_RELAYS = 8;
 
+	private String updateLogDate;
 	private Number t1;
 	private Number t2;
 	private Number t3;
@@ -13,6 +14,7 @@ public class Controller {
 	private boolean atoHigh;
 	private byte pwmA;
 	private byte pwmD;
+	private byte salinity;
 	private Relay main;
 	private byte qtyExpansionRelays;
 	private Relay[] expansionRelays;
@@ -27,6 +29,7 @@ public class Controller {
 	}
 
 	private void init ( ) {
+		updateLogDate = "";
 		t1 = new Number((byte) 1);
 		t2 = new Number((byte) 1);
 		t3 = new Number((byte) 1);
@@ -35,6 +38,7 @@ public class Controller {
 		atoHigh = false;
 		pwmA = 0;
 		pwmD = 0;
+		salinity = 0;
 		main = new Relay();
 		expansionRelays = new Relay[MAX_EXPANSION_RELAYS];
 		for ( int i = 0; i < MAX_EXPANSION_RELAYS; i++ ) {
@@ -51,12 +55,20 @@ public class Controller {
 		return qtyExpansionRelays;
 	}
 
+	public void setLogDate ( String date ) {
+		updateLogDate = date;
+	}
+	
+	public String getLogDate ( ) {
+		return updateLogDate;
+	}
+	
 	public void setTemp1 ( int value ) {
 		t1.setValue(value);
 	}
 
 	public String getTemp1 ( ) {
-		return t1.getNumberString();
+		return t1.toString();
 	}
 
 	public void setTemp2 ( int value ) {
@@ -64,7 +76,7 @@ public class Controller {
 	}
 
 	public String getTemp2 ( ) {
-		return t2.getNumberString();
+		return t2.toString();
 	}
 
 	public void setTemp3 ( int value ) {
@@ -72,7 +84,7 @@ public class Controller {
 	}
 
 	public String getTemp3 ( ) {
-		return t3.getNumberString();
+		return t3.toString();
 	}
 
 	public void setPH ( int value ) {
@@ -80,7 +92,7 @@ public class Controller {
 	}
 
 	public String getPH ( ) {
-		return pH.getNumberString();
+		return pH.toString();
 	}
 
 	public void setAtoLow ( boolean v ) {
@@ -132,6 +144,14 @@ public class Controller {
 		return new String(String.format("%s%c", pwmD, DecimalFormatSymbols
 				.getInstance().getPercent()));
 	}
+	
+	public void setSalinity ( byte v ) {
+		salinity = v;
+	}
+	
+	public String getSalinity ( ) {
+		return new String(String.format("%d ppt", salinity));
+	}
 
 	public void setMainRelayData ( short data, short maskOn, short maskOff ) {
 		main.setRelayData(data, maskOn, maskOff);
@@ -141,12 +161,12 @@ public class Controller {
 		main.setRelayData(data);
 	}
 
-	public void setMainRelayDataMaskOn ( short maskOn ) {
-		main.setRelayDataMaskOn(maskOn);
+	public void setMainRelayOnMask ( short maskOn ) {
+		main.setRelayOnMask(maskOn);
 	}
 
-	public void setMainRelayDataMaskOff ( short maskOff ) {
-		main.setRelayDataMaskOff(maskOff);
+	public void setMainRelayOffMask ( short maskOff ) {
+		main.setRelayOffMask(maskOff);
 	}
 
 	public Relay getMainRelay ( ) {
