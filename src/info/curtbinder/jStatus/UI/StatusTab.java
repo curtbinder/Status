@@ -3,6 +3,7 @@ package info.curtbinder.jStatus.UI;
 import info.curtbinder.jStatus.Classes.Controller;
 import info.curtbinder.jStatus.Classes.Globals;
 import info.curtbinder.jStatus.Classes.RefreshAdapter;
+import info.curtbinder.jStatus.Classes.Relay;
 import info.curtbinder.jStatus.Classes.Status;
 
 import java.awt.Component;
@@ -37,6 +38,7 @@ public class StatusTab extends JPanel {
 	private JLabel lblHigh;
 	// private Status statusClass;
 	private Controller ra;
+	private RelayPanel relayPanel;
 
 	public StatusTab ( Status s ) {
 		super();
@@ -205,37 +207,21 @@ public class StatusTab extends JPanel {
 		gbc_lblHigh.gridy = 3;
 		status.add( lblHigh, gbc_lblHigh );
 
-		JPanel relayPanel = new JPanel();
+		relayPanel = new RelayPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.gridwidth = 5;
 		gbc_panel.insets = new Insets( 0, 0, 0, 5 );
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 5;
-		relayPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
-		relayPanel.setLayout( new BoxLayout( relayPanel, BoxLayout.X_AXIS ) );
-		JLabel lblMain = new JLabel( "Main:" );
-		lblMain.setAlignmentY( Component.TOP_ALIGNMENT );
-		JLabel[] lblMainRelays = new JLabel[8];
-
-		relayPanel.add( lblMain );
-		for ( int i = 0; i < 8; i++ ) {
-			// change strings to be the icons, start with OFF icons first
-			lblMainRelays[i] = new JLabel( String.format( "#%d", i + 1 ) );
-			lblMainRelays[i].setAlignmentY( Component.TOP_ALIGNMENT );
-			relayPanel.add( lblMainRelays[i] );
-		}
-		// TODO convert relay panel to being created and have an array of them
-		// placed inside a panel
-
+		gbc_panel.gridy = 4;
 		status.add( relayPanel, gbc_panel );
-		relayPanel.setVisible( false );
 
 		add( buttonPanel );
 		add( Box.createVerticalStrut( 5 ) );
 		add( status );
 	}
 
+	@Override
 	public String toString ( ) {
 		return NAME;
 	}
@@ -268,5 +254,22 @@ public class StatusTab extends JPanel {
 		lblPwmDaylight.setText( ra.getPwmD() );
 		lblLow.setText( ra.getAtoLowText() );
 		lblHigh.setText( ra.getAtoHighText() );
+		
+		short status;
+		String s, s1;
+		for ( int i = 0; i < 8; i++ ) {
+			status = ra.getMainRelay().getPortStatus( i+1 );
+			if ( status == Relay.PORT_STATE_ON ) {
+				s1 = "ON";
+			} else if ( status == Relay.PORT_STATE_AUTO ) {
+				s1 = "AUTO";
+			} else {
+				s1 = "OFF";
+			}
+			s = new String(String.format("Port %d: %s(%s)", i+1, ra.getMainRelay().isPortOn(i+1, true)?"ON":"OFF",s1));
+			System.out.println( s );
+			
+			//relayPanel.portButtons[i].setSelected( ra.getMainRelay().isPortOn(i+1, true) );
+		}
 	}
 }

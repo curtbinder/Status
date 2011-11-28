@@ -211,15 +211,15 @@ public class Status {
 		try {
 			//res = sendCommandToController( new URL( url ) );
 			InputStream is;
-			if ( url.startsWith( "GET" ) ) {
+			if ( url.startsWith( "GET " ) ) {
 				// this is COM method
 				is = null;
 				throw new InterruptedException();
 			} else {
 				URL u = new URL( url );
 				con = (HttpURLConnection) u.openConnection();
-				con.setReadTimeout( 1500 );
-				con.setConnectTimeout( 1000 );
+				con.setReadTimeout( 10000 );
+				con.setConnectTimeout( 15000 );
 				con.setRequestMethod( "GET" );
 				con.connect();
 				is = con.getInputStream();
