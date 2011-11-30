@@ -11,6 +11,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -140,29 +141,34 @@ public class Status {
 		sendCommand( "Get DateTime", Globals.requestDateTime );
 	}
 
-	private void updateDisplay ( XMLHandler h ) {
-		String req = h.getRequestType();
-		if ( req.equals( Globals.requestStatus ) ) {
-			StatusApp.statusUI.tabStatus.setControllerInformation( h.getRa() );
-		} else if ( req.startsWith( Globals.requestDateTime ) ) {
-			if ( writeValue ) {
-				StatusApp.statusUI.tabDateTime.setDateTimeText( h
-						.getDateTimeUpdateStatus() );
-			} else {
-				StatusApp.statusUI.tabDateTime
-						.setDateTimeText( h.getDateTime() );
+	private void updateDisplay ( final XMLHandler h ) {
+		// Run this updating in the GUI thread
+		SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				String req = h.getRequestType();
+				if ( req.equals( Globals.requestStatus ) ) {
+					StatusApp.statusUI.tabStatus.setControllerInformation( h.getRa() );
+				} else if ( req.startsWith( Globals.requestDateTime ) ) {
+					if ( writeValue ) {
+						StatusApp.statusUI.tabDateTime.setDateTimeText( h
+								.getDateTimeUpdateStatus() );
+					} else {
+						StatusApp.statusUI.tabDateTime
+								.setDateTimeText( h.getDateTime() );
+					}
+				} else if ( req.equals( Globals.requestVersion ) ) {
+					StatusApp.statusUI.tabDateTime.setVersionText( h.getVersion() );
+				} else if ( req.startsWith( Globals.requestMemoryByte.substring( 0, 2 ) ) ) {
+					if ( writeValue ) {
+						StatusApp.statusUI.tabMemory.setWriteStatus( h
+						                     						.getMemoryResponse() );
+					} else {
+						StatusApp.statusUI.tabMemory.setReadValue( h
+						                   						.getMemoryResponse() );
+					}
+				}
 			}
-		} else if ( req.equals( Globals.requestVersion ) ) {
-			StatusApp.statusUI.tabDateTime.setVersionText( h.getVersion() );
-		} else if ( req.startsWith( Globals.requestMemoryByte.substring( 0, 2 ) ) ) {
-			if ( writeValue ) {
-				StatusApp.statusUI.tabMemory.setWriteStatus( h
-				                     						.getMemoryResponse() );
-			} else {
-				StatusApp.statusUI.tabMemory.setReadValue( h
-				                   						.getMemoryResponse() );
-			}
-		}
+		});
 	}
 
 	private void disableButtons ( ) {

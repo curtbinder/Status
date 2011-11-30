@@ -269,7 +269,7 @@ public class StatusTab extends JPanel {
 			s = new String(String.format("Port %d: %s(%s)", i+1, ra.getMainRelay().isPortOn(i+1, true)?"ON":"OFF",s1));
 			System.out.println( s );
 			
-			//relayPanel.portButtons[i].setSelected( ra.getMainRelay().isPortOn(i+1, true) );
+			relayPanel.portButtons[i].setSelected( ra.getMainRelay().isPortOn(i+1, true) );
 		}
 	}
 }

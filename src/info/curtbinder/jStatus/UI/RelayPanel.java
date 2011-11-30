@@ -26,7 +26,7 @@ public class RelayPanel extends JPanel {
 		add( lblMain );
 		
 		JPanel[] portRows = new JPanel[4];
-		for ( int i = 0, j = 3; i < 4; i++, j++ ) {
+		for ( int i = 0, j = 4; i < 4; i++, j++ ) {
 			portRows[i] = new JPanel();
 			
 			portPanels[i] = new JPanel();
