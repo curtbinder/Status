@@ -8,7 +8,7 @@ import info.curtbinder.jStatus.UI.*;
 public class StatusApp {
 
 	public static MainFrame statusUI;
-	static Status statusClass;
+	public static Status statusClass;
 	private static String host;
 	private static String port;
 	private static String comtype;

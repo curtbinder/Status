@@ -7,6 +7,9 @@ public class Globals {
 	public static final String ComActionCommand = "COM";
 	public static final String errorMessage = "Error";
 	public static final String defaultStatusText = "-";
+	public static final String labelOn =   " ON  ";
+	public static final String labelOff =  " OFF ";
+	public static final String labelAuto = "AUTO";
 	
 	// Preferences
 	public static final String keyHost = "host";
@@ -73,6 +76,7 @@ public class Globals {
 	public static final String appIconName = "/images/Rss-green-64.png";
 	public static final String refreshIconName = "/images/refresh-16.png";
 	public static final String memoryLocationsIconName = "/images/help-16.png";
+	public static final String greenIconName = "/images/greenbutton.png";
 
 	// Menus
 	public static final String menuFileText = "File";

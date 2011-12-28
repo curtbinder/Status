@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private static final int minWidth = 380; // 370;
+	private static final int minWidth = 390; // 370;
 	private static final int minHeight = 435;
 	private JPanel contentPane;
 	// private Status statusClass;

@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class StatusTab extends JPanel {
@@ -52,8 +53,8 @@ public class StatusTab extends JPanel {
 		buttonPanel.setAlignmentY( Component.TOP_ALIGNMENT );
 		buttonPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
 		btnRefresh =
-				new JButton( new ImageIcon( MainFrame.class
-						.getResource( Globals.refreshIconName ) ) );
+				new JButton( new ImageIcon(
+					MainFrame.class.getResource( Globals.refreshIconName ) ) );
 		btnRefresh.setAlignmentY( Component.TOP_ALIGNMENT );
 		btnRefresh.setBorderPainted( false );
 		btnRefresh.setContentAreaFilled( false );
@@ -238,8 +239,8 @@ public class StatusTab extends JPanel {
 		this.ra = ra;
 		DateFormat dft =
 				DateFormat.getDateTimeInstance( DateFormat.DEFAULT,
-												DateFormat.DEFAULT, Locale
-														.getDefault() );
+												DateFormat.DEFAULT,
+												Locale.getDefault() );
 		lblLastUpdateTime.setText( dft.format( new Date() ) );
 		refreshData();
 	}
@@ -254,22 +255,33 @@ public class StatusTab extends JPanel {
 		lblPwmDaylight.setText( ra.getPwmD() );
 		lblLow.setText( ra.getAtoLowText() );
 		lblHigh.setText( ra.getAtoHighText() );
-		
+
 		short status;
 		String s, s1;
+		boolean fStatus;
+		boolean showClearMask;
 		for ( int i = 0; i < 8; i++ ) {
-			status = ra.getMainRelay().getPortStatus( i+1 );
+			status = ra.getMainRelay().getPortStatus( i + 1 );
+			showClearMask = true;
 			if ( status == Relay.PORT_STATE_ON ) {
-				s1 = "ON";
+				s1 = Globals.labelOn;
 			} else if ( status == Relay.PORT_STATE_AUTO ) {
-				s1 = "AUTO";
+				s1 = Globals.labelAuto;
+				showClearMask = false;
 			} else {
-				s1 = "OFF";
+				s1 = Globals.labelOff;
 			}
-			s = new String(String.format("Port %d: %s(%s)", i+1, ra.getMainRelay().isPortOn(i+1, true)?"ON":"OFF",s1));
+			fStatus = ra.getMainRelay().isPortOn( i + 1, true );
+			s =
+					new String( String.format(	"Port %d: %s(%s)", i + 1,
+												fStatus	? Globals.labelOn
+														: Globals.labelOff, s1 ) );
 			System.out.println( s );
-			
-			relayPanel.portButtons[i].setSelected( ra.getMainRelay().isPortOn(i+1, true) );
+
+			relayPanel.portButtons[i].setText( fStatus	? Globals.labelOn
+														: Globals.labelOff );
+			relayPanel.portButtons[i].setSelected( fStatus );
+			relayPanel.portGreen[i].setVisible( showClearMask );
 		}
 	}
 }

@@ -29,51 +29,51 @@ public class Status {
 	}
 
 	private String sendCommandToController ( InputStream is ) {
-		StringBuilder s = new StringBuilder(8192);
+		StringBuilder s = new StringBuilder( 8192 );
 		try {
 			if ( Thread.interrupted() )
 				throw new InterruptedException();
-			
+
 			BufferedReader bin =
 					new BufferedReader( new InputStreamReader( is ) );
 			String line;
 			while ( (line = bin.readLine()) != null ) {
-				if ( Thread.interrupted() ) 
+				if ( Thread.interrupted() )
 					throw new InterruptedException();
-				
+
 				s.append( line );
 			}
 		} catch ( InterruptedException e ) {
-			s = new StringBuilder("Cancelled");
+			s = new StringBuilder( "Cancelled" );
 		} catch ( Exception e ) {
 			sendCmdErrorMessage = e.getMessage();
 			if ( sendCmdErrorMessage.isEmpty() ) {
 				sendCmdErrorMessage =
 						"Unknown error communicating to controller";
 			}
-			s = new StringBuilder(Globals.errorMessage);
+			s = new StringBuilder( Globals.errorMessage );
 		}
 		return s.toString();
 	}
 
 	public void sendReadMemoryCommand ( ) {
-		sendMemoryCommand("ReadMemory");
+		sendMemoryCommand( "ReadMemory" );
 	}
-	
+
 	public void sendWriteMemoryCommand ( ) {
 		writeValue = true;
-		if ( ! sendMemoryCommand("WriteMemory") ) {
+		if ( !sendMemoryCommand( "WriteMemory" ) ) {
 			// error with the command for whatever reason
 			// most likely due to an unavailable option
 			writeValue = false;
 		}
 	}
-	
-	private boolean sendMemoryCommand(String outputPrefix) {
+
+	private boolean sendMemoryCommand ( String outputPrefix ) {
 		String cmd = StatusApp.statusUI.tabMemory.getMemType();
 		String loc = StatusApp.statusUI.tabMemory.getTextLocation();
 		if ( loc.isEmpty() ) {
-			JOptionPane.showMessageDialog( StatusApp.statusUI,
+			JOptionPane.showMessageDialog(	StatusApp.statusUI,
 											"Must specify a memory location",
 											"Missing Memory Location",
 											JOptionPane.INFORMATION_MESSAGE );
@@ -92,12 +92,18 @@ public class Status {
 			}
 			cmd += "," + value;
 		}
-		sendCommand(outputPrefix, cmd);
+		sendCommand( outputPrefix, cmd );
 		return true;
 	}
 
 	public void sendRefreshCommand ( ) {
 		sendCommand( "Refresh", Globals.requestStatus );
+	}
+
+	public void sendRelayCommand ( int port, byte mode ) {
+		String cmd = String.format( "%s%d%d", Globals.requestRelay, port, mode );
+		System.out.println( "RelayCommand: " + cmd );
+		sendCommand( "Relay", cmd );
 	}
 
 	public void sendVersionCommand ( ) {
@@ -111,7 +117,8 @@ public class Status {
 				DateTime dt = new DateTime();
 				dt.setWithCurrentDateTime();
 				String req = Globals.requestDateTime + dt.getSetCommand();
-				// indicate we are writing a value to look for the proper response
+				// indicate we are writing a value to look for the proper
+				// response
 				writeValue = true;
 				// indicate we don't want the buttons re-enabled just yet
 				enableButtonsOnThreadFinish = false;
@@ -122,7 +129,7 @@ public class Status {
 					e.printStackTrace();
 				}
 				enableButtonsOnThreadFinish = true;
-				if ( ! sendCmdErrorMessage.isEmpty() ) {
+				if ( !sendCmdErrorMessage.isEmpty() ) {
 					enableButtons();
 					return;
 				}
@@ -144,31 +151,34 @@ public class Status {
 	private void updateDisplay ( final XMLHandler h ) {
 		// Run this updating in the GUI thread
 		SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
+			public void run ( ) {
 				String req = h.getRequestType();
 				if ( req.equals( Globals.requestStatus ) ) {
-					StatusApp.statusUI.tabStatus.setControllerInformation( h.getRa() );
+					StatusApp.statusUI.tabStatus.setControllerInformation( h
+							.getRa() );
 				} else if ( req.startsWith( Globals.requestDateTime ) ) {
 					if ( writeValue ) {
 						StatusApp.statusUI.tabDateTime.setDateTimeText( h
 								.getDateTimeUpdateStatus() );
 					} else {
-						StatusApp.statusUI.tabDateTime
-								.setDateTimeText( h.getDateTime() );
+						StatusApp.statusUI.tabDateTime.setDateTimeText( h
+								.getDateTime() );
 					}
 				} else if ( req.equals( Globals.requestVersion ) ) {
-					StatusApp.statusUI.tabDateTime.setVersionText( h.getVersion() );
-				} else if ( req.startsWith( Globals.requestMemoryByte.substring( 0, 2 ) ) ) {
+					StatusApp.statusUI.tabDateTime.setVersionText( h
+							.getVersion() );
+				} else if ( req.startsWith( Globals.requestMemoryByte
+						.substring( 0, 2 ) ) ) {
 					if ( writeValue ) {
 						StatusApp.statusUI.tabMemory.setWriteStatus( h
-						                     						.getMemoryResponse() );
+								.getMemoryResponse() );
 					} else {
 						StatusApp.statusUI.tabMemory.setReadValue( h
-						                   						.getMemoryResponse() );
+								.getMemoryResponse() );
 					}
 				}
 			}
-		});
+		} );
 	}
 
 	private void disableButtons ( ) {
@@ -188,7 +198,7 @@ public class Status {
 	public void sendCommand ( String outputPrefix, String request ) {
 		String url = StatusApp.statusUI.getCommMethod();
 		if ( url == "GET " ) {
-			JOptionPane.showMessageDialog( StatusApp.statusUI,
+			JOptionPane.showMessageDialog(	StatusApp.statusUI,
 											"COM not implemented yet",
 											"Comm Type",
 											JOptionPane.INFORMATION_MESSAGE );
@@ -215,7 +225,7 @@ public class Status {
 		sendCmdErrorMessage = "";
 		long start = System.currentTimeMillis();
 		try {
-			//res = sendCommandToController( new URL( url ) );
+			// res = sendCommandToController( new URL( url ) );
 			InputStream is;
 			if ( url.startsWith( "GET " ) ) {
 				// this is COM method
@@ -230,10 +240,10 @@ public class Status {
 				con.connect();
 				is = con.getInputStream();
 			}
-			
+
 			if ( Thread.interrupted() )
 				throw new InterruptedException();
-			
+
 			res = sendCommandToController( is );
 		} catch ( MalformedURLException e ) {
 			sendCmdErrorMessage = "Error sending command";
@@ -243,7 +253,7 @@ public class Status {
 			res = Globals.errorMessage;
 		} catch ( IOException e ) {
 			sendCmdErrorMessage = "IO Exception";
-			res = Globals.errorMessage;			
+			res = Globals.errorMessage;
 		} catch ( InterruptedException e ) {
 			sendCmdErrorMessage = "Cancelled";
 			res = Globals.errorMessage;
@@ -263,7 +273,7 @@ public class Status {
 		// check if there was an error
 		if ( res.equals( Globals.errorMessage ) ) {
 			// encountered an error, display a popup message
-			JOptionPane.showMessageDialog( StatusApp.statusUI,
+			JOptionPane.showMessageDialog(	StatusApp.statusUI,
 											sendCmdErrorMessage,
 											"Error sending command",
 											JOptionPane.INFORMATION_MESSAGE );
