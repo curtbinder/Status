@@ -3,6 +3,7 @@ package info.curtbinder.Dialogs;
 import info.curtbinder.jStatus.Classes.Globals;
 import info.curtbinder.jStatus.Classes.StatusApp;
 import info.curtbinder.jStatus.UI.CommunicationsPanel;
+import info.curtbinder.jStatus.UI.SettingsPanel;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,7 @@ public class PrefsDialog extends JDialog {
 	private static final int minWidth = 300;
 	private static final int minHeight = 200;
 	private CommunicationsPanel panelCommunication;
+	private SettingsPanel panelSettings;
 
 	public PrefsDialog ( JFrame owner ) {
 		super( owner );
@@ -40,6 +42,7 @@ public class PrefsDialog extends JDialog {
 
 		setTitle( Globals.prefsTitle );
 		panelCommunication = new CommunicationsPanel();
+		panelSettings = new SettingsPanel();
 
 		// Button panel
 		JPanel buttonPanel = new JPanel();
@@ -56,13 +59,16 @@ public class PrefsDialog extends JDialog {
 				String host = panelCommunication.getTextHost().getText();
 				String port = panelCommunication.getTextPort().getText();
 				String comtype = panelCommunication.getCommMethod();
+				boolean fUsePre10Memory = panelSettings.getUsePre10Memory();
 				userprefs.put( Globals.keyHost, host );
 				userprefs.put( Globals.keyPort, port );
 				userprefs.put( Globals.keyComType, comtype );
+				userprefs.putBoolean( Globals.keyPre10Memory, fUsePre10Memory );
 				// update mainframe with the new values
 				StatusApp.statusUI.setHost( host );
 				StatusApp.statusUI.setPort( port );
 				StatusApp.statusUI.setComType( comtype );
+				StatusApp.fUsePre10Memory = fUsePre10Memory;
 				// now close the window
 				setVisible( false );
 				dispose();
@@ -82,6 +88,8 @@ public class PrefsDialog extends JDialog {
 		buttonPanel.add( btnClose );
 
 		contentPane.add( panelCommunication );
+		contentPane.add( Box.createVerticalStrut( 5 ) );
+		contentPane.add( panelSettings );
 		contentPane.add( Box.createVerticalStrut( 5 ) );
 		contentPane.add( buttonPanel );
 	}
@@ -105,5 +113,9 @@ public class PrefsDialog extends JDialog {
 		} else {
 			panelCommunication.setWifiMethod();
 		}
+	}
+	
+	public void setUsePre10Memory ( boolean fUse ) {
+		panelSettings.setUsePre10Memory( fUse );
 	}
 }

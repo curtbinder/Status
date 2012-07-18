@@ -9,6 +9,7 @@ public class StatusApp {
 
 	public static MainFrame statusUI;
 	public static Status statusClass;
+	public static boolean fUsePre10Memory;
 	private static String host;
 	private static String port;
 	private static String comtype;
@@ -47,6 +48,7 @@ public class StatusApp {
 		host = userprefs.get( Globals.keyHost, Globals.defaultHost );
 		port = userprefs.get( Globals.keyPort, Globals.defaultPort );
 		comtype = userprefs.get( Globals.keyComType, Globals.defaultComType );
+		fUsePre10Memory = userprefs.getBoolean( Globals.keyPre10Memory, false);
 	}
 
 }

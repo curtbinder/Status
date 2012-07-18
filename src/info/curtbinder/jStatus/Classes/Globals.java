@@ -10,6 +10,7 @@ public class Globals {
 	public static final String labelOn =   " ON  ";
 	public static final String labelOff =  " OFF ";
 	public static final String labelAuto = "AUTO";
+	public static final String labelPre10Memory = "Use pre v1.0 memory locations";
 	
 	// Preferences
 	public static final String keyHost = "host";
@@ -18,6 +19,7 @@ public class Globals {
 	public static final String defaultPort = "2000";
 	public static final String keyComType = "comtype";
 	public static final String defaultComType = WifiActionCommand;
+	public static final String keyPre10Memory = "pre10memory";
 	
 	// Controller commands
 	public static final String requestMemoryByte = "/mb";
