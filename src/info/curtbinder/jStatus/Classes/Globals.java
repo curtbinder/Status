@@ -66,8 +66,8 @@ public class Globals {
 	public static final int versionMajor = 1;
 	public static final int versionMinor = 0;
 	public static final int versionRevision = 0;
-	public static final String versionBuild = "beta 1";
-	public static final String copyrightInfo = "Copyright 2011 Curt Binder";
+	public static final String versionBuild = "beta 2";
+	public static final String copyrightInfo = "Copyright 2011-12 Curt Binder";
 	public static final String url = "http://curtbinder.info/";
 	public static final String aboutTitle = "About ";
 	public static final String prefsTitle = "Preferences";
