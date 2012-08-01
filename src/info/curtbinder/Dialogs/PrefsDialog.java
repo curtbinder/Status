@@ -24,7 +24,7 @@ public class PrefsDialog extends JDialog {
 
 	private static final long serialVersionUID = 432907898192448125L;
 	private static final int minWidth = 300;
-	private static final int minHeight = 200;
+	private static final int minHeight = 250;
 	private CommunicationsPanel panelCommunication;
 	private SettingsPanel panelSettings;
 
