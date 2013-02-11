@@ -147,7 +147,27 @@ public class Status {
 	public void sendGetDateTimeCommand ( ) {
 		sendCommand( "Get DateTime", Globals.requestDateTime );
 	}
+	
+	public void sendEnterFeedModeCommand ( ) {
+		sendCommand( "Feeding Mode", Globals.requestFeedingMode );
+	}
+	
+	public void sendEnterWaterChangeModeCommand ( ) {
+		sendCommand( "Water Change Mode", Globals.requestWaterMode );
+	}
+	
+	public void sendExitModeCommand ( ) {
+		sendCommand( "Exit Mode", Globals.requestExitMode );
+	}
+	
+	public void sendClearATOCommand ( ) {
+		sendCommand( "Clear ATO", Globals.requestClearATO );
+	}
 
+	public void sendClearOverheatCommand ( ) {
+		sendCommand( "Clear Overheat", Globals.requestClearOverheat );
+	}
+	
 	private void updateDisplay ( final XMLHandler h ) {
 		// Run this updating in the GUI thread
 		SwingUtilities.invokeLater( new Runnable() {
@@ -158,14 +178,14 @@ public class Status {
 							.getRa() );
 				} else if ( req.startsWith( Globals.requestDateTime ) ) {
 					if ( writeValue ) {
-						StatusApp.statusUI.tabDateTime.setDateTimeText( h
+						StatusApp.statusUI.tabCommands.setDateTimeText( h
 								.getDateTimeUpdateStatus() );
 					} else {
-						StatusApp.statusUI.tabDateTime.setDateTimeText( h
+						StatusApp.statusUI.tabCommands.setDateTimeText( h
 								.getDateTime() );
 					}
 				} else if ( req.equals( Globals.requestVersion ) ) {
-					StatusApp.statusUI.tabDateTime.setVersionText( h
+					StatusApp.statusUI.tabCommands.setVersionText( h
 							.getVersion() );
 				} else if ( req.startsWith( Globals.requestMemoryByte
 						.substring( 0, 2 ) ) ) {
@@ -185,14 +205,14 @@ public class Status {
 		// disable all buttons on the forms
 		StatusApp.statusUI.tabMemory.disableButtons();
 		StatusApp.statusUI.tabStatus.disableRefreshButton();
-		StatusApp.statusUI.tabDateTime.disableButtons();
+		StatusApp.statusUI.tabCommands.disableButtons();
 	}
 
 	private void enableButtons ( ) {
 		// enable all buttons on the forms
 		StatusApp.statusUI.tabMemory.enableButtons();
 		StatusApp.statusUI.tabStatus.enableRefreshButton();
-		StatusApp.statusUI.tabDateTime.enableButtons();
+		StatusApp.statusUI.tabCommands.enableButtons();
 	}
 
 	public void sendCommand ( String outputPrefix, String request ) {

@@ -30,6 +30,8 @@ public class Globals {
 	public static final String requestFeedingMode = "/mf";
 	public static final String requestWaterMode = "/mw";
 	public static final String requestExitMode = "/bp";
+	public static final String requestClearATO = "/mt";
+	public static final String requestClearOverheat = "/mo";
 	public static final String requestRelay = "/r";
 	public static final String requestNone = "";
 	public static final String requestReefAngel = "ra";
@@ -66,8 +68,8 @@ public class Globals {
 	public static final int versionMajor = 1;
 	public static final int versionMinor = 0;
 	public static final int versionRevision = 0;
-	public static final String versionBuild = "beta 2";
-	public static final String copyrightInfo = "Copyright 2011-12 Curt Binder";
+	public static final String versionBuild = "";
+	public static final String copyrightInfo = "Copyright 2011-13 Curt Binder";
 	public static final String url = "http://curtbinder.info/";
 	public static final String aboutTitle = "About ";
 	public static final String prefsTitle = "Preferences";
