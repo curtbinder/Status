@@ -196,7 +196,8 @@ public class MemoryDialog extends TextDialog {
 				new Memory( 321, Memory.locationINT, "PH Exp Min Value (PH7)" ),
 				new Memory( 323, Memory.locationINT, "PH Exp Max Value (PH10)" ),
 				new Memory( 325, Memory.locationINT, "Water Level Min Value" ),
-				new Memory( 327, Memory.locationINT, "Water Level Max Value" ), };
+				new Memory( 327, Memory.locationINT, "Water Level Max Value" ),
+				new Memory( 329, Memory.locationINT, "Salinity Temp Compensation" ), };
 
 	private JList memoryLocations;
 
