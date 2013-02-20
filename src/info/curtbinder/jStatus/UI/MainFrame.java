@@ -1,10 +1,15 @@
 package info.curtbinder.jStatus.UI;
 
-import info.curtbinder.jStatus.Classes.*;
+import info.curtbinder.jStatus.Classes.Globals;
+import info.curtbinder.jStatus.Classes.Memory;
+import info.curtbinder.jStatus.Classes.Status;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -31,6 +36,14 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame ( Status m ) {
 		setTitle( Globals.appTitle );
+		// set the application icon
+		Image img = null;
+		try {
+			img = ImageIO.read(getClass().getResource(Globals.appIconName));
+			setIconImage(img);
+		} catch ( IOException e ) {
+			// error getting app icon, so don't set one
+		}
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		// center on screen
 		setBounds( 100, 100, minWidth, minHeight );

@@ -77,7 +77,6 @@ public class Globals {
 
 	// Icons
 	public static final String bannerIconName = "/images/cb_h_banner-medium.png";
-	//public static final String appIconName = "/images/Rss-green-64.png";
 	public static final String appIconName = "/images/ra-logo-64.png";
 	public static final String refreshIconName = "/images/refresh-16.png";
 	public static final String memoryLocationsIconName = "/images/help-16.png";
