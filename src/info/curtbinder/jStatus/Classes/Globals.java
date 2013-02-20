@@ -9,6 +9,21 @@ public class Globals {
 	public static final String labelOn =   " ON  ";
 	public static final String labelOff =  " OFF ";
 	public static final String labelAuto = "AUTO";
+	public static final String labelVersion = "Version";
+	public static final String labelInstalledVersion = "Installed Version:";
+	public static final String labelUnknown = "Unknown";
+	public static final String labelGet = "Get";
+	public static final String labelModes = "Modes";
+	public static final String labelModesDescription = "Switch modes on the controller";
+	public static final String labelFeedingMode = "Feeding Mode";
+	public static final String labelWaterChange = "Water Change";
+	public static final String labelExit = "Exit";
+	public static final String labelClearATO = "Clear ATO";
+	public static final String labelClearOverheat = "Clear Overheat";
+	public static final String labelDateTime = "Date & Time";
+	public static final String labelCurrentController = "Current Controller:";
+	public static final String labelGetTime = "Get Time";
+	public static final String labelSetCurrentTime =  "Set Current Time";
 	public static final String labelPre10Memory = "Use pre v1.0 memory locations";
 	public static final String labelDisableNotifications = "Disable status popup notifications";
 	
@@ -19,6 +34,11 @@ public class Globals {
 	public static final String errorConnectTimeout = "Timeout connecting";
 	public static final String errorIO = "IO Exception";
 	public static final String errorCancelled = "Cancelled";
+	public static final String errorFeedMode = "Error entering Feeding Mode";
+	public static final String errorWaterChange = "Error entering Water Change Mode";
+	public static final String errorExit = "Error Exiting Mode";
+	public static final String errorClearATO = "Error clearing ATO";
+	public static final String errorClearOverheat = "Error clearing Overheat";
 	
 	// Preferences
 	public static final String keyHost = "host";
@@ -75,7 +95,7 @@ public class Globals {
 	public static final String appName = "RA Status";
 	public static final String appDescription = "Monitor the status of the controller";
 	public static final int versionMajor = 1;
-	public static final int versionMinor = 0;
+	public static final int versionMinor = 1;
 	public static final int versionRevision = 0;
 	public static final String versionBuild = "";
 	public static final String copyrightInfo = "Copyright 2011-13 Curt Binder";

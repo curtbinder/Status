@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import info.curtbinder.jStatus.Classes.GetTimeAdapter;
 import info.curtbinder.jStatus.Classes.GetVersionAdapter;
+import info.curtbinder.jStatus.Classes.Globals;
 import info.curtbinder.jStatus.Classes.SetTimeAdapter;
 import info.curtbinder.jStatus.Classes.Status;
 import info.curtbinder.jStatus.Classes.StatusApp;
@@ -45,15 +46,15 @@ public class CommandsTab extends JPanel {
 		JPanel versionPanel = new JPanel();
 		versionPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
 		// contains the version information
-		versionPanel.setBorder( new TitledBorder( null, "Version",
+		versionPanel.setBorder( new TitledBorder( null, Globals.labelVersion,
 			TitledBorder.LEADING, TitledBorder.TOP, null, null ) );
 		versionPanel
 				.setLayout( new BoxLayout( versionPanel, BoxLayout.X_AXIS ) );
 
-		JLabel lblVersionLabel = new JLabel( "Installed Version:" );
+		JLabel lblVersionLabel = new JLabel( Globals.labelInstalledVersion );
 		lblVersionLabel.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
-		lblVersion = new JLabel( "Unknown" );
-		btnCheckVersion = new JButton( "Get" );
+		lblVersion = new JLabel( Globals.labelUnknown );
+		btnCheckVersion = new JButton( Globals.labelGet );
 		btnCheckVersion.addActionListener( new GetVersionAdapter( s ) );
 
 		versionPanel.add( lblVersionLabel );
@@ -61,105 +62,120 @@ public class CommandsTab extends JPanel {
 		versionPanel.add( lblVersion );
 		versionPanel.add( Box.createHorizontalGlue() );
 		versionPanel.add( btnCheckVersion );
-		
+
 		JPanel modesPanel = new JPanel();
 		modesPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
-		modesPanel.setBorder( new TitledBorder( null, "Modes",
+		modesPanel.setBorder( new TitledBorder( null, Globals.labelModes,
 			TitledBorder.LEADING, TitledBorder.TOP, null, null ) );
-		modesPanel
-				.setLayout( new BoxLayout( modesPanel, BoxLayout.Y_AXIS ) );
-		
+		modesPanel.setLayout( new BoxLayout( modesPanel, BoxLayout.Y_AXIS ) );
+
 		JPanel panelText = new JPanel();
 		panelText.setAlignmentX( Component.LEFT_ALIGNMENT );
 		panelText.setLayout( new BoxLayout( panelText, BoxLayout.X_AXIS ) );
-		JLabel lblModesDescription = new JLabel( "Switch modes on the controller" );
+		JLabel lblModesDescription = new JLabel( Globals.labelModesDescription );
 		lblModesDescription.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		lblModesDescription.setHorizontalAlignment( SwingConstants.LEFT );
-		panelText.add( lblModesDescription );		
+		panelText.add( lblModesDescription );
 		panelText.add( Box.createHorizontalGlue() );
-		
+
 		JPanel panelModesButton = new JPanel();
 		panelModesButton.setAlignmentX( Component.LEFT_ALIGNMENT );
-		panelModesButton.setLayout( new BoxLayout( panelModesButton, BoxLayout.X_AXIS ) );
-		btnFeedMode = new JButton( "Feeding Mode" );
+		panelModesButton.setLayout( new BoxLayout( panelModesButton,
+			BoxLayout.X_AXIS ) );
+		btnFeedMode = new JButton( Globals.labelFeedingMode );
 		btnFeedMode.addActionListener( new ActionListener() {
 			public void actionPerformed ( ActionEvent arg0 ) {
 				try {
 					s.sendEnterFeedModeCommand();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(StatusApp.statusUI, "Error entering Feeding Mode",
-							"Feeding Mode Error", JOptionPane.INFORMATION_MESSAGE);
+				} catch ( Exception e ) {
+					JOptionPane
+							.showMessageDialog( StatusApp.statusUI,
+												Globals.errorFeedMode,
+												Globals.errorMessage,
+												JOptionPane.INFORMATION_MESSAGE );
 				}
 			}
-		});
-		btnWaterChangeMode = new JButton( "Water Change" );
-		btnWaterChangeMode.addActionListener(new ActionListener() {
+		} );
+		btnWaterChangeMode = new JButton( Globals.labelWaterChange );
+		btnWaterChangeMode.addActionListener( new ActionListener() {
 			public void actionPerformed ( ActionEvent arg0 ) {
 				try {
 					s.sendEnterWaterChangeModeCommand();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(StatusApp.statusUI, "Error entering Water Change Mode",
-							"Water Change Mode Error", JOptionPane.INFORMATION_MESSAGE);
+				} catch ( Exception e ) {
+					JOptionPane
+							.showMessageDialog( StatusApp.statusUI,
+												Globals.errorWaterChange,
+												Globals.errorMessage,
+												JOptionPane.INFORMATION_MESSAGE );
 				}
 			}
-		});
-		btnExitMode = new JButton( "Exit" );
-		btnExitMode.addActionListener(new ActionListener() {
+		} );
+		btnExitMode = new JButton( Globals.labelExit );
+		btnExitMode.addActionListener( new ActionListener() {
 			public void actionPerformed ( ActionEvent arg0 ) {
 				try {
 					s.sendExitModeCommand();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(StatusApp.statusUI, "Error Exiting Mode",
-							"Exit Mode Error", JOptionPane.INFORMATION_MESSAGE);
+				} catch ( Exception e ) {
+					JOptionPane
+							.showMessageDialog( StatusApp.statusUI,
+												Globals.errorExit,
+												Globals.errorMessage,
+												JOptionPane.INFORMATION_MESSAGE );
 				}
 			}
-		});
-		
+		} );
+
 		panelModesButton.add( btnFeedMode );
 		panelModesButton.add( Box.createHorizontalGlue() );
 		panelModesButton.add( btnWaterChangeMode );
 		panelModesButton.add( Box.createHorizontalGlue() );
 		panelModesButton.add( btnExitMode );
-		
+
 		JPanel panelClearButton = new JPanel();
 		panelClearButton.setAlignmentX( Component.LEFT_ALIGNMENT );
-		panelClearButton.setLayout( new BoxLayout( panelClearButton, BoxLayout.X_AXIS ) );
-		btnClearATO = new JButton( "Clear ATO" );
-		btnClearATO.addActionListener(new ActionListener() {
+		panelClearButton.setLayout( new BoxLayout( panelClearButton,
+			BoxLayout.X_AXIS ) );
+		btnClearATO = new JButton( Globals.labelClearATO );
+		btnClearATO.addActionListener( new ActionListener() {
 			public void actionPerformed ( ActionEvent arg0 ) {
 				try {
 					s.sendClearATOCommand();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(StatusApp.statusUI, "Error clearing ATO",
-							"Clear ATO Error", JOptionPane.INFORMATION_MESSAGE);
+				} catch ( Exception e ) {
+					JOptionPane
+							.showMessageDialog( StatusApp.statusUI,
+												Globals.errorClearATO,
+												Globals.errorMessage,
+												JOptionPane.INFORMATION_MESSAGE );
 				}
 			}
-		});
-		btnClearOverheat = new JButton( "Clear Overheat" );
-		btnClearOverheat.addActionListener(new ActionListener() {
+		} );
+		btnClearOverheat = new JButton( Globals.labelClearOverheat );
+		btnClearOverheat.addActionListener( new ActionListener() {
 			public void actionPerformed ( ActionEvent arg0 ) {
 				try {
 					s.sendClearOverheatCommand();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(StatusApp.statusUI, "Error clearing Overheat",
-							"Clear Overheat Error", JOptionPane.INFORMATION_MESSAGE);
+				} catch ( Exception e ) {
+					JOptionPane
+							.showMessageDialog( StatusApp.statusUI,
+												Globals.errorClearOverheat,
+												Globals.errorMessage,
+												JOptionPane.INFORMATION_MESSAGE );
 				}
 			}
-		});
+		} );
 		panelClearButton.add( btnClearATO );
 		panelClearButton.add( Box.createHorizontalGlue() );
 		panelClearButton.add( btnClearOverheat );
-		
+
 		modesPanel.add( panelText );
 		modesPanel.add( Box.createRigidArea( new Dimension( 0, 20 ) ) );
 		modesPanel.add( panelModesButton );
 		modesPanel.add( Box.createVerticalGlue() );
 		modesPanel.add( panelClearButton );
-		
 
 		JPanel dateTimePanel = new JPanel();
 		dateTimePanel.setAlignmentX( Component.LEFT_ALIGNMENT );
-		dateTimePanel.setBorder( new TitledBorder( null, "Date & Time",
+		dateTimePanel.setBorder( new TitledBorder( null, Globals.labelDateTime,
 			TitledBorder.LEADING, TitledBorder.TOP, null, null ) );
 		dateTimePanel
 				.setLayout( new BoxLayout( dateTimePanel, BoxLayout.Y_AXIS ) );
@@ -167,12 +183,13 @@ public class CommandsTab extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setAlignmentX( Component.LEFT_ALIGNMENT );
 		panel.setLayout( new BoxLayout( panel, BoxLayout.X_AXIS ) );
-		JLabel lblCurrentController = new JLabel( "Current Controller:" );
+		JLabel lblCurrentController =
+				new JLabel( Globals.labelCurrentController );
 		panel.add( lblCurrentController );
 		lblCurrentController.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		lblCurrentController.setHorizontalAlignment( SwingConstants.LEFT );
 		panel.add( Box.createRigidArea( new Dimension( 20, 20 ) ) );
-		lblDateTime = new JLabel( "-" );
+		lblDateTime = new JLabel( Globals.defaultStatusText );
 		panel.add( lblDateTime );
 		lblDateTime.setHorizontalAlignment( SwingConstants.CENTER );
 		panel.add( Box.createHorizontalGlue() );
@@ -180,12 +197,12 @@ public class CommandsTab extends JPanel {
 		JPanel panelButton = new JPanel();
 		panelButton.setAlignmentX( Component.LEFT_ALIGNMENT );
 		panelButton.setLayout( new BoxLayout( panelButton, BoxLayout.X_AXIS ) );
-		btnGetTime = new JButton( "Get Time" );
+		btnGetTime = new JButton( Globals.labelGetTime );
 		btnGetTime.addActionListener( new GetTimeAdapter( s ) );
 		panelButton.add( btnGetTime );
 		btnGetTime.setHorizontalAlignment( SwingConstants.LEFT );
 		panelButton.add( Box.createHorizontalStrut( 5 ) ); // 20
-		btnSetCurrentTime = new JButton( "Set Current Time" );
+		btnSetCurrentTime = new JButton( Globals.labelSetCurrentTime );
 		btnSetCurrentTime.addActionListener( new SetTimeAdapter( s ) );
 		panelButton.add( btnSetCurrentTime );
 

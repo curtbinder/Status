@@ -35,7 +35,6 @@ public class SettingsPanel extends JPanel {
 		add( Box.createHorizontalStrut( 5 ) );
 		// Add the settings here
 		add( p );
-		// add( Box.createHorizontalStrut( 5 ) );
 		add( Box.createHorizontalGlue() );
 	}
 

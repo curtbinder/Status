@@ -55,8 +55,6 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout( new BoxLayout( contentPane, BoxLayout.Y_AXIS ) );
 		setContentPane( contentPane );
 
-		// panelCommunication = new CommunicationsPanel();
-
 		// Tabbed window panel
 		tabbedPane = new JTabbedPane( JTabbedPane.TOP );
 		tabMemory = new MemoryTab( m );
@@ -74,7 +72,6 @@ public class MainFrame extends JFrame {
 		buttonPanel.add( btnClose );
 
 		// Add the panels to the main pane
-		// contentPane.add( panelCommunication );
 		contentPane.add( tabbedPane );
 		contentPane.add( Box.createVerticalStrut( 5 ) );
 		contentPane.add( buttonPanel );
