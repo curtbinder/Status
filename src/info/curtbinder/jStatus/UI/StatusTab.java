@@ -243,7 +243,11 @@ public class StatusTab extends JPanel {
 		lblLastUpdateTime.setText( dft.format( new Date() ) );
 		refreshData();
 	}
-
+	
+	public void setUpdateErrorText ( String msg ) {
+		lblLastUpdateTime.setText( msg );
+	}
+	
 	private void refreshData ( ) {
 		// update the data on the screen
 		lblT1.setText( ra.getTemp1() );

@@ -22,6 +22,7 @@ public class PrefsAction extends AbstractAction {
 		d.setPort( StatusApp.statusUI.getPort() );
 		d.setComType( StatusApp.statusUI.getComType() );
 		d.setUsePre10Memory( StatusApp.fUsePre10Memory );
+		d.setDisableNotifications( StatusApp.fDisableNotifications );
 		d.showDialog();
 	}
 }

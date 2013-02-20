@@ -33,14 +33,14 @@ public class MainFrame extends JFrame {
 	private String host;
 	private String port;
 	private String comtype;
-	
+
 	public MainFrame ( Status m ) {
 		setTitle( Globals.appTitle );
 		// set the application icon
 		Image img = null;
 		try {
-			img = ImageIO.read(getClass().getResource(Globals.appIconName));
-			setIconImage(img);
+			img = ImageIO.read( getClass().getResource( Globals.appIconName ) );
+			setIconImage( img );
 		} catch ( IOException e ) {
 			// error getting app icon, so don't set one
 		}
@@ -78,7 +78,7 @@ public class MainFrame extends JFrame {
 		contentPane.add( tabbedPane );
 		contentPane.add( Box.createVerticalStrut( 5 ) );
 		contentPane.add( buttonPanel );
-		
+
 	}
 
 	public String getCommMethod ( ) {
@@ -93,7 +93,7 @@ public class MainFrame extends JFrame {
 	public void setComType ( String s ) {
 		comtype = s;
 	}
-	
+
 	public String getComType ( ) {
 		return comtype;
 	}

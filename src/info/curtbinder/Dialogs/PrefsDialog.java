@@ -24,7 +24,7 @@ public class PrefsDialog extends JDialog {
 
 	private static final long serialVersionUID = 432907898192448125L;
 	private static final int minWidth = 300;
-	private static final int minHeight = 250;
+	private static final int minHeight = 270;
 	private CommunicationsPanel panelCommunication;
 	private SettingsPanel panelSettings;
 
@@ -53,22 +53,7 @@ public class PrefsDialog extends JDialog {
 		btnSave.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 		btnSave.addActionListener( new ActionListener() {
 			public void actionPerformed ( ActionEvent ev ) {
-				// store the values in preferences
-				Preferences userprefs =
-						Preferences.userNodeForPackage( StatusApp.class );
-				String host = panelCommunication.getTextHost().getText();
-				String port = panelCommunication.getTextPort().getText();
-				String comtype = panelCommunication.getCommMethod();
-				boolean fUsePre10Memory = panelSettings.getUsePre10Memory();
-				userprefs.put( Globals.keyHost, host );
-				userprefs.put( Globals.keyPort, port );
-				userprefs.put( Globals.keyComType, comtype );
-				userprefs.putBoolean( Globals.keyPre10Memory, fUsePre10Memory );
-				// update mainframe with the new values
-				StatusApp.statusUI.setHost( host );
-				StatusApp.statusUI.setPort( port );
-				StatusApp.statusUI.setComType( comtype );
-				StatusApp.fUsePre10Memory = fUsePre10Memory;
+				saveSettings();
 				// now close the window
 				setVisible( false );
 				dispose();
@@ -99,6 +84,29 @@ public class PrefsDialog extends JDialog {
 		setVisible( true );
 	}
 
+	protected void saveSettings ( ) {
+		// store the values in preferences
+		Preferences userprefs =
+				Preferences.userNodeForPackage( StatusApp.class );
+		String host = panelCommunication.getTextHost().getText();
+		String port = panelCommunication.getTextPort().getText();
+		String comtype = panelCommunication.getCommMethod();
+		boolean fUsePre10Memory = panelSettings.getUsePre10Memory();
+		boolean fDisableNotifications = panelSettings.getDisableNotifications();
+		userprefs.put( Globals.keyHost, host );
+		userprefs.put( Globals.keyPort, port );
+		userprefs.put( Globals.keyComType, comtype );
+		userprefs.putBoolean( Globals.keyPre10Memory, fUsePre10Memory );
+		userprefs.putBoolean(	Globals.keyDisableNotifications,
+								fDisableNotifications );
+		// update mainframe with the new values
+		StatusApp.statusUI.setHost( host );
+		StatusApp.statusUI.setPort( port );
+		StatusApp.statusUI.setComType( comtype );
+		StatusApp.fUsePre10Memory = fUsePre10Memory;
+		StatusApp.fDisableNotifications = fDisableNotifications;
+	}
+
 	public void setHost ( String s ) {
 		panelCommunication.getTextHost().setText( s );
 	}
@@ -114,8 +122,12 @@ public class PrefsDialog extends JDialog {
 			panelCommunication.setWifiMethod();
 		}
 	}
-	
+
 	public void setUsePre10Memory ( boolean fUse ) {
 		panelSettings.setUsePre10Memory( fUse );
+	}
+
+	public void setDisableNotifications ( boolean fDisable ) {
+		panelSettings.setDisableNotifications( fDisable );
 	}
 }

@@ -147,19 +147,19 @@ public class Status {
 	public void sendGetDateTimeCommand ( ) {
 		sendCommand( "Get DateTime", Globals.requestDateTime );
 	}
-	
+
 	public void sendEnterFeedModeCommand ( ) {
 		sendCommand( "Feeding Mode", Globals.requestFeedingMode );
 	}
-	
+
 	public void sendEnterWaterChangeModeCommand ( ) {
 		sendCommand( "Water Change Mode", Globals.requestWaterMode );
 	}
-	
+
 	public void sendExitModeCommand ( ) {
 		sendCommand( "Exit Mode", Globals.requestExitMode );
 	}
-	
+
 	public void sendClearATOCommand ( ) {
 		sendCommand( "Clear ATO", Globals.requestClearATO );
 	}
@@ -167,7 +167,7 @@ public class Status {
 	public void sendClearOverheatCommand ( ) {
 		sendCommand( "Clear Overheat", Globals.requestClearOverheat );
 	}
-	
+
 	private void updateDisplay ( final XMLHandler h ) {
 		// Run this updating in the GUI thread
 		SwingUtilities.invokeLater( new Runnable() {
@@ -225,18 +225,19 @@ public class Status {
 			return;
 		}
 		final String s = url + request;
+		final String r = request;
 		System.out.println( outputPrefix + ": '" + s + "'" );
 		threadSender = new Thread() {
 			public void run ( ) {
 				System.out.println( "Started thread" );
-				threadSendCommand( s );
+				threadSendCommand( s, r );
 				System.out.println( "Finished thread" );
 			}
 		};
 		threadSender.start();
 	}
 
-	private void threadSendCommand ( String url ) {
+	private void threadSendCommand ( String url, String req ) {
 		// Disable the buttons
 		disableButtons();
 		// send command to controller
@@ -245,7 +246,6 @@ public class Status {
 		sendCmdErrorMessage = "";
 		long start = System.currentTimeMillis();
 		try {
-			// res = sendCommandToController( new URL( url ) );
 			InputStream is;
 			if ( url.startsWith( "GET " ) ) {
 				// this is COM method
@@ -266,16 +266,16 @@ public class Status {
 
 			res = sendCommandToController( is );
 		} catch ( MalformedURLException e ) {
-			sendCmdErrorMessage = "Error sending command";
+			sendCmdErrorMessage = Globals.errorSendingCommand;
 			res = Globals.errorMessage;
 		} catch ( SocketTimeoutException e ) {
-			sendCmdErrorMessage = "Timeout connecting";
+			sendCmdErrorMessage = Globals.errorConnectTimeout;
 			res = Globals.errorMessage;
 		} catch ( IOException e ) {
-			sendCmdErrorMessage = "IO Exception";
+			sendCmdErrorMessage = Globals.errorIO;
 			res = Globals.errorMessage;
 		} catch ( InterruptedException e ) {
-			sendCmdErrorMessage = "Cancelled";
+			sendCmdErrorMessage = Globals.errorCancelled;
 			res = Globals.errorMessage;
 		} finally {
 			if ( con != null ) {
@@ -292,23 +292,41 @@ public class Status {
 
 		// check if there was an error
 		if ( res.equals( Globals.errorMessage ) ) {
-			// encountered an error, display a popup message
-			JOptionPane.showMessageDialog(	StatusApp.statusUI,
-											sendCmdErrorMessage,
-											"Error sending command",
-											JOptionPane.INFORMATION_MESSAGE );
-
+			// encountered an error
+			handleError( req, Globals.errorSendingCommand + ": "
+								+ sendCmdErrorMessage );
 		} else {
 			XMLHandler h = new XMLHandler();
 			if ( !parseXML( h, res ) ) {
-				// TODO consider displaying a popup window
-				System.out.println( "Error with parser" );
+				handleError( req, Globals.errorParser );
 				return;
 			}
 			updateDisplay( h );
 		}
 		// always turn off write value when we finish the threads
 		writeValue = false;
+	}
+
+	private void handleError ( String req, String consoleErrorMessage ) {
+		System.out.println( consoleErrorMessage );
+		boolean fShowPopups = true;
+		if ( req.equals( Globals.requestStatus ) ) {
+			// update status text
+			StatusApp.statusUI.tabStatus
+					.setUpdateErrorText( sendCmdErrorMessage );
+			if ( StatusApp.fDisableNotifications ) {
+				// Only display popup if notifications are not disabled
+				fShowPopups = false;
+			}
+		}
+		// always show popups on every tab BUT the status tab
+		// unless popup notifications are enabled
+		if ( fShowPopups ) {
+			JOptionPane.showMessageDialog(	StatusApp.statusUI,
+											sendCmdErrorMessage,
+											Globals.errorMessage,
+											JOptionPane.INFORMATION_MESSAGE );
+		}
 	}
 
 	private boolean parseXML ( XMLHandler h, String res ) {

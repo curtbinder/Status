@@ -4,13 +4,21 @@ public class Globals {
 	public static final String comWifiLabel = "Wifi";
 	public static final String comCOMLabel = "COM";
 	public static final String WifiActionCommand = "WIFI";
-	public static final String ComActionCommand = "COM";
-	public static final String errorMessage = "Error";
+	public static final String ComActionCommand = "COM"; 
 	public static final String defaultStatusText = "-";
 	public static final String labelOn =   " ON  ";
 	public static final String labelOff =  " OFF ";
 	public static final String labelAuto = "AUTO";
 	public static final String labelPre10Memory = "Use pre v1.0 memory locations";
+	public static final String labelDisableNotifications = "Disable status popup notifications";
+	
+	// Error messages
+	public static final String errorMessage = "Error";
+	public static final String errorSendingCommand = "Error sending command";
+	public static final String errorParser = "Error with parser";
+	public static final String errorConnectTimeout = "Timeout connecting";
+	public static final String errorIO = "IO Exception";
+	public static final String errorCancelled = "Cancelled";
 	
 	// Preferences
 	public static final String keyHost = "host";
@@ -20,6 +28,7 @@ public class Globals {
 	public static final String keyComType = "comtype";
 	public static final String defaultComType = WifiActionCommand;
 	public static final String keyPre10Memory = "pre10memory";
+	public static final String keyDisableNotifications = "disablenotifications";
 	
 	// Controller commands
 	public static final String requestMemoryByte = "/mb";
