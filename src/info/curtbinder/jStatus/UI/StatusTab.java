@@ -226,11 +226,21 @@ public class StatusTab extends JPanel {
 		return NAME;
 	}
 
-	public void enableRefreshButton ( ) {
+	public void enableButtons ( ) {
+		enableRefreshButton();
+		relayPanel.enableRelayButtons();
+	}
+
+	public void disableButtons ( ) {
+		disableRefreshButton();
+		relayPanel.disableRelayButtons();
+	}
+
+	private void enableRefreshButton ( ) {
 		btnRefresh.setEnabled( true );
 	}
 
-	public void disableRefreshButton ( ) {
+	private void disableRefreshButton ( ) {
 		btnRefresh.setEnabled( false );
 	}
 
@@ -243,11 +253,11 @@ public class StatusTab extends JPanel {
 		lblLastUpdateTime.setText( dft.format( new Date() ) );
 		refreshData();
 	}
-	
+
 	public void setUpdateErrorText ( String msg ) {
 		lblLastUpdateTime.setText( msg );
 	}
-	
+
 	private void refreshData ( ) {
 		// update the data on the screen
 		lblT1.setText( ra.getTemp1() );

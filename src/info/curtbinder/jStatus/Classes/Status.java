@@ -204,14 +204,14 @@ public class Status {
 	private void disableButtons ( ) {
 		// disable all buttons on the forms
 		StatusApp.statusUI.tabMemory.disableButtons();
-		StatusApp.statusUI.tabStatus.disableRefreshButton();
+		StatusApp.statusUI.tabStatus.disableButtons();
 		StatusApp.statusUI.tabCommands.disableButtons();
 	}
 
 	private void enableButtons ( ) {
 		// enable all buttons on the forms
 		StatusApp.statusUI.tabMemory.enableButtons();
-		StatusApp.statusUI.tabStatus.enableRefreshButton();
+		StatusApp.statusUI.tabStatus.enableButtons();
 		StatusApp.statusUI.tabCommands.enableButtons();
 	}
 

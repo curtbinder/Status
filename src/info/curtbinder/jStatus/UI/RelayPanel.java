@@ -93,6 +93,20 @@ public class RelayPanel extends JPanel {
 		}
 	}
 
+	public void enableRelayButtons ( ) {
+		for ( int i = 0; i < 8; i++ ) {
+			portButtons[i].setEnabled( true );
+			portGreen[i].setEnabled( true );
+		}
+	}
+
+	public void disableRelayButtons ( ) {
+		for ( int i = 0; i < 8; i++ ) {
+			portButtons[i].setEnabled( false );
+			portGreen[i].setEnabled( false );
+		}
+	}
+
 	public class TogglePortAdapter implements ActionListener {
 
 		Status m;
@@ -106,14 +120,14 @@ public class RelayPanel extends JPanel {
 		@Override
 		public void actionPerformed ( ActionEvent arg0 ) {
 			try {
-				String txt = portButtons[port-1].getText();
+				String txt = portButtons[port - 1].getText();
 				byte mode = Relay.PORT_STATE_OFF;
 				if ( txt.equals( Globals.labelOff ) ) {
 					mode = Relay.PORT_STATE_ON;
 				}
 				// if it's not already visible, show the clear mask button
-				if ( !portGreen[port-1].isVisible() ) {
-					portGreen[port-1].setVisible( true );
+				if ( !portGreen[port - 1].isVisible() ) {
+					portGreen[port - 1].setVisible( true );
 				}
 				m.sendRelayCommand( port, mode );
 			} catch ( Exception e ) {
@@ -140,7 +154,7 @@ public class RelayPanel extends JPanel {
 		public void actionPerformed ( ActionEvent arg0 ) {
 			try {
 				// hide the button
-				portGreen[port-1].setVisible( false );
+				portGreen[port - 1].setVisible( false );
 				// clears the mask
 				m.sendRelayCommand( port, Relay.PORT_STATE_AUTO );
 			} catch ( Exception e ) {
