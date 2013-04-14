@@ -1,12 +1,18 @@
 package info.curtbinder.Dialogs;
 
 import info.curtbinder.jStatus.Classes.Globals;
+import info.curtbinder.jStatus.Classes.Log;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,12 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class AboutDialog extends JDialog {
 
@@ -99,7 +99,7 @@ public class AboutDialog extends JDialog {
 				java.awt.Desktop d = java.awt.Desktop.getDesktop();
 				java.net.URI url;
 				try {
-					System.out.print( "Create URL: " + lblUrl.getText() + "\n" );
+					Log.i( "Create URL: " + lblUrl.getText() + "\n" );
 					url = new java.net.URI( lblUrl.getText() );
 				} catch ( URISyntaxException e1 ) {
 					// invalid URL
@@ -111,7 +111,7 @@ public class AboutDialog extends JDialog {
 					return;
 				}
 				try {
-					System.out.print( "Launch browser: " + url.toString()
+					Log.i( "Launch browser: " + url.toString()
 										+ "\n" );
 					d.browse( url );
 				} catch ( IOException e1 ) {

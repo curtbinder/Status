@@ -102,7 +102,7 @@ public class Status {
 
 	public void sendRelayCommand ( int port, byte mode ) {
 		String cmd = String.format( "%s%d%d", Globals.requestRelay, port, mode );
-		System.out.println( "RelayCommand: " + cmd );
+		Log.i( "RelayCommand: " + cmd );
 		sendCommand( "Relay", cmd );
 	}
 
@@ -226,12 +226,12 @@ public class Status {
 		}
 		final String s = url + request;
 		final String r = request;
-		System.out.println( outputPrefix + ": '" + s + "'" );
+		Log.i( outputPrefix + ": '" + s + "'" );
 		threadSender = new Thread() {
 			public void run ( ) {
-				System.out.println( "Started thread" );
+				Log.i( "Started thread" );
 				threadSendCommand( s, r );
-				System.out.println( "Finished thread" );
+				Log.i( "Finished thread" );
 			}
 		};
 		threadSender.start();
@@ -283,7 +283,7 @@ public class Status {
 			}
 		}
 		long end = System.currentTimeMillis();
-		System.out.printf( "Took %d ms to send command\n", end - start );
+		Log.i( "Took %d ms to send command\n", end - start );
 
 		// Enable the buttons only if we are supposed to
 		if ( enableButtonsOnThreadFinish ) {
@@ -308,7 +308,7 @@ public class Status {
 	}
 
 	private void handleError ( String req, String consoleErrorMessage ) {
-		System.out.println( consoleErrorMessage );
+		Log.i( consoleErrorMessage );
 		boolean fShowPopups = true;
 		if ( req.equals( Globals.requestStatus ) ) {
 			// update status text
@@ -332,7 +332,7 @@ public class Status {
 	private boolean parseXML ( XMLHandler h, String res ) {
 		XMLReader xr;
 		long start, end;
-		System.out.println( "Parsing" );
+		Log.i( "Parsing" );
 		try {
 			xr = XMLReaderFactory.createXMLReader();
 		} catch ( SAXException e ) {
@@ -352,8 +352,8 @@ public class Status {
 			return false;
 		}
 		end = System.currentTimeMillis();
-		System.out.printf( "Took %d ms to parse\n", end - start );
-		System.out.println( "Parsed" );
+		Log.i( "Took %d ms to parse\n", end - start );
+		Log.i( "Parsed" );
 		return true;
 	}
 }

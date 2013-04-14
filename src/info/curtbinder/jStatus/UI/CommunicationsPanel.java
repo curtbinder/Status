@@ -1,9 +1,12 @@
 package info.curtbinder.jStatus.UI;
 
 import info.curtbinder.jStatus.Classes.Globals;
+import info.curtbinder.jStatus.Classes.Log;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -21,6 +24,40 @@ public class CommunicationsPanel extends JPanel {
 	private WifiPanel panelWifiSettings;
 	private JRadioButton rdbtnWifi;
 	private JRadioButton rdbtnCom;
+	
+	private ComAction ca = new ComAction();
+	private WifiAction wa = new WifiAction();
+	
+	private class ComAction extends AbstractAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		public ComAction() {
+			putValue( NAME, Globals.ComActionCommand );
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			setComMethod();
+			
+		}
+		
+	};
+	private class WifiAction extends AbstractAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public WifiAction() {
+			putValue( NAME, Globals.WifiActionCommand );
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			setWifiMethod();
+		}
+	};
 
 	public CommunicationsPanel () {
 		super();
@@ -37,9 +74,11 @@ public class CommunicationsPanel extends JPanel {
 		panelCommChoice.setLayout( new BoxLayout( panelCommChoice,
 			BoxLayout.Y_AXIS ) );
 		rdbtnWifi = new JRadioButton( Globals.comWifiLabel );
-		rdbtnWifi.setActionCommand( Globals.WifiActionCommand );
+		rdbtnWifi.setAction(wa);
+		rdbtnWifi.setActionCommand(Globals.WifiActionCommand);
 		rdbtnCom = new JRadioButton( Globals.comCOMLabel );
-		rdbtnCom.setActionCommand( Globals.ComActionCommand );
+		rdbtnCom.setAction(ca);
+		rdbtnCom.setActionCommand(Globals.ComActionCommand);
 		panelCommChoice.add( Box.createVerticalGlue() );
 		panelCommChoice.add( rdbtnWifi );
 		panelCommChoice.add( Box.createVerticalGlue() );
@@ -47,7 +86,7 @@ public class CommunicationsPanel extends JPanel {
 		panelCommChoice.add( Box.createVerticalGlue() );
 		groupCommType = new ButtonGroup();
 		groupCommType.add( rdbtnWifi );
-		rdbtnWifi.setSelected( true );
+		//rdbtnWifi.setSelected( true );
 		groupCommType.add( rdbtnCom );
 
 		// Communication settings
@@ -75,20 +114,17 @@ public class CommunicationsPanel extends JPanel {
 
 	public String getCommMethod ( ) {
 		String s = groupCommType.getSelection().getActionCommand();
-		String url;
-		if ( s == "COM" )
-			url = "GET ";
-		else
-			url = "http://" + getTextHost().getText() + ":"
-							+ getTextPort().getText();
-		return url;
+		Log.i("Group Selection: " + s);
+		return s;
 	}
 
 	public void setWifiMethod ( ) {
+		Log.i("setWifiMethod");
 		rdbtnWifi.setSelected( true );
 	}
 
 	public void setComMethod ( ) {
-		rdbtnCom.setSelected( false );
+		Log.i("setComMethod");
+		rdbtnCom.setSelected( true );
 	}
 }

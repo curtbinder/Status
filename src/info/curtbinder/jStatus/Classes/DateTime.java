@@ -115,7 +115,7 @@ public class DateTime {
 		cmd +=
 				String.format( "%02d%02d,%02d%02d,%02d", hr, min, mon + 1, day,
 								yr - 2000 );
-		System.out.println( "DateTime: '" + cmd + "'" );
+		Log.i( "DateTime: '" + cmd + "'" );
 		return cmd;
 	}
 }

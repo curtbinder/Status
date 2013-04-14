@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
 
 	public String getCommMethod ( ) {
 		String url;
-		if ( comtype == Globals.ComActionCommand )
+		if ( comtype.equals(Globals.ComActionCommand) )
 			url = "GET ";
 		else
 			url = "http://" + host + ":" + port;

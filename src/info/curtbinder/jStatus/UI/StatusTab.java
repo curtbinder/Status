@@ -2,6 +2,7 @@ package info.curtbinder.jStatus.UI;
 
 import info.curtbinder.jStatus.Classes.Controller;
 import info.curtbinder.jStatus.Classes.Globals;
+import info.curtbinder.jStatus.Classes.Log;
 import info.curtbinder.jStatus.Classes.RefreshAdapter;
 import info.curtbinder.jStatus.Classes.Relay;
 import info.curtbinder.jStatus.Classes.Status;
@@ -289,7 +290,7 @@ public class StatusTab extends JPanel {
 					new String( String.format(	"Port %d: %s(%s)", i + 1,
 												fStatus	? Globals.labelOn
 														: Globals.labelOff, s1 ) );
-			System.out.println( s );
+			Log.i( s );
 
 			relayPanel.portButtons[i].setText( fStatus	? Globals.labelOn
 														: Globals.labelOff );

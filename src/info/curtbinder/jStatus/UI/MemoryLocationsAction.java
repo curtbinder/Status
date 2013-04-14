@@ -1,6 +1,7 @@
 package info.curtbinder.jStatus.UI;
 
 import info.curtbinder.jStatus.Classes.Globals;
+import info.curtbinder.jStatus.Classes.Log;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,7 @@ public class MemoryLocationsAction extends AbstractAction {
 			boolean canProceed = true;
 			if ( dlg.getClass().equals( MemoryDialog.class ) ) {
 				if ( dlg.isDisplayable() ) {
-					System.out.println( "found textdialog" );
+					Log.i( "found textdialog" );
 					MemoryDialog md = (MemoryDialog) dlg;
 					md.setVisible( true );
 					md.setWindowPosition();

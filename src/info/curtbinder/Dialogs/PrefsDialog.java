@@ -1,6 +1,7 @@
 package info.curtbinder.Dialogs;
 
 import info.curtbinder.jStatus.Classes.Globals;
+import info.curtbinder.jStatus.Classes.Log;
 import info.curtbinder.jStatus.Classes.StatusApp;
 import info.curtbinder.jStatus.UI.CommunicationsPanel;
 import info.curtbinder.jStatus.UI.SettingsPanel;
@@ -116,9 +117,12 @@ public class PrefsDialog extends JDialog {
 	}
 
 	public void setComType ( String s ) {
-		if ( s == Globals.ComActionCommand ) {
+		Log.i("setComType: '" + s + "'");
+		if ( s.equals(Globals.ComActionCommand) ) {
+			Log.i("equals COM");
 			panelCommunication.setComMethod();
 		} else {
+			Log.i("not COM");
 			panelCommunication.setWifiMethod();
 		}
 	}

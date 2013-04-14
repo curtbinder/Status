@@ -52,6 +52,7 @@ public class StatusApp {
 		fUsePre10Memory = userprefs.getBoolean( Globals.keyPre10Memory, false );
 		fDisableNotifications =
 				userprefs.getBoolean( Globals.keyDisableNotifications, true );
+		Log.i("Load: '" + comtype + "'");
 	}
 
 }
