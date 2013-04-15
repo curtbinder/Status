@@ -60,6 +60,13 @@ public class StatusApp {
 
 	private static void readParams(String[] args) {
 		if (args.length > 0) {
+			for ( String s : args ) {
+				for ( String v : Globals.cmdVerbose ) {
+					if ( s.equals(v) ) {
+						fDisplayMessages = true;
+					}
+				}
+			}
 		}
 	}
 }
