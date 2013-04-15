@@ -30,5 +30,22 @@ public class SerialConn {
 			return "Unknown type";
 		}
 	}
+	
+	public SerialPort getPort(String portName) throws Exception {
+		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+		SerialPort p = null;
+		if ( portIdentifier.isCurrentlyOwned() ) {
+			Log.i("Error: Port in use");
+			throw new Exception();
+		}
+		CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
+		if ( commPort instanceof SerialPort ) {
+			p = (SerialPort) commPort;
+			p.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+		} else {
+			Log.i("Error: Only serial ports are allowed");
+		}
+		return p;
+	}
 
 }

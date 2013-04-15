@@ -1,9 +1,14 @@
 package info.curtbinder.jStatus.Classes;
 
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -30,6 +35,35 @@ public class Status {
 
 	private String sendCommandToController ( InputStream is ) {
 		StringBuilder s = new StringBuilder( 8192 );
+		String url = StatusApp.statusUI.getCommMethod();
+		if ( url == "GET " ) {
+			byte[] b = new byte[1024];
+			int len = -1;
+			try {
+				int d = is.available();
+				Log.i("Trying to read %d\n", d);
+				while ( ( len = is.read(b)) > -1) {
+					Log.i("Read: %d\n", len);
+					if ( Thread.interrupted() )
+						throw new InterruptedException();
+					String s1 = new String(b,0,len);
+					s.append(s1);
+					if ( len >= d ) 
+						break;
+				}
+				is.close();
+			} catch ( IOException e ) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			// let's strip off the HTTP headers
+			int idx = s.indexOf(Globals.responseCRLF);
+			Log.i("XML Start Offset: %d\n", idx);
+			String sx = s.substring(idx+Globals.responseCRLF.length(), s.length());
+			Log.i(sx);
+			return sx;
+		}
 		try {
 			if ( Thread.interrupted() )
 				throw new InterruptedException();
@@ -217,15 +251,20 @@ public class Status {
 
 	public void sendCommand ( String outputPrefix, String request ) {
 		String url = StatusApp.statusUI.getCommMethod();
+		String extra = "";
 		if ( url == "GET " ) {
+			/*
 			JOptionPane.showMessageDialog(	StatusApp.statusUI,
 											"COM not implemented yet",
 											"Comm Type",
 											JOptionPane.INFORMATION_MESSAGE );
 			return;
+			*/
+			extra = " ";
 		}
-		final String s = url + request;
-		final String r = request;
+		
+		final String s = url + request + extra;
+		final String r = request + extra;
 		Log.i( outputPrefix + ": '" + s + "'" );
 		threadSender = new Thread() {
 			public void run ( ) {
@@ -243,14 +282,32 @@ public class Status {
 		// send command to controller
 		String res = "";
 		HttpURLConnection con = null;
+		SerialPort p = null;
 		sendCmdErrorMessage = "";
 		long start = System.currentTimeMillis();
 		try {
 			InputStream is;
 			if ( url.startsWith( "GET " ) ) {
-				// this is COM method
 				is = null;
-				throw new InterruptedException();
+				CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("/dev/ttyUSB0");
+				if ( portIdentifier.isCurrentlyOwned() ) {
+					Log.i("Error: Port in use");
+					throw new Exception();
+				}
+				CommPort commPort = portIdentifier.open(this.getClass().getName(), 500);
+				if ( commPort instanceof SerialPort ) {
+					p = (SerialPort) commPort;
+					p.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+					OutputStream os = p.getOutputStream();
+					os.write(url.getBytes());
+					is = p.getInputStream();
+					while ( is.available() == 0 ) {
+						Thread.sleep(500);
+					}
+				} else {
+					Log.i("Error: Only serial ports are allowed");
+					throw new Exception();
+				}
 			} else {
 				URL u = new URL( url );
 				con = (HttpURLConnection) u.openConnection();
@@ -277,9 +334,15 @@ public class Status {
 		} catch ( InterruptedException e ) {
 			sendCmdErrorMessage = Globals.errorCancelled;
 			res = Globals.errorMessage;
+		} catch (Exception e) {
+			sendCmdErrorMessage = Globals.errorCancelled;
+			res = Globals.errorMessage;
 		} finally {
 			if ( con != null ) {
 				con.disconnect();
+			}
+			if ( p != null ) {
+				p.close();
 			}
 		}
 		long end = System.currentTimeMillis();

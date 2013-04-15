@@ -6,6 +6,7 @@ public class Globals {
 	public static final String WifiActionCommand = "WIFI";
 	public static final String ComActionCommand = "COM"; 
 	public static final String defaultStatusText = "-";
+	public static final String responseCRLF = "\r\n\r\n";
 	public static final String labelOn =   " ON  ";
 	public static final String labelOff =  " OFF ";
 	public static final String labelAuto = "AUTO";
