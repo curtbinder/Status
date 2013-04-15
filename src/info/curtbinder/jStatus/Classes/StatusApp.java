@@ -15,6 +15,7 @@ public class StatusApp {
 	private static String host;
 	private static String port;
 	private static String comtype;
+	private static String comport;
 
 	public StatusApp() {
 		fDisplayMessages = false;
@@ -38,6 +39,7 @@ public class StatusApp {
 					statusUI.setHost(host);
 					statusUI.setPort(port);
 					statusUI.setComType(comtype);
+					statusUI.setComPort(comport);
 					statusUI.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,10 +54,13 @@ public class StatusApp {
 		host = userprefs.get(Globals.keyHost, Globals.defaultHost);
 		port = userprefs.get(Globals.keyPort, Globals.defaultPort);
 		comtype = userprefs.get(Globals.keyComType, Globals.defaultComType);
+		// TODO switch this to be platform independent
+		comport = userprefs.get(Globals.keyComPort, Globals.defaultComPortLinux);
 		fUsePre10Memory = userprefs.getBoolean(Globals.keyPre10Memory, false);
 		fDisableNotifications = userprefs.getBoolean(
 				Globals.keyDisableNotifications, true);
 		Log.i("Load: '" + comtype + "'");
+		Log.i("Com Port: " + comport);
 	}
 
 	private static void readParams(String[] args) {

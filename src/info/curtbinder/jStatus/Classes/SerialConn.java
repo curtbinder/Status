@@ -30,6 +30,18 @@ public class SerialConn {
 		return l;
 	}
 
+	public static boolean isValidPort(String port) {
+		List l = getPortList();
+		boolean fRet = false;
+		for (String s : l.getItems()) {
+			if (s.equalsIgnoreCase(port)) {
+				fRet = true;
+				break;
+			}
+		}
+		return fRet;
+	}
+
 	public static String getPortTypeName(int portType) {
 		switch (portType) {
 		case CommPortIdentifier.PORT_I2C:

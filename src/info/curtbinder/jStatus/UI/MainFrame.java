@@ -1,7 +1,9 @@
 package info.curtbinder.jStatus.UI;
 
 import info.curtbinder.jStatus.Classes.Globals;
+import info.curtbinder.jStatus.Classes.Log;
 import info.curtbinder.jStatus.Classes.Memory;
+import info.curtbinder.jStatus.Classes.SerialConn;
 import info.curtbinder.jStatus.Classes.Status;
 
 import java.awt.Component;
@@ -33,6 +35,7 @@ public class MainFrame extends JFrame {
 	private String host;
 	private String port;
 	private String comtype;
+	private String comport;
 
 	public MainFrame ( Status m ) {
 		setTitle( Globals.appTitle );
@@ -99,6 +102,8 @@ public class MainFrame extends JFrame {
 		setHost( Globals.defaultHost );
 		setPort( Globals.defaultPort );
 		setComType( Globals.defaultComType );
+		// TODO switch to platform independent
+		setComPort ( Globals.defaultComPortLinux );
 		tabMemory.setReadValue( "" );
 		tabMemory.setWriteStatus( "" );
 	}
@@ -117,6 +122,21 @@ public class MainFrame extends JFrame {
 
 	public String getPort ( ) {
 		return port;
+	}
+	
+	public void setComPort ( String s ) {
+		// TODO switch to platform independent
+		if ( SerialConn.isValidPort(s) ) {
+			comport = s;
+		} else {
+			Log.e("Invalid Port: " + s );
+			comport = Globals.defaultComPortLinux;
+		}
+		
+	}
+	
+	public String getComPort ( ) {
+		return comport;
 	}
 
 	public void updateMemorySettings ( Memory m ) {

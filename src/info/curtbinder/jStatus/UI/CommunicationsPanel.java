@@ -10,6 +10,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -21,7 +22,7 @@ public class CommunicationsPanel extends JPanel {
 	private static final long serialVersionUID = 7377000441986611539L;
 
 	private ButtonGroup groupCommType;
-	private WifiPanel panelWifiSettings;
+	private TypePanel panelTypeSettings;
 	private JRadioButton rdbtnWifi;
 	private JRadioButton rdbtnCom;
 	
@@ -86,28 +87,31 @@ public class CommunicationsPanel extends JPanel {
 		panelCommChoice.add( Box.createVerticalGlue() );
 		groupCommType = new ButtonGroup();
 		groupCommType.add( rdbtnWifi );
-		//rdbtnWifi.setSelected( true );
 		groupCommType.add( rdbtnCom );
 
 		// Communication settings
-		panelWifiSettings = new WifiPanel();
+		panelTypeSettings = new TypePanel();
 
 		// Fill the communication panel
 		add( Box.createHorizontalStrut( 5 ) );
 		add( panelCommChoice );
 		add( Box.createHorizontalGlue() );
-		add( panelWifiSettings );
+		add( panelTypeSettings );
 		add( Box.createHorizontalStrut( 5 ) );
 	}
 
-	public JTextField getTextHost ( ) {
-		return panelWifiSettings.getTextHost();
+	public JTextField getTextWifiHost ( ) {
+		return panelTypeSettings.getTextWifiHost();
 	}
 
-	public JTextField getTextPort ( ) {
-		return panelWifiSettings.getTextPort();
+	public JTextField getTextWifiPort ( ) {
+		return panelTypeSettings.getTextWifiPort();
 	}
 
+	public JComboBox<?> getCboComPort ( ) {
+		return panelTypeSettings.getCboComPort();
+	}
+	
 	public ButtonGroup getGroupCommType ( ) {
 		return groupCommType;
 	}
@@ -121,10 +125,12 @@ public class CommunicationsPanel extends JPanel {
 	public void setWifiMethod ( ) {
 		Log.i("setWifiMethod");
 		rdbtnWifi.setSelected( true );
+		panelTypeSettings.setWifiPanel();
 	}
 
 	public void setComMethod ( ) {
 		Log.i("setComMethod");
 		rdbtnCom.setSelected( true );
+		panelTypeSettings.setComPanel();
 	}
 }

@@ -58,6 +58,10 @@ public class Globals {
 	public static final String defaultComType = WifiActionCommand;
 	public static final String keyPre10Memory = "pre10memory";
 	public static final String keyDisableNotifications = "disablenotifications";
+	public static final String defaultComPortLinux = "/dev/ttyUSB0";
+	public static final String defaultComPortWin = "COM1";
+	public static final String defaultComPortMac = "";
+	public static final String keyComPort = "comport";
 
 	// Controller commands
 	public static final String requestMemoryByte = "/mb";

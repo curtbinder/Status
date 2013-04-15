@@ -29,96 +29,102 @@ public class PrefsDialog extends JDialog {
 	private CommunicationsPanel panelCommunication;
 	private SettingsPanel panelSettings;
 
-	public PrefsDialog ( JFrame owner ) {
-		super( owner );
-		setMinimumSize( new Dimension( minWidth, minHeight ) );
+	public PrefsDialog(JFrame owner) {
+		super(owner);
+		setMinimumSize(new Dimension(minWidth, minHeight));
 		createWindow();
 	}
 
-	private void createWindow ( ) {
+	private void createWindow() {
 		JPanel contentPane = new JPanel();
-		contentPane.setBorder( new EmptyBorder( 5, 5, 5, 5 ) );
-		contentPane.setLayout( new BoxLayout( contentPane, BoxLayout.Y_AXIS ) );
-		setContentPane( contentPane );
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		setContentPane(contentPane);
 
-		setTitle( Globals.prefsTitle );
+		setTitle(Globals.prefsTitle);
 		panelCommunication = new CommunicationsPanel();
 		panelSettings = new SettingsPanel();
 
 		// Button panel
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout( new BoxLayout( buttonPanel, BoxLayout.X_AXIS ) );
-		buttonPanel.setAlignmentY( Component.BOTTOM_ALIGNMENT );
-		buttonPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
-		JButton btnSave = new JButton( Globals.btnSaveText );
-		btnSave.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
-		btnSave.addActionListener( new ActionListener() {
-			public void actionPerformed ( ActionEvent ev ) {
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+		buttonPanel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JButton btnSave = new JButton(Globals.btnSaveText);
+		btnSave.setFont(new Font("Dialog", Font.PLAIN, 12));
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
 				saveSettings();
 				// now close the window
-				setVisible( false );
+				setVisible(false);
 				dispose();
 			}
-		} );
-		JButton btnClose = new JButton( Globals.btnCloseText );
-		btnClose.setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
-		btnClose.addActionListener( new ActionListener() {
-			public void actionPerformed ( ActionEvent ev ) {
-				setVisible( false );
+		});
+		JButton btnClose = new JButton(Globals.btnCloseText);
+		btnClose.setFont(new Font("Dialog", Font.PLAIN, 12));
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				setVisible(false);
 				dispose();
 			}
-		} );
-		buttonPanel.add( Box.createHorizontalGlue() );
-		buttonPanel.add( btnSave );
-		buttonPanel.add( Box.createHorizontalStrut( 5 ) );
-		buttonPanel.add( btnClose );
+		});
+		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.add(btnSave);
+		buttonPanel.add(Box.createHorizontalStrut(5));
+		buttonPanel.add(btnClose);
 
-		contentPane.add( panelCommunication );
-		contentPane.add( Box.createVerticalStrut( 5 ) );
-		contentPane.add( panelSettings );
-		contentPane.add( Box.createVerticalStrut( 5 ) );
-		contentPane.add( buttonPanel );
+		contentPane.add(panelCommunication);
+		contentPane.add(Box.createVerticalStrut(5));
+		contentPane.add(panelSettings);
+		contentPane.add(Box.createVerticalStrut(5));
+		contentPane.add(buttonPanel);
 	}
 
-	public void showDialog ( ) {
-		setLocationRelativeTo( getParent() );
-		setVisible( true );
+	public void showDialog() {
+		setLocationRelativeTo(getParent());
+		setVisible(true);
 	}
 
-	protected void saveSettings ( ) {
+	protected void saveSettings() {
 		// store the values in preferences
-		Preferences userprefs =
-				Preferences.userNodeForPackage( StatusApp.class );
-		String host = panelCommunication.getTextHost().getText();
-		String port = panelCommunication.getTextPort().getText();
+		Preferences userprefs = Preferences.userNodeForPackage(StatusApp.class);
+		String host = panelCommunication.getTextWifiHost().getText();
+		String port = panelCommunication.getTextWifiPort().getText();
 		String comtype = panelCommunication.getCommMethod();
+		String comport = panelCommunication.getCboComPort().getSelectedItem().toString();
 		boolean fUsePre10Memory = panelSettings.getUsePre10Memory();
 		boolean fDisableNotifications = panelSettings.getDisableNotifications();
-		userprefs.put( Globals.keyHost, host );
-		userprefs.put( Globals.keyPort, port );
-		userprefs.put( Globals.keyComType, comtype );
-		userprefs.putBoolean( Globals.keyPre10Memory, fUsePre10Memory );
-		userprefs.putBoolean(	Globals.keyDisableNotifications,
-								fDisableNotifications );
+		userprefs.put(Globals.keyHost, host);
+		userprefs.put(Globals.keyPort, port);
+		userprefs.put(Globals.keyComType, comtype);
+		userprefs.put(Globals.keyComPort, comport);
+		userprefs.putBoolean(Globals.keyPre10Memory, fUsePre10Memory);
+		userprefs.putBoolean(Globals.keyDisableNotifications,
+				fDisableNotifications);
 		// update mainframe with the new values
-		StatusApp.statusUI.setHost( host );
-		StatusApp.statusUI.setPort( port );
-		StatusApp.statusUI.setComType( comtype );
+		StatusApp.statusUI.setHost(host);
+		StatusApp.statusUI.setPort(port);
+		StatusApp.statusUI.setComType(comtype);
+		StatusApp.statusUI.setComPort(comport);
 		StatusApp.fUsePre10Memory = fUsePre10Memory;
 		StatusApp.fDisableNotifications = fDisableNotifications;
 	}
 
-	public void setHost ( String s ) {
-		panelCommunication.getTextHost().setText( s );
+	public void setHost(String s) {
+		panelCommunication.getTextWifiHost().setText(s);
 	}
 
-	public void setPort ( String s ) {
-		panelCommunication.getTextPort().setText( s );
+	public void setPort(String s) {
+		panelCommunication.getTextWifiPort().setText(s);
 	}
 
-	public void setComType ( String s ) {
+	public void setComPort(String s) {
+		panelCommunication.getCboComPort().setSelectedItem(s);
+	}
+
+	public void setComType(String s) {
 		Log.i("setComType: '" + s + "'");
-		if ( s.equals(Globals.ComActionCommand) ) {
+		if (s.equals(Globals.ComActionCommand)) {
 			Log.i("equals COM");
 			panelCommunication.setComMethod();
 		} else {
@@ -127,11 +133,11 @@ public class PrefsDialog extends JDialog {
 		}
 	}
 
-	public void setUsePre10Memory ( boolean fUse ) {
-		panelSettings.setUsePre10Memory( fUse );
+	public void setUsePre10Memory(boolean fUse) {
+		panelSettings.setUsePre10Memory(fUse);
 	}
 
-	public void setDisableNotifications ( boolean fDisable ) {
-		panelSettings.setDisableNotifications( fDisable );
+	public void setDisableNotifications(boolean fDisable) {
+		panelSettings.setDisableNotifications(fDisable);
 	}
 }
