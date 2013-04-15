@@ -1,5 +1,6 @@
 package info.curtbinder.jStatus.Classes;
 
+import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 
@@ -269,8 +270,9 @@ public class Status {
 			InputStream is;
 			if (url.startsWith(Globals.urlCOM)) {
 				is = null;
+				Log.i("Using COM PORT: " + StatusApp.statusUI.getComPort());
 				SerialConn sc = new SerialConn();
-				p = sc.getPort("/dev/ttyUSB0");
+				p = sc.getPort(StatusApp.statusUI.getComPort());
 				OutputStream os = p.getOutputStream();
 				os.write(url.getBytes());
 				is = p.getInputStream();
@@ -305,6 +307,9 @@ public class Status {
 			res = Globals.errorMessage;
 		} catch (PortInUseException e) {
 			sendCmdErrorMessage = Globals.errorPortInUse;
+			res = Globals.errorMessage;
+		} catch (NoSuchPortException e) {
+			sendCmdErrorMessage = Globals.errorNoSuchPort + StatusApp.statusUI.getComPort();
 			res = Globals.errorMessage;
 		} catch (Exception e) {
 			sendCmdErrorMessage = e.getMessage();

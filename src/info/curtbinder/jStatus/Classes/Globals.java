@@ -48,6 +48,7 @@ public class Globals {
 	public static final String errorPortInUse = "Port currently in use";
 	public static final String errorException = "General exception";
 	public static final String errorUnknown = "Unknown error communicating to controller";
+	public static final String errorNoSuchPort = "No such port: ";
 
 	// Preferences
 	public static final String keyHost = "host";

@@ -3,7 +3,6 @@ package info.curtbinder.jStatus.UI;
 import info.curtbinder.jStatus.Classes.Globals;
 import info.curtbinder.jStatus.Classes.Log;
 import info.curtbinder.jStatus.Classes.Memory;
-import info.curtbinder.jStatus.Classes.SerialConn;
 import info.curtbinder.jStatus.Classes.Status;
 
 import java.awt.Component;
@@ -37,119 +36,114 @@ public class MainFrame extends JFrame {
 	private String comtype;
 	private String comport;
 
-	public MainFrame ( Status m ) {
-		setTitle( Globals.appTitle );
+	public MainFrame(Status m) {
+		setTitle(Globals.appTitle);
 		// set the application icon
 		Image img = null;
 		try {
-			img = ImageIO.read( getClass().getResource( Globals.appIconName ) );
-			setIconImage( img );
-		} catch ( IOException e ) {
+			img = ImageIO.read(getClass().getResource(Globals.appIconName));
+			setIconImage(img);
+		} catch (IOException e) {
 			// error getting app icon, so don't set one
 		}
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// center on screen
-		setBounds( 100, 100, minWidth, minHeight );
-		setMinimumSize( new Dimension( minWidth, minHeight ) );
-		setJMenuBar( new StatusMenuBar() );
+		setBounds(100, 100, minWidth, minHeight);
+		setMinimumSize(new Dimension(minWidth, minHeight));
+		setJMenuBar(new StatusMenuBar());
 
 		contentPane = new JPanel();
-		contentPane.setBorder( new EmptyBorder( 5, 5, 5, 5 ) );
-		contentPane.setLayout( new BoxLayout( contentPane, BoxLayout.Y_AXIS ) );
-		setContentPane( contentPane );
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		setContentPane(contentPane);
 
 		// Tabbed window panel
-		tabbedPane = new JTabbedPane( JTabbedPane.TOP );
-		tabMemory = new MemoryTab( m );
-		tabStatus = new StatusTab( m );
-		tabCommands = new CommandsTab( m );
-		tabbedPane.addTab( tabStatus.NAME, null, tabStatus, null );
-		tabbedPane.addTab( tabMemory.NAME, null, tabMemory, null );
-		tabbedPane.addTab( tabCommands.NAME, null, tabCommands, null );
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabMemory = new MemoryTab(m);
+		tabStatus = new StatusTab(m);
+		tabCommands = new CommandsTab(m);
+		tabbedPane.addTab(tabStatus.NAME, null, tabStatus, null);
+		tabbedPane.addTab(tabMemory.NAME, null, tabMemory, null);
+		tabbedPane.addTab(tabCommands.NAME, null, tabCommands, null);
 
 		// Button panel
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout( new BoxLayout( buttonPanel, BoxLayout.X_AXIS ) );
-		JButton btnClose = new JButton( new CloseAction() );
-		buttonPanel.add( Box.createHorizontalGlue() );
-		buttonPanel.add( btnClose );
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+		JButton btnClose = new JButton(new CloseAction());
+		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.add(btnClose);
 
 		// Add the panels to the main pane
-		contentPane.add( tabbedPane );
-		contentPane.add( Box.createVerticalStrut( 5 ) );
-		contentPane.add( buttonPanel );
+		contentPane.add(tabbedPane);
+		contentPane.add(Box.createVerticalStrut(5));
+		contentPane.add(buttonPanel);
 
 	}
 
-	public String getCommMethod ( ) {
+	public String getCommMethod() {
 		String url;
-		if ( comtype.equals(Globals.ComActionCommand) )
+		if (comtype.equals(Globals.ComActionCommand))
 			url = Globals.urlCOM;
 		else
 			url = Globals.urlWIFI + host + ":" + port;
 		return url;
 	}
 
-	public void setComType ( String s ) {
+	public void setComType(String s) {
 		comtype = s;
 	}
 
-	public String getComType ( ) {
+	public String getComType() {
 		return comtype;
 	}
 
-	public void setDefaults ( ) {
-		setHost( Globals.defaultHost );
-		setPort( Globals.defaultPort );
-		setComType( Globals.defaultComType );
+	public void setDefaults() {
+		setHost(Globals.defaultHost);
+		setPort(Globals.defaultPort);
+		setComType(Globals.defaultComType);
 		// TODO switch to platform independent
-		setComPort ( Globals.defaultComPortLinux );
-		tabMemory.setReadValue( "" );
-		tabMemory.setWriteStatus( "" );
+		setComPort("");
+		tabMemory.setReadValue("");
+		tabMemory.setWriteStatus("");
 	}
 
-	public void setHost ( String s ) {
+	public void setHost(String s) {
 		host = s;
 	}
 
-	public String getHost ( ) {
+	public String getHost() {
 		return host;
 	}
 
-	public void setPort ( String s ) {
+	public void setPort(String s) {
 		port = s;
 	}
 
-	public String getPort ( ) {
+	public String getPort() {
 		return port;
 	}
-	
-	public void setComPort ( String s ) {
+
+	public void setComPort(String s) {
 		// TODO switch to platform independent
-		if ( SerialConn.isValidPort(s) ) {
-			comport = s;
-		} else {
-			Log.e("Invalid Port: " + s );
-			comport = Globals.defaultComPortLinux;
-		}
-		
+		Log.i("Set COM PORT: " + s);
+		comport = s;
 	}
-	
-	public String getComPort ( ) {
+
+	public String getComPort() {
 		return comport;
 	}
 
-	public void updateMemorySettings ( Memory m ) {
-		if ( !tabbedPane.getSelectedComponent().toString()
-				.equals( tabMemory.toString() ) ) {
-			for ( Component c : tabbedPane.getComponents() ) {
-				if ( c.toString().equals( tabMemory.toString() ) ) {
-					tabbedPane.setSelectedComponent( c );
+	public void updateMemorySettings(Memory m) {
+		if (!tabbedPane.getSelectedComponent().toString()
+				.equals(tabMemory.toString())) {
+			for (Component c : tabbedPane.getComponents()) {
+				if (c.toString().equals(tabMemory.toString())) {
+					tabbedPane.setSelectedComponent(c);
 					break;
 				}
 			}
 		}
-		tabMemory.setMemoryLocation( m.getLocation() );
-		tabMemory.setMemoryType( m.getType() );
+		tabMemory.setMemoryLocation(m.getLocation());
+		tabMemory.setMemoryType(m.getType());
 	}
 }

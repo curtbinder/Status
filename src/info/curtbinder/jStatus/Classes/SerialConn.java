@@ -1,9 +1,6 @@
 package info.curtbinder.jStatus.Classes;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.PortInUseException;
-import gnu.io.SerialPort;
+import gnu.io.*;
 
 import java.awt.List;
 import java.util.Enumeration;
@@ -60,7 +57,7 @@ public class SerialConn {
 	}
 
 	public SerialPort getPort(String portName) throws Exception,
-			PortInUseException {
+			PortInUseException, NoSuchPortException {
 		CommPortIdentifier portIdentifier = CommPortIdentifier
 				.getPortIdentifier(portName);
 		SerialPort p = null;
