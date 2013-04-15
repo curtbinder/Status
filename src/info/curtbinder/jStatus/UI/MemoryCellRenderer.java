@@ -9,7 +9,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 
-public class MemoryCellRenderer extends JLabel implements ListCellRenderer {
+public class MemoryCellRenderer extends JLabel implements ListCellRenderer<Object> {
 	private static final long serialVersionUID = 4373466111505000343L;
 
 	public MemoryCellRenderer () {
@@ -18,7 +18,7 @@ public class MemoryCellRenderer extends JLabel implements ListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent (
-			JList list,
+			JList<?> list,
 			Object value,
 			int index,
 			boolean isSelected,

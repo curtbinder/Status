@@ -81,9 +81,9 @@ public class MainFrame extends JFrame {
 	public String getCommMethod ( ) {
 		String url;
 		if ( comtype.equals(Globals.ComActionCommand) )
-			url = "GET ";
+			url = Globals.urlCOM;
 		else
-			url = "http://" + host + ":" + port;
+			url = Globals.urlWIFI + host + ":" + port;
 		return url;
 	}
 

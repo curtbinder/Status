@@ -7,6 +7,8 @@ public class Globals {
 	public static final String ComActionCommand = "COM"; 
 	public static final String defaultStatusText = "-";
 	public static final String responseCRLF = "\r\n\r\n";
+	public static final String urlCOM = "GET ";
+	public static final String urlWIFI = "http://";
 	public static final String labelOn =   " ON  ";
 	public static final String labelOff =  " OFF ";
 	public static final String labelAuto = "AUTO";
@@ -40,6 +42,9 @@ public class Globals {
 	public static final String errorExit = "Error Exiting Mode";
 	public static final String errorClearATO = "Error clearing ATO";
 	public static final String errorClearOverheat = "Error clearing Overheat";
+	public static final String errorPortInUse = "Port currently in use";
+	public static final String errorException = "General exception";
+	public static final String errorUnknown = "Unknown error communicating to controller";
 	
 	// Preferences
 	public static final String keyHost = "host";

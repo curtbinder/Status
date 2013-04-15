@@ -1,7 +1,6 @@
 package info.curtbinder.jStatus.Classes;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 
 import java.io.BufferedReader;
@@ -30,123 +29,125 @@ public class Status {
 	private String sendCmdErrorMessage = "";
 	private Thread threadSender;
 
-	public Status () {
+	public Status() {
 	}
 
-	private String sendCommandToController ( InputStream is ) {
-		StringBuilder s = new StringBuilder( 8192 );
+	private String sendCommandToController(InputStream is) {
+		StringBuilder s = new StringBuilder(8192);
 		String url = StatusApp.statusUI.getCommMethod();
-		if ( url == "GET " ) {
+		if (url.equals(Globals.urlCOM)) {
 			byte[] b = new byte[1024];
 			int len = -1;
+			String sx = "";
 			try {
 				int d = is.available();
 				Log.i("Trying to read %d\n", d);
-				while ( ( len = is.read(b)) > -1) {
+				while ((len = is.read(b)) > -1) {
 					Log.i("Read: %d\n", len);
-					if ( Thread.interrupted() )
+					if (Thread.interrupted()) {
+						is.close();
 						throw new InterruptedException();
-					String s1 = new String(b,0,len);
+					}
+					String s1 = new String(b, 0, len);
 					s.append(s1);
-					if ( len >= d ) 
+					if (len >= d)
 						break;
 				}
 				is.close();
-			} catch ( IOException e ) {
-				e.printStackTrace();
+				// let's strip off the HTTP headers
+				int idx = s.indexOf(Globals.responseCRLF);
+				Log.i("XML Start Offset: %d\n", idx);
+				sx = s.substring(idx + Globals.responseCRLF.length(),
+						s.length());
+				Log.i(sx);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				sendCmdErrorMessage = Globals.errorCancelled;
+				sx = Globals.errorMessage;
+				;
+			} catch (IOException e) {
+				sendCmdErrorMessage = Globals.errorIO;
+				sx = Globals.errorMessage;
 			}
-			// let's strip off the HTTP headers
-			int idx = s.indexOf(Globals.responseCRLF);
-			Log.i("XML Start Offset: %d\n", idx);
-			String sx = s.substring(idx+Globals.responseCRLF.length(), s.length());
-			Log.i(sx);
 			return sx;
 		}
 		try {
-			if ( Thread.interrupted() )
-				throw new InterruptedException();
-
-			BufferedReader bin =
-					new BufferedReader( new InputStreamReader( is ) );
+			BufferedReader bin = new BufferedReader(new InputStreamReader(is));
 			String line;
-			while ( (line = bin.readLine()) != null ) {
-				if ( Thread.interrupted() )
+			while ((line = bin.readLine()) != null) {
+				if (Thread.interrupted()) {
+					bin.close();
 					throw new InterruptedException();
-
-				s.append( line );
+				}
+				s.append(line);
 			}
-		} catch ( InterruptedException e ) {
-			s = new StringBuilder( "Cancelled" );
-		} catch ( Exception e ) {
+			bin.close();
+		} catch (InterruptedException e) {
+			sendCmdErrorMessage = Globals.errorCancelled;
+			s = new StringBuilder(Globals.errorMessage);
+		} catch (Exception e) {
 			sendCmdErrorMessage = e.getMessage();
-			if ( sendCmdErrorMessage.isEmpty() ) {
-				sendCmdErrorMessage =
-						"Unknown error communicating to controller";
+			if (sendCmdErrorMessage.isEmpty()) {
+				sendCmdErrorMessage = Globals.errorUnknown;
 			}
-			s = new StringBuilder( Globals.errorMessage );
+			s = new StringBuilder(Globals.errorMessage);
 		}
 		return s.toString();
 	}
 
-	public void sendReadMemoryCommand ( ) {
-		sendMemoryCommand( "ReadMemory" );
+	public void sendReadMemoryCommand() {
+		sendMemoryCommand("ReadMemory");
 	}
 
-	public void sendWriteMemoryCommand ( ) {
+	public void sendWriteMemoryCommand() {
 		writeValue = true;
-		if ( !sendMemoryCommand( "WriteMemory" ) ) {
+		if (!sendMemoryCommand("WriteMemory")) {
 			// error with the command for whatever reason
 			// most likely due to an unavailable option
 			writeValue = false;
 		}
 	}
 
-	private boolean sendMemoryCommand ( String outputPrefix ) {
+	private boolean sendMemoryCommand(String outputPrefix) {
 		String cmd = StatusApp.statusUI.tabMemory.getMemType();
 		String loc = StatusApp.statusUI.tabMemory.getTextLocation();
-		if ( loc.isEmpty() ) {
-			JOptionPane.showMessageDialog(	StatusApp.statusUI,
-											"Must specify a memory location",
-											"Missing Memory Location",
-											JOptionPane.INFORMATION_MESSAGE );
+		if (loc.isEmpty()) {
+			JOptionPane.showMessageDialog(StatusApp.statusUI,
+					"Must specify a memory location",
+					"Missing Memory Location", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 		cmd += loc;
-		if ( writeValue ) {
+		if (writeValue) {
 			String value = StatusApp.statusUI.tabMemory.getWriteValue();
-			if ( value.isEmpty() ) {
-				JOptionPane
-						.showMessageDialog( StatusApp.statusUI,
-											"Must specify a value to write",
-											"Missing Value",
-											JOptionPane.INFORMATION_MESSAGE );
+			if (value.isEmpty()) {
+				JOptionPane.showMessageDialog(StatusApp.statusUI,
+						"Must specify a value to write", "Missing Value",
+						JOptionPane.INFORMATION_MESSAGE);
 				return false;
 			}
 			cmd += "," + value;
 		}
-		sendCommand( outputPrefix, cmd );
+		sendCommand(outputPrefix, cmd);
 		return true;
 	}
 
-	public void sendRefreshCommand ( ) {
-		sendCommand( "Refresh", Globals.requestStatus );
+	public void sendRefreshCommand() {
+		sendCommand("Refresh", Globals.requestStatus);
 	}
 
-	public void sendRelayCommand ( int port, byte mode ) {
-		String cmd = String.format( "%s%d%d", Globals.requestRelay, port, mode );
-		Log.i( "RelayCommand: " + cmd );
-		sendCommand( "Relay", cmd );
+	public void sendRelayCommand(int port, byte mode) {
+		String cmd = String.format("%s%d%d", Globals.requestRelay, port, mode);
+		Log.i("RelayCommand: " + cmd);
+		sendCommand("Relay", cmd);
 	}
 
-	public void sendVersionCommand ( ) {
-		sendCommand( "Version", Globals.requestVersion );
+	public void sendVersionCommand() {
+		sendCommand("Version", Globals.requestVersion);
 	}
 
-	public void sendSetDateTimeCommand ( ) {
+	public void sendSetDateTimeCommand() {
 		new Thread() {
-			public void run ( ) {
+			public void run() {
 				// set date and time
 				DateTime dt = new DateTime();
 				dt.setWithCurrentDateTime();
@@ -156,127 +157,125 @@ public class Status {
 				writeValue = true;
 				// indicate we don't want the buttons re-enabled just yet
 				enableButtonsOnThreadFinish = false;
-				sendCommand( "SetDateTime", req );
+				sendCommand("SetDateTime", req);
 				try {
 					threadSender.join();
-				} catch ( InterruptedException e ) {
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				enableButtonsOnThreadFinish = true;
-				if ( !sendCmdErrorMessage.isEmpty() ) {
+				if (!sendCmdErrorMessage.isEmpty()) {
 					enableButtons();
 					return;
 				}
 				// delay for about 2 seconds
 				try {
-					java.util.concurrent.TimeUnit.SECONDS.sleep( 2 );
-				} catch ( InterruptedException e ) {
+					java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
 				}
 				// get date and time from controller
-				sendCommand( "GetDateTime", Globals.requestDateTime );
+				sendCommand("GetDateTime", Globals.requestDateTime);
 			}
 		}.start();
 	}
 
-	public void sendGetDateTimeCommand ( ) {
-		sendCommand( "Get DateTime", Globals.requestDateTime );
+	public void sendGetDateTimeCommand() {
+		sendCommand("Get DateTime", Globals.requestDateTime);
 	}
 
-	public void sendEnterFeedModeCommand ( ) {
-		sendCommand( "Feeding Mode", Globals.requestFeedingMode );
+	public void sendEnterFeedModeCommand() {
+		sendCommand("Feeding Mode", Globals.requestFeedingMode);
 	}
 
-	public void sendEnterWaterChangeModeCommand ( ) {
-		sendCommand( "Water Change Mode", Globals.requestWaterMode );
+	public void sendEnterWaterChangeModeCommand() {
+		sendCommand("Water Change Mode", Globals.requestWaterMode);
 	}
 
-	public void sendExitModeCommand ( ) {
-		sendCommand( "Exit Mode", Globals.requestExitMode );
+	public void sendExitModeCommand() {
+		sendCommand("Exit Mode", Globals.requestExitMode);
 	}
 
-	public void sendClearATOCommand ( ) {
-		sendCommand( "Clear ATO", Globals.requestClearATO );
+	public void sendClearATOCommand() {
+		sendCommand("Clear ATO", Globals.requestClearATO);
 	}
 
-	public void sendClearOverheatCommand ( ) {
-		sendCommand( "Clear Overheat", Globals.requestClearOverheat );
+	public void sendClearOverheatCommand() {
+		sendCommand("Clear Overheat", Globals.requestClearOverheat);
 	}
 
-	private void updateDisplay ( final XMLHandler h ) {
+	private void updateDisplay(final XMLHandler h) {
 		// Run this updating in the GUI thread
-		SwingUtilities.invokeLater( new Runnable() {
-			public void run ( ) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
 				String req = h.getRequestType();
-				if ( req.equals( Globals.requestStatus ) ) {
-					StatusApp.statusUI.tabStatus.setControllerInformation( h
-							.getRa() );
-				} else if ( req.startsWith( Globals.requestDateTime ) ) {
-					if ( writeValue ) {
-						StatusApp.statusUI.tabCommands.setDateTimeText( h
-								.getDateTimeUpdateStatus() );
+				if (req.equals(Globals.requestStatus)) {
+					StatusApp.statusUI.tabStatus.setControllerInformation(h
+							.getRa());
+				} else if (req.startsWith(Globals.requestDateTime)) {
+					if (writeValue) {
+						StatusApp.statusUI.tabCommands.setDateTimeText(h
+								.getDateTimeUpdateStatus());
 					} else {
-						StatusApp.statusUI.tabCommands.setDateTimeText( h
-								.getDateTime() );
+						StatusApp.statusUI.tabCommands.setDateTimeText(h
+								.getDateTime());
 					}
-				} else if ( req.equals( Globals.requestVersion ) ) {
-					StatusApp.statusUI.tabCommands.setVersionText( h
-							.getVersion() );
-				} else if ( req.startsWith( Globals.requestMemoryByte
-						.substring( 0, 2 ) ) ) {
-					if ( writeValue ) {
-						StatusApp.statusUI.tabMemory.setWriteStatus( h
-								.getMemoryResponse() );
+				} else if (req.equals(Globals.requestVersion)) {
+					StatusApp.statusUI.tabCommands.setVersionText(h
+							.getVersion());
+				} else if (req.startsWith(Globals.requestMemoryByte.substring(
+						0, 2))) {
+					if (writeValue) {
+						StatusApp.statusUI.tabMemory.setWriteStatus(h
+								.getMemoryResponse());
 					} else {
-						StatusApp.statusUI.tabMemory.setReadValue( h
-								.getMemoryResponse() );
+						StatusApp.statusUI.tabMemory.setReadValue(h
+								.getMemoryResponse());
 					}
 				}
 			}
-		} );
+		});
 	}
 
-	private void disableButtons ( ) {
+	private void disableButtons() {
 		// disable all buttons on the forms
 		StatusApp.statusUI.tabMemory.disableButtons();
 		StatusApp.statusUI.tabStatus.disableButtons();
 		StatusApp.statusUI.tabCommands.disableButtons();
 	}
 
-	private void enableButtons ( ) {
+	private void enableButtons() {
 		// enable all buttons on the forms
 		StatusApp.statusUI.tabMemory.enableButtons();
 		StatusApp.statusUI.tabStatus.enableButtons();
 		StatusApp.statusUI.tabCommands.enableButtons();
 	}
 
-	public void sendCommand ( String outputPrefix, String request ) {
+	public void sendCommand(String outputPrefix, String request) {
 		String url = StatusApp.statusUI.getCommMethod();
 		String extra = "";
-		if ( url == "GET " ) {
+		if (url.equals(Globals.urlCOM)) {
 			/*
-			JOptionPane.showMessageDialog(	StatusApp.statusUI,
-											"COM not implemented yet",
-											"Comm Type",
-											JOptionPane.INFORMATION_MESSAGE );
-			return;
-			*/
+			 * JOptionPane.showMessageDialog( StatusApp.statusUI,
+			 * "COM not implemented yet", "Comm Type",
+			 * JOptionPane.INFORMATION_MESSAGE ); return;
+			 */
 			extra = " ";
 		}
-		
+
 		final String s = url + request + extra;
 		final String r = request + extra;
-		Log.i( outputPrefix + ": '" + s + "'" );
+		// Log.i(outputPrefix + ": '" + s + "'");
 		threadSender = new Thread() {
-			public void run ( ) {
-				Log.i( "Started thread" );
-				threadSendCommand( s, r );
-				Log.i( "Finished thread" );
+			public void run() {
+				Log.i("Started thread");
+				threadSendCommand(s, r);
+				Log.i("Finished thread");
 			}
 		};
 		threadSender.start();
 	}
 
-	private void threadSendCommand ( String url, String req ) {
+	private void threadSendCommand(String url, String req) {
 		// Disable the buttons
 		disableButtons();
 		// send command to controller
@@ -287,136 +286,127 @@ public class Status {
 		long start = System.currentTimeMillis();
 		try {
 			InputStream is;
-			if ( url.startsWith( "GET " ) ) {
+			if (url.startsWith(Globals.urlCOM)) {
 				is = null;
-				CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("/dev/ttyUSB0");
-				if ( portIdentifier.isCurrentlyOwned() ) {
-					Log.i("Error: Port in use");
-					throw new Exception();
-				}
-				CommPort commPort = portIdentifier.open(this.getClass().getName(), 500);
-				if ( commPort instanceof SerialPort ) {
-					p = (SerialPort) commPort;
-					p.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-					OutputStream os = p.getOutputStream();
-					os.write(url.getBytes());
-					is = p.getInputStream();
-					while ( is.available() == 0 ) {
-						Thread.sleep(500);
-					}
-				} else {
-					Log.i("Error: Only serial ports are allowed");
-					throw new Exception();
+				SerialConn sc = new SerialConn();
+				p = sc.getPort("/dev/ttyUSB0");
+				OutputStream os = p.getOutputStream();
+				os.write(url.getBytes());
+				is = p.getInputStream();
+				while (is.available() == 0) {
+					Thread.sleep(500);
 				}
 			} else {
-				URL u = new URL( url );
+				URL u = new URL(url);
 				con = (HttpURLConnection) u.openConnection();
-				con.setReadTimeout( 10000 );
-				con.setConnectTimeout( 15000 );
-				con.setRequestMethod( "GET" );
+				con.setReadTimeout(10000);
+				con.setConnectTimeout(15000);
+				con.setRequestMethod("GET");
 				con.connect();
 				is = con.getInputStream();
 			}
 
-			if ( Thread.interrupted() )
+			if (Thread.interrupted())
 				throw new InterruptedException();
 
-			res = sendCommandToController( is );
-		} catch ( MalformedURLException e ) {
+			res = sendCommandToController(is);
+		} catch (MalformedURLException e) {
 			sendCmdErrorMessage = Globals.errorSendingCommand;
 			res = Globals.errorMessage;
-		} catch ( SocketTimeoutException e ) {
+		} catch (SocketTimeoutException e) {
 			sendCmdErrorMessage = Globals.errorConnectTimeout;
 			res = Globals.errorMessage;
-		} catch ( IOException e ) {
+		} catch (IOException e) {
 			sendCmdErrorMessage = Globals.errorIO;
 			res = Globals.errorMessage;
-		} catch ( InterruptedException e ) {
+		} catch (InterruptedException e) {
 			sendCmdErrorMessage = Globals.errorCancelled;
+			res = Globals.errorMessage;
+		} catch (PortInUseException e) {
+			sendCmdErrorMessage = Globals.errorPortInUse;
 			res = Globals.errorMessage;
 		} catch (Exception e) {
-			sendCmdErrorMessage = Globals.errorCancelled;
+			sendCmdErrorMessage = Globals.errorException;
 			res = Globals.errorMessage;
 		} finally {
-			if ( con != null ) {
+			if (con != null) {
 				con.disconnect();
 			}
-			if ( p != null ) {
+			if (p != null) {
 				p.close();
 			}
 		}
 		long end = System.currentTimeMillis();
-		Log.i( "Took %d ms to send command\n", end - start );
+		Log.i("Took %d ms to send command\n", end - start);
 
 		// Enable the buttons only if we are supposed to
-		if ( enableButtonsOnThreadFinish ) {
+		if (enableButtonsOnThreadFinish) {
 			enableButtons();
 		}
 
 		// check if there was an error
-		if ( res.equals( Globals.errorMessage ) ) {
+		if (res.equals(Globals.errorMessage)) {
 			// encountered an error
-			handleError( req, Globals.errorSendingCommand + ": "
-								+ sendCmdErrorMessage );
+			handleError(req, Globals.errorSendingCommand + ": "
+					+ sendCmdErrorMessage);
 		} else {
 			XMLHandler h = new XMLHandler();
-			if ( !parseXML( h, res ) ) {
-				handleError( req, Globals.errorParser );
+			if (!parseXML(h, res)) {
+				handleError(req, Globals.errorParser);
 				return;
 			}
-			updateDisplay( h );
+			updateDisplay(h);
 		}
 		// always turn off write value when we finish the threads
 		writeValue = false;
 	}
 
-	private void handleError ( String req, String consoleErrorMessage ) {
-		Log.i( consoleErrorMessage );
+	private void handleError(String req, String consoleErrorMessage) {
+		Log.i(consoleErrorMessage);
 		boolean fShowPopups = true;
-		if ( req.equals( Globals.requestStatus ) ) {
+		if (req.equals(Globals.requestStatus)) {
 			// update status text
 			StatusApp.statusUI.tabStatus
-					.setUpdateErrorText( sendCmdErrorMessage );
-			if ( StatusApp.fDisableNotifications ) {
+					.setUpdateErrorText(sendCmdErrorMessage);
+			if (StatusApp.fDisableNotifications) {
 				// Only display popup if notifications are not disabled
 				fShowPopups = false;
 			}
 		}
 		// always show popups on every tab BUT the status tab
 		// unless popup notifications are enabled
-		if ( fShowPopups ) {
-			JOptionPane.showMessageDialog(	StatusApp.statusUI,
-											sendCmdErrorMessage,
-											Globals.errorMessage,
-											JOptionPane.INFORMATION_MESSAGE );
+		if (fShowPopups) {
+			JOptionPane.showMessageDialog(StatusApp.statusUI,
+					sendCmdErrorMessage, Globals.errorMessage,
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
-	private boolean parseXML ( XMLHandler h, String res ) {
+	private boolean parseXML(XMLHandler h, String res) {
 		XMLReader xr;
 		long start, end;
-		Log.i( "Parsing" );
+		Log.i("Parsing");
 		try {
 			xr = XMLReaderFactory.createXMLReader();
-		} catch ( SAXException e ) {
+		} catch (SAXException e) {
 			e.printStackTrace();
 			return false;
 		}
-		xr.setContentHandler( h );
-		xr.setErrorHandler( h );
+		xr.setContentHandler(h);
+		xr.setErrorHandler(h);
 		start = System.currentTimeMillis();
 		try {
-			xr.parse( new InputSource( new StringReader( res ) ) );
-		} catch ( IOException e ) {
+			xr.parse(new InputSource(new StringReader(res)));
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
-		} catch ( SAXException e ) {
+		} catch (SAXException e) {
 			e.printStackTrace();
 			return false;
 		}
 		end = System.currentTimeMillis();
-		Log.i( "Took %d ms to parse\n", end - start );
-		Log.i( "Parsed" );
+		Log.i("Took %d ms to parse\n", end - start);
+		Log.i("Parsed");
 		return true;
 	}
 }
