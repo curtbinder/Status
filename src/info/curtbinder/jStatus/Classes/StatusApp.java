@@ -21,7 +21,6 @@ public class StatusApp {
 	public static void main ( String[] args ) {
 		statusClass = new Status();
 		// read any saved/stored default values
-		SerialConn.listPorts();
 		initPrefs();
 
 		EventQueue.invokeLater( new Runnable() {
