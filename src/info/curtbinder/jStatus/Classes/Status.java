@@ -32,65 +32,46 @@ public class Status {
 	public Status() {
 	}
 
-	private String sendCommandToController(InputStream is) {
+	private String sendCommandToController(InputStream is)
+			throws InterruptedException, IOException, Exception {
 		StringBuilder s = new StringBuilder(8192);
 		String url = StatusApp.statusUI.getCommMethod();
 		if (url.equals(Globals.urlCOM)) {
+			// COM reading
 			byte[] b = new byte[1024];
 			int len = -1;
 			String sx = "";
-			try {
-				int d = is.available();
-				Log.i("Trying to read %d\n", d);
-				while ((len = is.read(b)) > -1) {
-					Log.i("Read: %d\n", len);
-					if (Thread.interrupted()) {
-						is.close();
-						throw new InterruptedException();
-					}
-					String s1 = new String(b, 0, len);
-					s.append(s1);
-					if (len >= d)
-						break;
-				}
-				is.close();
-				// let's strip off the HTTP headers
-				int idx = s.indexOf(Globals.responseCRLF);
-				Log.i("XML Start Offset: %d\n", idx);
-				sx = s.substring(idx + Globals.responseCRLF.length(),
-						s.length());
-				Log.i(sx);
-			} catch (InterruptedException e) {
-				sendCmdErrorMessage = Globals.errorCancelled;
-				sx = Globals.errorMessage;
-				;
-			} catch (IOException e) {
-				sendCmdErrorMessage = Globals.errorIO;
-				sx = Globals.errorMessage;
-			}
-			return sx;
-		}
-		try {
-			BufferedReader bin = new BufferedReader(new InputStreamReader(is));
-			String line;
-			while ((line = bin.readLine()) != null) {
+			int d = is.available();
+			Log.i("Trying to read %d\n", d);
+			while ((len = is.read(b)) > -1) {
+				Log.i("Read: %d\n", len);
 				if (Thread.interrupted()) {
-					bin.close();
+					is.close();
 					throw new InterruptedException();
 				}
-				s.append(line);
+				s.append(new String(b, 0, len));
+				if (len >= d)
+					break;
 			}
-			bin.close();
-		} catch (InterruptedException e) {
-			sendCmdErrorMessage = Globals.errorCancelled;
-			s = new StringBuilder(Globals.errorMessage);
-		} catch (Exception e) {
-			sendCmdErrorMessage = e.getMessage();
-			if (sendCmdErrorMessage.isEmpty()) {
-				sendCmdErrorMessage = Globals.errorUnknown;
-			}
-			s = new StringBuilder(Globals.errorMessage);
+			is.close();
+			// let's strip off the HTTP headers
+			int idx = s.indexOf(Globals.responseCRLF);
+			Log.i("XML Start Offset: %d\n", idx);
+			sx = s.substring(idx + Globals.responseCRLF.length(), s.length());
+			Log.i(sx);
+			return sx;
 		}
+		// WIFI reading
+		BufferedReader bin = new BufferedReader(new InputStreamReader(is));
+		String line;
+		while ((line = bin.readLine()) != null) {
+			if (Thread.interrupted()) {
+				bin.close();
+				throw new InterruptedException();
+			}
+			s.append(line);
+		}
+		bin.close();
 		return s.toString();
 	}
 
@@ -326,7 +307,10 @@ public class Status {
 			sendCmdErrorMessage = Globals.errorPortInUse;
 			res = Globals.errorMessage;
 		} catch (Exception e) {
-			sendCmdErrorMessage = Globals.errorException;
+			sendCmdErrorMessage = e.getMessage();
+			if (sendCmdErrorMessage.isEmpty()) {
+				sendCmdErrorMessage = Globals.errorUnknown;
+			}
 			res = Globals.errorMessage;
 		} finally {
 			if (con != null) {
