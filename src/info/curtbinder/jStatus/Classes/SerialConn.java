@@ -5,17 +5,29 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 
+import java.awt.List;
+import java.util.Enumeration;
+
 public class SerialConn {
-	
-	public static void listPorts() {
+
+	public static void listSerialPorts() {
+		List l = getPortList();
+		for (String s : l.getItems())
+			Log.i(s);
+	}
+
+	public static List getPortList() {
+		List l = new List();
 		@SuppressWarnings("unchecked")
-		java.util.Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier
+		Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier
 				.getPortIdentifiers();
 		while (portEnum.hasMoreElements()) {
 			CommPortIdentifier portIdentifier = portEnum.nextElement();
-			Log.i(portIdentifier.getName() + " - "
-					+ getPortTypeName(portIdentifier.getPortType()));
+			if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+				l.add(portIdentifier.getName());
+			}
 		}
+		return l;
 	}
 
 	public static String getPortTypeName(int portType) {
@@ -34,18 +46,21 @@ public class SerialConn {
 			return "Unknown type";
 		}
 	}
-	
-	public SerialPort getPort(String portName) throws Exception, PortInUseException {
-		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+
+	public SerialPort getPort(String portName) throws Exception,
+			PortInUseException {
+		CommPortIdentifier portIdentifier = CommPortIdentifier
+				.getPortIdentifier(portName);
 		SerialPort p = null;
-		if ( portIdentifier.isCurrentlyOwned() ) {
+		if (portIdentifier.isCurrentlyOwned()) {
 			Log.i("Error: Port in use");
 			throw new PortInUseException();
 		}
 		CommPort commPort = portIdentifier.open(this.getClass().getName(), 500);
-		if ( commPort instanceof SerialPort ) {
+		if (commPort instanceof SerialPort) {
 			p = (SerialPort) commPort;
-			p.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+			p.setSerialPortParams(57600, SerialPort.DATABITS_8,
+					SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 		} else {
 			Log.i("Error: Only serial ports are allowed");
 			throw new Exception();
