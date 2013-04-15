@@ -4,13 +4,13 @@ public class Globals {
 	public static final String comWifiLabel = "Wifi";
 	public static final String comCOMLabel = "COM";
 	public static final String WifiActionCommand = "WIFI";
-	public static final String ComActionCommand = "COM"; 
+	public static final String ComActionCommand = "COM";
 	public static final String defaultStatusText = "-";
 	public static final String responseCRLF = "\r\n\r\n";
 	public static final String urlCOM = "GET ";
 	public static final String urlWIFI = "http://";
-	public static final String labelOn =   " ON  ";
-	public static final String labelOff =  " OFF ";
+	public static final String labelOn = " ON  ";
+	public static final String labelOff = " OFF ";
 	public static final String labelAuto = "AUTO";
 	public static final String labelVersion = "Version";
 	public static final String labelInstalledVersion = "Installed Version:";
@@ -26,10 +26,13 @@ public class Globals {
 	public static final String labelDateTime = "Date & Time";
 	public static final String labelCurrentController = "Current Controller:";
 	public static final String labelGetTime = "Get Time";
-	public static final String labelSetCurrentTime =  "Set Current Time";
+	public static final String labelSetCurrentTime = "Set Current Time";
 	public static final String labelPre10Memory = "Use pre v1.0 memory locations";
 	public static final String labelDisableNotifications = "Disable status popup notifications";
-	
+
+	// Command line flags
+	public static final String[] cmdVerbose = { "-v", "verbose", "--verbose" };
+
 	// Error messages
 	public static final String errorMessage = "Error";
 	public static final String errorSendingCommand = "Error sending command";
@@ -45,7 +48,7 @@ public class Globals {
 	public static final String errorPortInUse = "Port currently in use";
 	public static final String errorException = "General exception";
 	public static final String errorUnknown = "Unknown error communicating to controller";
-	
+
 	// Preferences
 	public static final String keyHost = "host";
 	public static final String defaultHost = "10.0.42.40";
@@ -55,7 +58,7 @@ public class Globals {
 	public static final String defaultComType = WifiActionCommand;
 	public static final String keyPre10Memory = "pre10memory";
 	public static final String keyDisableNotifications = "disablenotifications";
-	
+
 	// Controller commands
 	public static final String requestMemoryByte = "/mb";
 	public static final String requestMemoryInt = "/mi";
@@ -129,15 +132,14 @@ public class Globals {
 	public static final String btnCreditsText = "Credits";
 	public static final String btnLicenseText = "License";
 	public static final String btnSaveText = "Save";
-	
+
 	// Credits & Legal Stuff
 	public static final String contributorsText = "Contributors:";
-	public static final String[] creditList =
-			{ "Curt Binder", "Dave Molton", "Roberto Imai" };
+	public static final String[] creditList = { "Curt Binder", "Dave Molton",
+			"Roberto Imai" };
 	public static final String legalText = "Legal Stuff:";
-	public static final String legal =
-			"This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. "
-					+ "To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 444 Castro Street, "
-					+ "Suite 900, Mountain View, California, 94041, USA.";
+	public static final String legal = "This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. "
+			+ "To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 444 Castro Street, "
+			+ "Suite 900, Mountain View, California, 94041, USA.";
 
 }
