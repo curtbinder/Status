@@ -1,9 +1,9 @@
 package info.curtbinder.jStatus.Classes;
 
+import info.curtbinder.jStatus.UI.MainFrame;
+
 import java.awt.EventQueue;
 import java.util.prefs.Preferences;
-
-import info.curtbinder.jStatus.UI.*;
 
 public class StatusApp {
 
