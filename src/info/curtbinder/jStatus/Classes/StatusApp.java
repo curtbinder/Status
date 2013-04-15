@@ -54,8 +54,7 @@ public class StatusApp {
 		host = userprefs.get(Globals.keyHost, Globals.defaultHost);
 		port = userprefs.get(Globals.keyPort, Globals.defaultPort);
 		comtype = userprefs.get(Globals.keyComType, Globals.defaultComType);
-		// TODO switch this to be platform independent
-		comport = userprefs.get(Globals.keyComPort, Globals.defaultComPortLinux);
+		comport = userprefs.get(Globals.keyComPort, "");
 		fUsePre10Memory = userprefs.getBoolean(Globals.keyPre10Memory, false);
 		fDisableNotifications = userprefs.getBoolean(
 				Globals.keyDisableNotifications, true);

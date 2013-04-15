@@ -101,7 +101,6 @@ public class MainFrame extends JFrame {
 		setHost(Globals.defaultHost);
 		setPort(Globals.defaultPort);
 		setComType(Globals.defaultComType);
-		// TODO switch to platform independent
 		setComPort("");
 		tabMemory.setReadValue("");
 		tabMemory.setWriteStatus("");
@@ -124,7 +123,6 @@ public class MainFrame extends JFrame {
 	}
 
 	public void setComPort(String s) {
-		// TODO switch to platform independent
 		Log.i("Set COM PORT: " + s);
 		comport = s;
 	}

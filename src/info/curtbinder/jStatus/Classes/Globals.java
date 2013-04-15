@@ -109,9 +109,9 @@ public class Globals {
 	public static final String appName = "RA Status";
 	public static final String appDescription = "Monitor the status of the controller";
 	public static final int versionMajor = 1;
-	public static final int versionMinor = 1;
+	public static final int versionMinor = 2;
 	public static final int versionRevision = 0;
-	public static final String versionBuild = "";
+	public static final String versionBuild = "beta1";
 	public static final String copyrightInfo = "Copyright 2011-13 Curt Binder";
 	public static final String url = "http://curtbinder.info/";
 	public static final String aboutTitle = "About ";
