@@ -264,8 +264,8 @@ public class StatusTab extends JPanel {
 		lblT2.setText( ra.getTemp2() );
 		lblT3.setText( ra.getTemp3() );
 		lblPH.setText( ra.getPH() );
-		lblPwmActinic.setText( ra.getPwmA() );
-		lblPwmDaylight.setText( ra.getPwmD() );
+		lblPwmActinic.setText( ra.getPwmAString() );
+		lblPwmDaylight.setText( ra.getPwmDString() );
 		lblLow.setText( ra.getAtoLowText() );
 		lblHigh.setText( ra.getAtoHighText() );
 
