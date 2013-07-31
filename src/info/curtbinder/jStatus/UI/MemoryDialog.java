@@ -199,15 +199,15 @@ public class MemoryDialog extends TextDialog {
 				new Memory( 327, Memory.locationINT, "Water Level Max Value" ),
 				new Memory( 329, Memory.locationINT, "Salinity Temp Compensation" ), };
 
-	private JList<?> memoryLocations;
+	private JList memoryLocations;
 
 	public MemoryDialog ( JDialog owner ) {
 		super( owner, Globals.menuHelpMemoryText, Globals.memoryDescription,
 				windowWidth, windowHeight );
 		if ( StatusApp.fUsePre10Memory )
-			memoryLocations = new JList<Object>( memoryPre10LocationArray );
+			memoryLocations = new JList( memoryPre10LocationArray );
 		else
-			memoryLocations = new JList<Object>( memoryLocationArray );
+			memoryLocations = new JList( memoryLocationArray );
 		memoryLocations.setCellRenderer( new MemoryCellRenderer() );
 		memoryLocations.addMouseListener( new MemoryListMouseAdapter(
 			memoryLocations ) );

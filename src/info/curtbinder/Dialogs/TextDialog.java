@@ -83,7 +83,7 @@ public class TextDialog extends JDialog {
 	}
 
 	public void setWindowList ( String[] array ) {
-		JList<?> list = new JList<Object>( array );
+		JList list = new JList( array );
 		textWindow.setViewportView( list );
 	}
 

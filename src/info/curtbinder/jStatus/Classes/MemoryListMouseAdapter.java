@@ -7,9 +7,9 @@ import javax.swing.JList;
 
 public class MemoryListMouseAdapter implements MouseListener {
 
-	private JList<?> list;
+	private JList list;
 
-	public MemoryListMouseAdapter ( JList<?> list ) {
+	public MemoryListMouseAdapter ( JList list ) {
 		this.list = list;
 	}
 
