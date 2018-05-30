@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jStatus:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jStatus_jar</output-path>
+    <root id="archive" name="jStatus_jar.jar">
+      <element id="module-output" name="jStatus" />
+    </root>
+  </artifact>
+</component>
